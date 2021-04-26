@@ -6,7 +6,7 @@ This alert fires when the eviction strategy of a VM is set to "LiveMigration" bu
 
 ## Impact
 
-Such non-migratable VMs block node eviction which can impact operations such as node drain, updates, etc..
+Non-migratable VMs block node eviction. This can impact operations such as node drain, updates, etc..
 
 ## Diagnosis
 
