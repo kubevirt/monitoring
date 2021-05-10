@@ -14,15 +14,15 @@ When the operands are changed by someone else constantly, it may lead to oscilla
 
 ## Diagnosis
 
-Check the alert details. `component_name` is the name of the operand that is overwritten.
+Check the alert details. `component_name` refers to the operand that is overwritten and it follows `<kind-of-operand>/<name-of-operand>` pattern.
 
 ```
 Labels
     alertname=KubevirtHyperconvergedClusterOperatorCRModification
-    component_name=kubevirt-kubevirt-hyperconverged
+    component_name=kubevirt/kubevirt-kubevirt-hyperconverged
     severity=warning
 ```
-Thanks to the fact that all kubevirt-hyperconverged CRs follow `<type>-kubevirt-hyperconverged` pattern in in their names, it is possible to fetch the type of the CRs from their name. In the example above, the type is `kubevirt` and `kubevirt.kubevirt.io/kubevirt-kubevirt-hyperconverged` is the fully qualified name of the operand. 
+In the example above, the kind of operand is `kubevirt` and the name operand is `kubevirt-kubevirt-hyperconverged`.
 
 
 ## Mitigation
