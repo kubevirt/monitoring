@@ -2,11 +2,11 @@
 
 ## Meaning
 
-Container that hosting Virtual Machine has free memory less than 20 MB and it is close to memory limit.
+The container, that is hosting the Virtual Machine, has less than 20 MB free memory and is close to its memory limit.
 
 ## Impact
 
-Virtual Machine is at risk of being terminated by the runtime when container memory usage will exceed the memory limit.
+When the container memory usage will exceed the memory limit, the Virtual Machine will be terminated by the runtime.
 
 ## Diagnosis
 
@@ -24,3 +24,22 @@ kubectl exec -it <virt launcher pod name> -c compute -- top
 ## Mitigation
 
 Consider changing container memory limit.
+
+Memory resource request and limit are set in VirtualMachine object spec.
+
+Example:
+```
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-name
+    spec:
+      domain:
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            memory: 128Mi
+```
