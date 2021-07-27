@@ -1,24 +1,29 @@
 {
   "annotations": {
     "list": [
-      {
-        "builtIn": 1,
-        "datasource": "-- Grafana --",
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
     ]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 2,
-  "id": 16,
-  "iteration": 1617874848563,
+  "id": 10,
+  "iteration": 1627808586632,
   "links": [],
   "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 44,
+      "panels": [],
+      "title": "Top Consumers",
+      "type": "row"
+    },
     {
       "aliasColors": {},
       "bars": false,
@@ -29,7 +34,24 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -39,7 +61,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 39,
       "legend": {
@@ -55,144 +77,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
+      "options": {
+        "showHeader": true
+      },
       "pageSize": null,
       "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "showHeader": true,
-      "sort": {
-        "col": 3,
-        "desc": true
-      },
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "styles": [
-        {
-          "alias": "Namespace",
-          "pattern": "namespace",
-          "type": "string"
-        },
-        {
-          "alias": "Pod",
-          "pattern": "pod",
-          "type": "string"
-        },
-        {
-          "alias": "Value",
-          "decimals": 1,
-          "pattern": "Value",
-          "type": "number",
-          "unit": "bytes"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "mappingType": 1,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "expr": "sort_desc(topk(${top_consumers}, sum(rate(kubevirt_vmi_memory_swap_traffic_bytes_total[${interval}])) by (namespace, name)))>0",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "",
-          "refId": "A",
-          "step": 10
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Top Memory Swap Traffic Consumers",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transform": "table",
-      "type": "table-old",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "columns": [],
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$datasource",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 40,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null as zero",
-      "pageSize": null,
-      "percentage": false,
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -212,21 +102,6 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "hidden"
-        },
-        {
-          "alias": "vCPU Wait Time",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "linkTooltip": "Drill down",
-          "linkUrl": "",
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "number",
-          "unit": "s"
         },
         {
           "alias": "Namespace",
@@ -259,6 +134,21 @@
           "unit": "short"
         },
         {
+          "alias": "Memory Swap Traffic",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
           "alias": "",
           "align": "auto",
           "colorMode": null,
@@ -273,7 +163,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(topk(${top_consumers}, sum(rate(kubevirt_vmi_vcpu_wait_seconds[${interval}])) by (namespace, name))) >0",
+          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_memory_swap_in_traffic_bytes_total[$period]) + rate(kubevirt_vmi_memory_swap_out_traffic_bytes_total[$period])) by (namespace, name)))>0",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -286,14 +176,14 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top vCPU Wait Consumers",
+      "title": "Top Memory Swap Traffic Consumers",
       "tooltip": {
         "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
       "transform": "table",
-      "type": "table-old",
+      "type": "table",
       "xaxis": {
         "buckets": null,
         "mode": "time",
@@ -315,7 +205,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": false
         }
       ]
@@ -327,9 +217,27 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
+      "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -338,10 +246,10 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
-        "y": 8
+        "x": 12,
+        "y": 1
       },
-      "id": 35,
+      "id": 40,
       "legend": {
         "avg": false,
         "current": false,
@@ -355,8 +263,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
+      "options": {
+        "showHeader": true
+      },
       "pageSize": null,
       "percentage": false,
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -378,7 +290,22 @@
           "type": "hidden"
         },
         {
-          "alias": "CPU Usage",
+          "alias": "Namespace",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "",
+          "linkUrl": "",
+          "pattern": "namespace",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Name",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -387,10 +314,165 @@
           "link": false,
           "linkTooltip": "Drill down",
           "linkUrl": "",
-          "pattern": "Value",
+          "pattern": "name",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "vCPU Wait Time",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "Value #A",
           "thresholds": [],
           "type": "number",
-          "unit": "percentunit"
+          "unit": "s"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_vcpu_wait_seconds[$period])) by (namespace, name))) >0",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Top vCPU Wait Consumers",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transform": "table",
+      "type": "table",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "columns": [],
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 35,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "showHeader": true
+      },
+      "pageSize": null,
+      "percentage": false,
+      "pluginVersion": "7.3.6",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
         },
         {
           "alias": "Namespace",
@@ -423,6 +505,21 @@
           "unit": "short"
         },
         {
+          "alias": "CPU Usage",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTargetBlank": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
           "alias": "",
           "align": "auto",
           "colorMode": null,
@@ -437,7 +534,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(topk(${top_consumers}, sum(rate(container_cpu_usage_seconds_total{container=\"compute\",pod=~\"virt-launcher-.*\"}[${interval}])) by (namespace,pod)))>0",
+          "expr": "sort_desc(topk(5, sum(rate(container_cpu_usage_seconds_total{container=\"compute\",pod=~\"virt-launcher-.*\"}[$period])) by (namespace,pod)))>0",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -458,7 +555,7 @@
         "value_type": "individual"
       },
       "transform": "table",
-      "type": "table-old",
+      "type": "table",
       "xaxis": {
         "buckets": null,
         "mode": "time",
@@ -480,7 +577,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": false
         }
       ]
@@ -494,7 +591,24 @@
       "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -504,7 +618,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 9
       },
       "id": 36,
       "legend": {
@@ -520,8 +634,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
+      "options": {
+        "showHeader": true
+      },
       "pageSize": null,
       "percentage": false,
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -541,21 +659,6 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "hidden"
-        },
-        {
-          "alias": "Network Traffic Usage",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "linkTooltip": "Drill down",
-          "linkUrl": "",
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "number",
-          "unit": "bytes"
         },
         {
           "alias": "Namespace",
@@ -588,6 +691,21 @@
           "unit": "short"
         },
         {
+          "alias": "Network Traffic Usage",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
           "alias": "",
           "align": "auto",
           "colorMode": null,
@@ -602,7 +720,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(topk(${top_consumers}, sum(rate(kubevirt_vmi_network_traffic_bytes_total[${interval}])) by (namespace, name)))>0",
+          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_network_receive_bytes_total[$period]) + rate(kubevirt_vmi_network_transmit_bytes_total[$period])) by (namespace, name)))>0",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -622,7 +740,7 @@
         "value_type": "individual"
       },
       "transform": "table",
-      "type": "table-old",
+      "type": "table",
       "xaxis": {
         "buckets": null,
         "mode": "time",
@@ -644,7 +762,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": false
         }
       ]
@@ -659,7 +777,24 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -669,7 +804,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 17
       },
       "id": 37,
       "legend": {
@@ -685,8 +820,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
+      "options": {
+        "showHeader": true
+      },
       "pageSize": null,
       "percentage": false,
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -706,21 +845,6 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "hidden"
-        },
-        {
-          "alias": "Storage Traffic Usage",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "linkTooltip": "Drill down",
-          "linkUrl": "",
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "number",
-          "unit": "bytes"
         },
         {
           "alias": "Namespace",
@@ -753,6 +877,21 @@
           "unit": "short"
         },
         {
+          "alias": "Storage Traffic Usage",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
           "alias": "",
           "align": "auto",
           "colorMode": null,
@@ -767,7 +906,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(topk(${top_consumers}, sum(rate(kubevirt_vmi_storage_traffic_bytes_total[${interval}])) by (namespace, name)))>0",
+          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_storage_read_traffic_bytes_total[$period]) + rate(kubevirt_vmi_storage_write_traffic_bytes_total[$period])) by (namespace, name)))>0",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -787,7 +926,7 @@
         "value_type": "individual"
       },
       "transform": "table",
-      "type": "table-old",
+      "type": "table",
       "xaxis": {
         "buckets": null,
         "mode": "time",
@@ -809,7 +948,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": false
         }
       ]
@@ -824,7 +963,24 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -834,7 +990,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 17
       },
       "id": 38,
       "legend": {
@@ -850,8 +1006,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
+      "options": {
+        "showHeader": true
+      },
       "pageSize": null,
       "percentage": false,
+      "pluginVersion": "7.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -871,21 +1031,6 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "hidden"
-        },
-        {
-          "alias": "Storage IOPS Usage",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "linkTooltip": "Drill down",
-          "linkUrl": "",
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "number",
-          "unit": "none"
         },
         {
           "alias": "Namespace",
@@ -918,6 +1063,21 @@
           "unit": "short"
         },
         {
+          "alias": "Storage IOPS Usage",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
           "alias": "",
           "align": "auto",
           "colorMode": null,
@@ -932,7 +1092,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(topk(${top_consumers}, sum(rate(kubevirt_vmi_storage_iops_total[${interval}])) by (namespace, name)))>0",
+          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_storage_iops_read_total[$period]) + rate(kubevirt_vmi_storage_iops_write_total[$period])) by (namespace, name)))>0",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -952,7 +1112,7 @@
         "value_type": "individual"
       },
       "transform": "table",
-      "type": "table-old",
+      "type": "table",
       "xaxis": {
         "buckets": null,
         "mode": "time",
@@ -974,10 +1134,24 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": false
         }
       ]
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 42,
+      "panels": [],
+      "title": "Top Consumers (over time)",
+      "type": "row"
     },
     {
       "aliasColors": {},
@@ -985,7 +1159,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "decimals": null,
+      "decimals": 2,
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -999,7 +1173,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 26
       },
       "hiddenSeries": false,
       "id": 23,
@@ -1034,11 +1208,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(kubevirt_vmi_memory_swap_traffic_bytes_total{name=~\"$top_memory_swap_traffic_consumers\"}[$__rate_interval])) by (name, namespace)",
+          "expr": "sort_desc(sum(irate(kubevirt_vmi_memory_swap_in_traffic_bytes_total{}[$__rate_interval]) + irate(kubevirt_vmi_memory_swap_out_traffic_bytes_total{}[$__rate_interval])) by (name, namespace))>0",
           "format": "time_series",
           "instant": false,
           "interval": "",
-          "legendFormat": "VM Name: {{name}} Namespace: {{namespace}}",
+          "legendFormat": "{{name}} / {{namespace}}",
           "refId": "A"
         }
       ],
@@ -1046,12 +1220,13 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Top Memory Swap Traffic Consumers (over time)",
+      "title": "Memory Swap Traffic Consumers (over time)",
       "tooltip": {
-        "shared": true,
+        "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
+      "transform": "table",
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -1062,21 +1237,21 @@
       },
       "yaxes": [
         {
-          "decimals": 1,
+          "decimals": 2,
           "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
-          "decimals": null,
+          "decimals": 2,
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": true
         }
       ],
@@ -1091,7 +1266,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "decimals": 1,
+      "decimals": 2,
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1104,7 +1279,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 34
       },
       "hiddenSeries": false,
       "id": 25,
@@ -1138,9 +1313,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(kubevirt_vmi_vcpu_wait_seconds{name=~\"$top_vcpu_wait_consumers\"}[$__rate_interval])) by (name, namespace)",
+          "expr": "sort_desc(sum(irate(kubevirt_vmi_vcpu_wait_seconds{}[$__rate_interval])) by (name, namespace))>0",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "VM Name: {{name}} Namespace: {{namespace}}",
+          "legendFormat": "{name}} / {{namespace}}",
           "refId": "A"
         }
       ],
@@ -1148,9 +1324,9 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Top vCPU Wait Consumers (over time)",
+      "title": "vCPU Wait Consumers (over time)",
       "tooltip": {
-        "shared": true,
+        "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
@@ -1168,7 +1344,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
@@ -1176,7 +1352,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": true
         }
       ],
@@ -1204,7 +1380,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 41
       },
       "hiddenSeries": false,
       "id": 19,
@@ -1240,10 +1416,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_cpu_usage_seconds_total{pod=~\"$top_cpu_usage_consumers\"}[$__rate_interval])) by (pod, namespace)",
+          "expr": "sort_desc(sum(irate(container_cpu_usage_seconds_total{container=\"compute\",pod=~\"virt-launcher-.*\"}[$__rate_interval])) by (pod, namespace))>0",
+          "format": "time_series",
           "instant": false,
           "interval": "",
-          "legendFormat": "Pod Name: {{name}} Namespace: {{namespace}}",
+          "legendFormat": "{{pod}} / {{namespace}}",
           "refId": "A"
         }
       ],
@@ -1251,12 +1428,13 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Top VM Container CPU Usage Consumers (over time)",
+      "title": "VM Container CPU Usage Consumers by Pod Name (over time)",
       "tooltip": {
-        "shared": true,
+        "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
+      "transform": "table",
       "transformations": [],
       "type": "graph",
       "xaxis": {
@@ -1268,12 +1446,12 @@
       },
       "yaxes": [
         {
-          "decimals": 1,
+          "decimals": 2,
           "format": "s",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
@@ -1281,7 +1459,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": true
         }
       ],
@@ -1308,7 +1486,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 49
       },
       "hiddenSeries": false,
       "id": 29,
@@ -1342,10 +1520,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(kubevirt_vmi_network_traffic_bytes_total{name=~\"$top_network_traffic_consumers\"}[$__rate_interval])) by (name, namespace)",
+          "expr": "sort_desc(sum(irate(kubevirt_vmi_network_receive_bytes_total[$__rate_interval]) + irate(kubevirt_vmi_network_transmit_bytes_total[$__rate_interval])) by (namespace, name))>0",
+          "format": "time_series",
           "instant": false,
           "interval": "",
-          "legendFormat": "VM Name: {{name}} Namespace: {{namespace}}",
+          "legendFormat": "{{name}} / {{namespace}}",
           "refId": "A"
         }
       ],
@@ -1353,12 +1532,13 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Top Network Traffic Consumers (over time)",
+      "title": "Network Traffic Consumers (over time)",
       "tooltip": {
-        "shared": true,
+        "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
+      "transform": "table",
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -1369,12 +1549,12 @@
       },
       "yaxes": [
         {
-          "decimals": 1,
+          "decimals": 2,
           "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
@@ -1382,7 +1562,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": true
         }
       ],
@@ -1410,7 +1590,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 57
       },
       "hiddenSeries": false,
       "id": 30,
@@ -1446,10 +1626,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(kubevirt_vmi_storage_traffic_bytes_total{name=~\"$top_storage_traffic_consumers\"}[$__rate_interval])) by (name, namespace)",
+          "expr": "sort_desc(sum(irate(kubevirt_vmi_storage_read_traffic_bytes_total[$__rate_interval]) + irate(kubevirt_vmi_storage_write_traffic_bytes_total[$__rate_interval])) by (name, namespace))>0",
+          "format": "time_series",
           "instant": false,
           "interval": "",
-          "legendFormat": "VM Name: {{name}} Namespace: {{namespace}}",
+          "legendFormat": "{{name}} / {{namespace}}",
           "refId": "A"
         }
       ],
@@ -1457,12 +1638,13 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Top Storage Traffic Consumers (over time)",
+      "title": "Storage Traffic Consumers (over time)",
       "tooltip": {
-        "shared": true,
+        "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
+      "transform": "table",
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -1473,21 +1655,21 @@
       },
       "yaxes": [
         {
-          "decimals": 1,
+          "decimals": 2,
           "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
-          "decimals": null,
+          "decimals": 2,
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": true
         }
       ],
@@ -1502,7 +1684,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "decimals": null,
+      "decimals": 2,
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1516,7 +1698,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 64
       },
       "hiddenSeries": false,
       "id": 33,
@@ -1552,10 +1734,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(kubevirt_vmi_storage_iops_total{name=~\"$top_storage_iops_consumers\"}[$__rate_interval])) by (name, namespace)",
+          "expr": "sort_desc(sum(irate(kubevirt_vmi_storage_iops_read_total[$__rate_interval])+ irate(kubevirt_vmi_storage_iops_write_total[$__rate_interval])) by (name, namespace))>0",
+          "format": "time_series",
           "instant": false,
           "interval": "",
-          "legendFormat": "VM Name: {{name}} Namespace: {{namespace}}",
+          "legendFormat": "{{name}} / {{namespace}}",
           "refId": "A"
         }
       ],
@@ -1563,12 +1746,13 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Top Storage IOPS Consumers (over time)",
+      "title": "Storage IOPS Consumers (over time)",
       "tooltip": {
-        "shared": true,
+        "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
+      "transform": "table",
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -1579,12 +1763,12 @@
       },
       "yaxes": [
         {
-          "decimals": 1,
+          "decimals": 2,
           "format": "short",
           "label": "",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": 0,
           "show": true
         },
         {
@@ -1592,7 +1776,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         }
       ],
@@ -1606,7 +1790,7 @@
   "schemaVersion": 26,
   "style": "dark",
   "tags": [
-    "kubernetes-mixin"
+    "kubevirt-mixin"
   ],
   "templating": {
     "list": [
@@ -1624,14 +1808,13 @@
         "name": "datasource",
         "options": [],
         "query": "prometheus",
-        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
-        "auto": false,
+        "auto": true,
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
@@ -1640,233 +1823,31 @@
           "value": "4h"
         },
         "error": null,
-        "hide": 2,
-        "label": null,
-        "name": "interval",
+        "hide": 0,
+        "label": "interval",
+        "name": "period",
         "options": [
+          {
+            "selected": false,
+            "text": "2h",
+            "value": "2h"
+          },
           {
             "selected": true,
             "text": "4h",
             "value": "4h"
           }
         ],
-        "query": "4h",
+        "query": "2h,4h",
         "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "5",
-          "value": "5"
-        },
-        "error": null,
-        "hide": 0,
-        "label": "Number of Top Consumers",
-        "name": "top_consumers",
-        "options": [
-          {
-            "selected": true,
-            "text": "5",
-            "value": "5"
-          }
-        ],
-        "query": "5",
-        "skipUrlSync": false,
-        "type": "textbox"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "$datasource",
-        "definition": "query_result(topk(${top_consumers}, sum(rate(container_cpu_usage_seconds_total{container=\"compute\",pod=~\"virt-launcher-.*\"}[${interval}])) by (namespace,pod)))",
-        "error": null,
-        "hide": 2,
-        "includeAll": true,
-        "label": null,
-        "multi": true,
-        "name": "top_cpu_usage_consumers",
-        "options": [],
-        "query": "query_result(topk(${top_consumers}, sum(rate(container_cpu_usage_seconds_total{container=\"compute\",pod=~\"virt-launcher-.*\"}[${interval}])) by (namespace,pod)))",
-        "refresh": 2,
-        "regex": ".*pod=\"(.*?)\".*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "$datasource",
-        "definition": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_memory_swap_traffic_bytes_total[${interval}])) by (namespace, name)))",
-        "error": null,
-        "hide": 2,
-        "includeAll": true,
-        "label": null,
-        "multi": true,
-        "name": "top_memory_swap_traffic_consumers",
-        "options": [],
-        "query": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_memory_swap_traffic_bytes_total[${interval}])) by (namespace, name)))",
-        "refresh": 2,
-        "regex": ".*name=\"(.*?)\".*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "$datasource",
-        "definition": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_vcpu_wait_seconds[${interval}])) by (namespace, name)))",
-        "error": null,
-        "hide": 2,
-        "includeAll": true,
-        "label": null,
-        "multi": true,
-        "name": "top_vcpu_wait_consumers",
-        "options": [],
-        "query": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_vcpu_wait_seconds[${interval}])) by (namespace, name)))",
-        "refresh": 2,
-        "regex": ".*name=\"(.*?)\".*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "$datasource",
-        "definition": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_network_traffic_bytes_total[${interval}])) by (namespace, name)))",
-        "error": null,
-        "hide": 2,
-        "includeAll": true,
-        "label": null,
-        "multi": true,
-        "name": "top_network_traffic_consumers",
-        "options": [],
-        "query": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_network_traffic_bytes_total[${interval}])) by (namespace, name)))",
-        "refresh": 2,
-        "regex": ".*name=\"(.*?)\".*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "$datasource",
-        "definition": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_storage_traffic_bytes_total[${interval}])) by (namespace, name)))",
-        "error": null,
-        "hide": 2,
-        "includeAll": true,
-        "label": null,
-        "multi": true,
-        "name": "top_storage_traffic_consumers",
-        "options": [],
-        "query": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_storage_traffic_bytes_total[${interval}])) by (namespace, name)))",
-        "refresh": 2,
-        "regex": ".*name=\"(.*?)\".*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "$datasource",
-        "definition": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_storage_iops_total[${interval}])) by (namespace, name)))",
-        "error": null,
-        "hide": 2,
-        "includeAll": true,
-        "label": null,
-        "multi": true,
-        "name": "top_storage_iops_consumers",
-        "options": [],
-        "query": "query_result(topk(${top_consumers}, sum(rate(kubevirt_vmi_storage_iops_total[${interval}])) by (namespace, name)))",
-        "refresh": 2,
-        "regex": ".*name=\"(.*?)\".*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
