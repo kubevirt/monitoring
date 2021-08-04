@@ -12,6 +12,7 @@
 Examples of runbooks can be found in this repository and in the [prometheus-operator/kube-prometheus](https://github.com/prometheus-operator/kube-prometheus/wiki/Runbooks) repository.
 
 ## List of Runbooks
+* [CnaoDown](CnaoDown.md)
 * [CnaoNotReady](CnaoNotReady.md)
 * [KubeVirtComponentExceedsRequestedCPU](KubeVirtComponentExceedsRequestedCPU.md)
 * [KubeVirtComponentExceedsRequestedMemory](KubeVirtComponentExceedsRequestedMemory.md)
