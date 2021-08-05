@@ -3,7 +3,7 @@
 ## Meaning
 
 Cluster-network-addons-operator (CNAO) deploys additional networking components on top of the cluster.
-This alert fires when CNAO CR is not ready, which means that one of the deployed components is not ready.
+This alert fires when CNAO CR `NetworkAddonsConfig` is not ready, which means that one of the deployed components is not ready.
 
 ## Impact
 
@@ -11,7 +11,7 @@ Without CNAO components deployed and ready, not all the kubevirt networking scen
 
 ## Diagnosis
 
-- Check for messages on the networkaddonsconfig CR status:
+- Check for messages on the `networkaddonsconfig` CR status:
 	```
 	kubectl get networkaddonsconfig -o custom-columns="":.status.conditions[*].message
 	```
