@@ -13,13 +13,13 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 
 ## List of Runbooks
 * [CnaoDown](CnaoDown.md)
-* [CnaoNotReady](CnaoNotReady.md)
 * [KubeVirtComponentExceedsRequestedCPU](KubeVirtComponentExceedsRequestedCPU.md)
 * [KubeVirtComponentExceedsRequestedMemory](KubeVirtComponentExceedsRequestedMemory.md)
 * [KubevirtHyperconvergedClusterOperatorCRModification](KubevirtHyperconvergedClusterOperatorCRModification.md)
 * [KubevirtHyperconvergedClusterOperatorUSModification](KubevirtHyperconvergedClusterOperatorUSModification.md)
 * [KubevirtVmHighMemoryUsage](KubevirtVmHighMemoryUsage.md)
 * [LowKVMNodesCount](LowKVMNodesCount.md)
+* [NetworkAddonsConfigNotReady](NetworkAddonsConfigNotReady.md)
 * [OrphanedVirtualMachineImages](OrphanedVirtualMachineImages.md)
 * [OutdatedVirtualMachineInstanceWorkloads](OutdatedVirtualMachineInstanceWorkloads.md)
 * [VMCannotBeEvicted](VMCannotBeEvicted.md)
