@@ -20,6 +20,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [KubevirtHyperconvergedClusterOperatorUSModification](KubevirtHyperconvergedClusterOperatorUSModification.md)
 * [KubevirtVmHighMemoryUsage](KubevirtVmHighMemoryUsage.md)
 * [LowKVMNodesCount](LowKVMNodesCount.md)
+* [LowReadyVirtControllersCount](LowReadyVirtControllersCount.md)
 * [NetworkAddonsConfigNotReady](NetworkAddonsConfigNotReady.md)
 * [OrphanedVirtualMachineImages](OrphanedVirtualMachineImages.md)
 * [OutdatedVirtualMachineInstanceWorkloads](OutdatedVirtualMachineInstanceWorkloads.md)
