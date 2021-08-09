@@ -1,4 +1,4 @@
-# KubeVirtComponenetExceedsRequestedCPU
+# KubeVirtComponentExceedsRequestedCPU
 
 ## Meaning
 
