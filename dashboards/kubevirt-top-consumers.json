@@ -6,8 +6,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 2,
-  "id": 10,
-  "iteration": 1627808586632,
+  "id": 1,
+  "iteration": 1628598301477,
   "links": [],
   "panels": [
     {
@@ -1140,13 +1140,199 @@
       ]
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "columns": [],
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 25
+      },
+      "id": 45,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "showHeader": true
+      },
+      "pageSize": null,
+      "percentage": false,
+      "pluginVersion": "7.3.6",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Namespace",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "",
+          "linkUrl": "",
+          "pattern": "namespace",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Name",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "name",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Memory Usage",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "linkTooltip": "Drill down",
+          "linkUrl": "",
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_memory_resident_bytes[$period])) by (namespace, name)))>0",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Top Memory (RSS) Used Consumers",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transform": "table",
+      "type": "table",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": false
+        }
+      ]
+    },
+    {
       "collapsed": false,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 33
       },
       "id": 42,
       "panels": [],
@@ -1173,7 +1359,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 34
       },
       "hiddenSeries": false,
       "id": 23,
@@ -1195,7 +1381,8 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "alertThreshold": true,
+        "dataLinks": []
       },
       "percentage": false,
       "pluginVersion": "7.3.6",
@@ -1279,7 +1466,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 42
       },
       "hiddenSeries": false,
       "id": 25,
@@ -1300,7 +1487,8 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "alertThreshold": true,
+        "dataLinks": []
       },
       "percentage": false,
       "pluginVersion": "7.3.6",
@@ -1380,7 +1568,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 49
       },
       "hiddenSeries": false,
       "id": 19,
@@ -1403,7 +1591,8 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "alertThreshold": true,
+        "dataLinks": []
       },
       "percentage": false,
       "pluginVersion": "7.3.6",
@@ -1486,7 +1675,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 57
       },
       "hiddenSeries": false,
       "id": 29,
@@ -1507,7 +1696,8 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "alertThreshold": true,
+        "dataLinks": []
       },
       "percentage": false,
       "pluginVersion": "7.3.6",
@@ -1590,7 +1780,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 65
       },
       "hiddenSeries": false,
       "id": 30,
@@ -1613,7 +1803,8 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "alertThreshold": true,
+        "dataLinks": []
       },
       "percentage": false,
       "pluginVersion": "7.3.6",
@@ -1698,7 +1889,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 72
       },
       "hiddenSeries": false,
       "id": 33,
@@ -1721,7 +1912,8 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "alertThreshold": true,
+        "dataLinks": []
       },
       "percentage": false,
       "pluginVersion": "7.3.6",
@@ -1784,10 +1976,114 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 80
+      },
+      "hiddenSeries": false,
+      "id": 46,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sort_desc(sum(irate(kubevirt_vmi_memory_resident_bytes[$__rate_interval])) by (namespace, name))>0",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{name}} / {{namespace}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Memory (RSS) Usage Consumers (over time)",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transform": "table",
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [
     "kubevirt-mixin"
@@ -1796,7 +2092,6 @@
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "default",
           "value": "default"
         },
@@ -1814,7 +2109,7 @@
         "type": "datasource"
       },
       {
-        "auto": true,
+        "auto": false,
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
@@ -1829,6 +2124,16 @@
         "options": [
           {
             "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
             "text": "2h",
             "value": "2h"
           },
@@ -1836,9 +2141,24 @@
             "selected": true,
             "text": "4h",
             "value": "4h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
           }
         ],
-        "query": "2h,4h",
+        "query": "5m,1h,2h,4h,6h,12h,1d",
         "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
