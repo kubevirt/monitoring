@@ -119,7 +119,7 @@
           "unit": "short"
         },
         {
-          "alias": "Name",
+          "alias": "Virtual Machine",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -176,7 +176,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top Memory Swap Traffic Consumers",
+      "title": "Top Consumers of Memory Swap Traffic",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -305,7 +305,7 @@
           "unit": "short"
         },
         {
-          "alias": "Name",
+          "alias": "Virtual Machine",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -362,7 +362,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top vCPU Wait Consumers",
+      "title": "Top Consumers of vCPU Wait",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -490,7 +490,7 @@
           "unit": "short"
         },
         {
-          "alias": "Pod",
+          "alias": "virt-launcher Pod",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -517,7 +517,7 @@
           "pattern": "Value #A",
           "thresholds": [],
           "type": "number",
-          "unit": "short"
+          "unit": "percentunit"
         },
         {
           "alias": "",
@@ -548,7 +548,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top VM Container CPU Usage Consumers",
+      "title": "Top Consumers of CPU by virt-launcher Pods",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -676,7 +676,7 @@
           "unit": "short"
         },
         {
-          "alias": "Name",
+          "alias": "Virtual Machine",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -733,7 +733,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top Network Traffic Consumers",
+      "title": "Top Consumers of Network Traffic",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -862,7 +862,7 @@
           "unit": "short"
         },
         {
-          "alias": "Name",
+          "alias": "Virtual Machine",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -919,7 +919,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top Storage Traffic Consumers",
+      "title": "Top Consumers of Storage Traffic",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1048,7 +1048,7 @@
           "unit": "short"
         },
         {
-          "alias": "Name",
+          "alias": "Virtual Machine",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -1105,7 +1105,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top Storage IOPS Consumers",
+      "title": "Top Consumers of Storage IOPS",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1234,7 +1234,7 @@
           "unit": "short"
         },
         {
-          "alias": "Pod",
+          "alias": "virt-launcher Pod",
           "align": "auto",
           "colorMode": null,
           "colors": [],
@@ -1291,7 +1291,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Top Memory Used Consumers",
+      "title": "Top Consumers of Memory",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1336,7 +1336,7 @@
       },
       "id": 42,
       "panels": [],
-      "title": "Top Consumers (over time)",
+      "title": "Top Consumers of Memory",
       "type": "row"
     },
     {
@@ -1407,7 +1407,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory Swap Traffic Consumers (over time)",
+      "title": "Memory Swap Traffic by Virtual Machines",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1512,7 +1512,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "vCPU Wait Consumers (over time)",
+      "title": "vCPU Wait by Virtual Machines",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1617,7 +1617,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "VM Container CPU Usage Consumers by Pod Name (over time)",
+      "title": "CPU Usage by virt-launcher Pods",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1722,7 +1722,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Network Traffic Consumers (over time)",
+      "title": "Network Traffic by Virtual Machines",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1829,7 +1829,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Storage Traffic Consumers (over time)",
+      "title": "Storage Traffic by Virtual Machines",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -1938,7 +1938,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Storage IOPS Consumers (over time)",
+      "title": "Storage IOPS Usage by Virtual Machines",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -2042,7 +2042,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory Usage Consumers (over time)",
+      "title": "Memory Usage by virt-launcher Pods",
       "tooltip": {
         "shared": false,
         "sort": 0,
