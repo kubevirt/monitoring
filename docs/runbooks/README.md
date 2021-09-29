@@ -23,6 +23,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [NetworkAddonsConfigNotReady](NetworkAddonsConfigNotReady.md)
 * [OrphanedVirtualMachineImages](OrphanedVirtualMachineImages.md)
 * [OutdatedVirtualMachineInstanceWorkloads](OutdatedVirtualMachineInstanceWorkloads.md)
+* [SSPCommonTemplatesModificationReverted](SSPCommonTemplatesModificationReverted.md)
 * [SSPHighRateRejectedVms](SSPHighRateRejectedVms.md)
 * [VMCannotBeEvicted](VMCannotBeEvicted.md)
 * [VirtAPIDown](VirtAPIDown.md)
