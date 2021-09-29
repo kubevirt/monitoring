@@ -13,7 +13,7 @@ VMIs that have not been updated to run in the most recent virt-launcher pod may 
 You can identify the VMIs that are out-of-date by using the `kubevirt.io/outdatedLauncherImage` label as a label selector when listing VMIs. Below is an example of a command that will list all out-of-date VMIs across all namespaces within the cluster.
 
 ```bash
-kubectl get vmi -l “kubevirt.io/outdatedLauncherImage” --all-namespaces
+kubectl get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
 ```
 
 ## Mitigation
