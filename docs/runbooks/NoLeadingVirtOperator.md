@@ -2,7 +2,7 @@
 
 ## Meaning
 
-The virt-operator is the first k8s operator coming to alive in a KubeVirt cluster. With the primary responsible for the installation, live-update, live-upgrade of a KubeVirt cluster, it monitors the life-cycle of top-level controllers such as virt-controller, virt-handler, virt-launcher, etc. and manages their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks such as certificate rotation and some infrastructure management, etc.
+The virt-operator is the first k8s operator coming alive in a KubeVirt cluster. Its primary responsibilities are installation, live-update, live-upgrade of a KubeVirt cluster, monitoring the life-cycle of top-level controllers, such as virt-controller, virt-handler, virt-launcher, etc. and manage their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks, such as certificate rotation and some infrastructure management, etc.
 
 The virt-operator deployment has a default replica of 2 pods, with one leader pod holding a leader lease, indicating an operating virt-operator pod. 
 
@@ -16,7 +16,7 @@ This alert indicates a failure at the level of the KubeVirt cluster. Critical cl
 
 The information on the leader status of a virt-operator pod can be deduced from the system log available from master nodes of the cluster. In an upstream KubeVirt environment, on a master node, the logs of the virt-operator pods can be found under the directory `/var/log/pods/*_virt-operator-*`. The log messages containing `Started leading` and `acquire leader` should help deduce the leader status of a given virt-operator pod. 
 
-In addition, always check whether there are any running virt-operator pods and their status, e.g. with following commands:
+In addition, always check whether there are any running virt-operator pods and their status, with following commands:
 - `kubectl -n kubevirt get pods -l kubevirt.io=virt-operator`
 - `kubectl -n kubevirt logs <pod-name>`.
 - `kubectl -n kubevirt describe pod <pod-name>`.

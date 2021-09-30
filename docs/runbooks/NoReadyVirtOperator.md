@@ -2,7 +2,7 @@
 
 ## Meaning
 
-The virt-operator is the first k8s operator coming to alive in a KubeVirt cluster. With the primary responsible for the installation, live-update, live-upgrade of a KubeVirt cluster, it monitors the life-cycle of top-level controllers such as virt-controller, virt-handler, virt-launcher, etc. and manages their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks such as certificate rotation and some infrastructure management, etc.
+The virt-operator is the first k8s operator coming alive in a KubeVirt cluster. Its primary responsibilities are installation, live-update, live-upgrade of a KubeVirt cluster, monitoring the life-cycle of top-level controllers, such as virt-controller, virt-handler, virt-launcher, etc. and manage their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks, such as certificate rotation and some infrastructure management, etc.
 
 Note that virt-operator is not directly responsible for virtual machines in the cluster, its temporal unavailability should not affect the custom workloads. 
 
@@ -14,7 +14,7 @@ This alert indicates a failure at the level of the KubeVirt cluster. Critical cl
 
 ## Diagnosis
 
-The output of the following command is 0. 
+Check if the output of the following command is 0. 
 - `kubectl get deployment -n kubevirt virt-operator -o jsonpath='{.status.readyReplicas}'`
 
 ## Mitigation
