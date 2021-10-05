@@ -15,13 +15,15 @@ This alert indicates a failure at the level of the KubeVirt cluster. Critical cl
 ## Diagnosis
 
 Check if the output of the following command is 0. 
-- `kubectl get deployment -n kubevirt virt-operator -o jsonpath='{.status.readyReplicas}'`
+- `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
+- `kubectl get deployment -n $NAMESPACE virt-operator -o jsonpath='{.status.readyReplicas}'`
 
 ## Mitigation
 
 - Check the status of the virt-operator deployment to find out more information. The following commands will provide the associated events and show if there are any specific issues.
-  - `kubectl -n kubevirt get deploy virt-operator -o yaml`
-  - `kubectl -n kubevirt describe deploy virt-operator`
+  - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
+  - `kubectl -n $NAMESPACE get deploy virt-operator -o yaml`
+  - `kubectl -n $NAMESPACE describe deploy virt-operator`
 - Check if there are issues with the nodes for control-plane and masters. For example, if they are in a NotReady state.
   - `kubectl get nodes`
 

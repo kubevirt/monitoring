@@ -11,8 +11,11 @@ The severity of the alert is as `warning`. This alert does not mean that the fai
 ## Diagnosis
 
 The diagnosis is to show that at least one worker node does not have a virt-handler pod running. One can follow these steps to identify the nodes associated with the failed rollouts:
-- List all the pods in the virt-handler DaemonSet with `kubectl get pods -n kubevirt -l=kubevirt.io=virt-handler`
-- For each virt-handler pod, find out the name of the worker node the pod is deployed on with `kubectl -n kubevirt get pod <virt-handler-pod-name> -o jsonpath='{.spec.nodeName}'`
+- List all the pods in the virt-handler DaemonSet with 
+  - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
+  - `kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler`
+- For each virt-handler pod, find out the name of the worker node the pod is deployed on with 
+  - `kubectl -n $NAMESPACE get pod <virt-handler-pod-name> -o jsonpath='{.spec.nodeName}'`
 
 ## Mitigation
 

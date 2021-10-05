@@ -15,13 +15,15 @@ In these circumstances the virt-operator will become a single point of failure.
 ## Diagnosis
 
 Check if the output of the following command is a number smaller than 2. 
-- `kubectl get deployment -n kubevirt virt-operator -o jsonpath='{.status.readyReplicas}'`
+- `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
+- `kubectl get deployment -n $NAMESPACE virt-operator -o jsonpath='{.status.readyReplicas}'`
 
 ## Mitigation
 
 - Check the status of the virt-operator deployment to find out more information. The following commands will provide the associated events and show if there are any specific issues.
-  - `kubectl -n kubevirt get deploy virt-operator -o yaml`
-  - `kubectl -n kubevirt describe deploy virt-operator`
+  - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
+  - `kubectl -n $NAMESPACE get deploy virt-operator -o yaml`
+  - `kubectl -n $NAMESPACE describe deploy virt-operator`
 - Check if there are issues with the nodes for control-plane and masters. For example, if they are in a NotReady state.
   - `kubectl get nodes`
 
