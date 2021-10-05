@@ -17,11 +17,12 @@ This alter indicates the downgrade of the availability of virt-operator.
 ## Diagnosis
 
 Check the states of virt-operator pods:
-- `kubectl -n kubevirt get pods -l kubevirt.io=virt-operator`
+- `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
+- `kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator`
 
 Check in-depth virt-operator pods that are in trouble:
-- `kubectl -n kubevirt logs <pod-name>`.
-- `kubectl -n kubevirt describe pod <pod-name>`.
+- `kubectl -n $NAMESPACE logs <pod-name>`.
+- `kubectl -n $NAMESPACE describe pod <pod-name>`.
 
 ## Mitigation
 
