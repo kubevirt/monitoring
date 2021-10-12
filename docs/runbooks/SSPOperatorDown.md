@@ -21,7 +21,7 @@ With SSP Operator down, the dependant components may not deploy at all and/or ch
 	kubectl -n $NAMESPACE get pods -l control-plane=ssp-operator
 	```
  
-- Check CNAO's operator pod logs and describe.
+- Check ssp-operator's pod logs and describe.
     - `kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator`
     - `kubectl -n $NAMESPACE logs -l control-plane=ssp-operator`
 
