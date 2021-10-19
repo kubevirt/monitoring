@@ -16,5 +16,6 @@ Two common types of errors may lead to this alert:
 
 ## Mitigation
 
-Check virt-operator logs to verify whether it can connect to the apiserver at all. logs of virt-operator pods are located on the master nodes, under the directory `/var/log/pods/*_virt-operator-*`. If there is indication that the virt-operator cannot connect to the apiserver, delete the pod to force a restart. In this case the issue is normally related to DNS or CNI issues outside of the scope of kubevirt.
+Check virt-operator logs to verify whether it can connect to the apiserver at all. Logs of virt-operator pods are located on the master nodes, under the directory `/var/log/pods/*_virt-operator-*`. If there is indication that the virt-operator cannot connect to the apiserver, try delete the pod to force a restart. 
+In any case, the issue is normally related to DNS or CNI issues outside of the scope of kubevirt. Identify the root cause and fix it.
 
