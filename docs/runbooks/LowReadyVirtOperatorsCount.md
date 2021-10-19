@@ -2,23 +2,15 @@
 
 ## Meaning
 
-The virt-operator is the first k8s operator coming alive in a KubeVirt cluster. Its primary responsibilities are installation, live-update, live-upgrade of a KubeVirt cluster, monitoring the life-cycle of top-level controllers, such as virt-controller, virt-handler, virt-launcher, etc. and manage their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks, such as certificate rotation and some infrastructure management, etc.
-
-Note that virt-operator is not directly responsible for virtual machines in the cluster, its temporal unavailability should not affect the custom workloads. 
-
 This alert is triggered when some virt operators are running but, not in the `Ready` state in the past 5 minutes. The virt-operator deployment has a default replica of 2 pods.
 
 ## Impact
 
-In these circumstances the virt-operator will become a single point of failure.
+The virt-operator is the first k8s operator coming alive in a KubeVirt cluster. Its primary responsibilities are installation, live-update, live-upgrade of a KubeVirt cluster, monitoring the life-cycle of top-level controllers, such as virt-controller, virt-handler, virt-launcher, etc. and manage their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks, such as certificate rotation and some infrastructure management, etc. Note that virt-operator is not directly responsible for virtual machines in the cluster, its temporal unavailability should not affect the custom workloads. 
+
+When observed this alert, and the `NoReadyVirtOperator` alert is not triggered, the virt-operator becomes a single point of failure.
 
 ## Diagnosis
-
-Check if the output of the following command is a number smaller than 2. 
-- `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
-- `kubectl get deployment -n $NAMESPACE virt-operator -o jsonpath='{.status.readyReplicas}'`
-
-## Mitigation
 
 - Check the status of the virt-operator deployment to find out more information. The following commands will provide the associated events and show if there are any specific issues.
   - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
@@ -27,3 +19,6 @@ Check if the output of the following command is a number smaller than 2.
 - Check if there are issues with the nodes for control-plane and masters. For example, if they are in a NotReady state.
   - `kubectl get nodes`
 
+## Mitigation
+
+There can be several reasons, identify the root cause and fix it.
