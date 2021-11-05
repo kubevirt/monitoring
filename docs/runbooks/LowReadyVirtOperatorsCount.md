@@ -2,7 +2,7 @@
 
 ## Meaning
 
-This alert is triggered when some virt operators are running but, not in the `Ready` state in the past 5 minutes. The virt-operator deployment has a default replica of 2 pods.
+This alert is triggered when some virt operators are running but, not in the `Ready` state in the past 10 minutes. The virt-operator deployment has a default replica of 2 pods.
 
 ## Impact
 

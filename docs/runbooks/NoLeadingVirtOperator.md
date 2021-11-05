@@ -2,7 +2,7 @@
 
 ## Meaning
 
-This alert is triggered when the system detects that in the past 5 minutes, there is no virt-operator pod holding the leader lease despite there are one or more virt-operator pod is in `Ready` state. The alert suggests that there is no operating virt-operator pod. 
+This alert is triggered when the system detects that in the past 10 minutes, there is no virt-operator pod holding the leader lease despite there are one or more virt-operator pod is in `Ready` state. The alert suggests that there is no operating virt-operator pod. 
 
 ## Impact
 

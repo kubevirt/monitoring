@@ -2,7 +2,7 @@
 
 ## Meaning
 
-This alert is triggered when there is only one virt-operator pod that is running in `Ready` state in the past 5 minutes. 
+This alert is triggered when there is only one virt-operator pod that is running in `Ready` state in the past 10 minutes. 
 
 ## Impact
 
