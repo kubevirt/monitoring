@@ -24,5 +24,4 @@ Check in-depth virt-operator pods that are in trouble:
 
 ## Mitigation
 
-There can be several reasons, identify the root cause and fix it.
-
+There can be several reasons, try to identify the root cause and fix it. If you cannot fix it, please open an issue and attach the artifacts gathered in the Diagnosis section.
