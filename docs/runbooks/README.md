@@ -12,6 +12,9 @@
 Examples of runbooks can be found in this repository and in the [prometheus-operator/kube-prometheus](https://github.com/prometheus-operator/kube-prometheus/wiki/Runbooks) repository.
 
 ## List of Runbooks
+* [CDIDataVolumeUnusualRestartCount](CDIDataVolumeUnusualRestartCount.md)
+* [CDINotReady](CDINotReady.md)
+* [CDIOperatorDown](CDIOperatorDown.md)
 * [CnaoDown](CnaoDown.md)
 * [KubeMacPoolDuplicateMacsFound](KubeMacPoolDuplicateMacsFound.md)
 * [KubeVirtComponentExceedsRequestedCPU](KubeVirtComponentExceedsRequestedCPU.md)
