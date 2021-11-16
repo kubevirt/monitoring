@@ -1,4 +1,4 @@
-# KubeVirtComponenetExceedsRequestedMemory
+# KubeVirtComponentExceedsRequestedMemory
 
 ## Meaning
 
