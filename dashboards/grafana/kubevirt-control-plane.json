@@ -2225,7 +2225,7 @@
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(rate(kubevirt_workqueue_longest_running_processor_seconds{job=~\".*kubevirt.*\", instance=~\"$instance\"}[5m])) by (instance, name)",
+              "expr": "kubevirt_workqueue_longest_running_processor_seconds{job=~\".*kubevirt.*\", instance=~\"$instance\"}",
               "interval": "",
               "legendFormat": "{{name}} {{instance}}",
               "queryType": "randomWalk",
