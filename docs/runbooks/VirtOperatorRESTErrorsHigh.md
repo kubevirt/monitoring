@@ -11,7 +11,7 @@ This alert suggests that the virt-operator is potentially lost the connection to
 ## Diagnosis
 
 Two common types of errors may lead to this alert:
-- The apiserver is overloaded and we run into timeouts. Issues like this can be identified by checking the apiserver metrics and looking at its response times, overall calls. Without customization, logs of KubeVirt apiserver pods are located on the master nodes, under the directory `/var/log/pods/*_kube-apiserver-*` and `/var/log/pods/*_virt-api-*`.
+- The apiserver is overloaded and we run into timeouts. Issues like this can be identified by checking the apiserver metrics and looking at its response times, overall calls.  For users without cluster privileges, logs of KubeVirt apiserver pods can be fetched with `kubectl logs` command.
 - The virt-operator pod cannot reach the apiserver. Common issues are network connectivity issues such as DNS issues on the node.
 
 ## Mitigation
