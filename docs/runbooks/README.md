@@ -43,6 +43,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [SSPTemplateValidatorDown](SSPTemplateValidatorDown.md)
 * [VMCannotBeEvicted](VMCannotBeEvicted.md)
 * [VirtAPIDown](VirtAPIDown.md)
+* [VirtControllerRESTErrorsBurst](VirtControllerRESTErrorsBurst.md)
 * [VirtControllerRESTErrorsHigh](VirtControllerRESTErrorsHigh.md)
 * [VirtHandlerDaemonSetRolloutFailing](VirtHandlerDaemonSetRolloutFailing.md)
 * [VirtOperatorDown](VirtOperatorDown.md)
