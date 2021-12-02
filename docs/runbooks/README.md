@@ -29,6 +29,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [LowReadyVirtControllersCount](LowReadyVirtControllersCount.md)
 * [LowReadyVirtOperatorsCount](LowReadyVirtOperatorsCount.md)
 * [LowVirtAPICount](LowVirtAPICount.md)
+* [LowVirtControllersCount](LowVirtControllersCount.md)
 * [LowVirtOperatorCount](LowVirtOperatorCount.md)
 * [NetworkAddonsConfigNotReady](NetworkAddonsConfigNotReady.md)
 * [NoLeadingVirtOperator](NoLeadingVirtOperator.md)
