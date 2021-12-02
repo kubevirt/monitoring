@@ -12,13 +12,30 @@ This alert indicates a failure at the level of the KubeVirt cluster. Critical cl
 
 ## Diagnosis
 
-The information on the leader status of a virt-operator pod can be deduced from the system log available from master nodes of the cluster. In an upstream KubeVirt environment, on a master node, the logs of the virt-operator pods can be found under the directory `/var/log/pods/*_virt-operator-*`. The log messages containing `Started leading` and `acquire leader` should help deduce the leader status of a given virt-operator pod. 
+The information on the leader status of a virt-operator pod can be deduced from the pod logs. The log messages containing `Started leading` and `acquire leader` should help deduce the leader status of a given virt-operator pod. 
 
 In addition, always check whether there are any running virt-operator pods and their status, with following commands:
 - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
 - `kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator`
 - `kubectl -n $NAMESPACE logs <pod-name>`.
 - `kubectl -n $NAMESPACE describe pod <pod-name>`.
+
+
+***Leader pod example:***
+```
+$ kubectl -n $NAMESPACE logs <pod-name> |grep lead
+{"component":"virt-operator","level":"info","msg":"Attempting to acquire leader status","pos":"application.go:400","timestamp":"2021-11-30T12:15:18.635387Z"}
+I1130 12:15:18.635452       1 leaderelection.go:243] attempting to acquire leader lease <namespace>/virt-operator...
+I1130 12:15:19.216582       1 leaderelection.go:253] successfully acquired lease <namespace>/virt-operator
+{"component":"virt-operator","level":"info","msg":"Started leading","pos":"application.go:385","timestamp":"2021-11-30T12:15:19.216836Z"}
+```
+
+***Non-leader pod example:***
+```
+$ kubectl -n $NAMESPACE logs <pod-name> |grep lead
+{"component":"virt-operator","level":"info","msg":"Attempting to acquire leader status","pos":"application.go:400","timestamp":"2021-11-30T12:15:20.533696Z"}
+I1130 12:15:20.533792       1 leaderelection.go:243] attempting to acquire leader lease <namespace>/virt-operator...
+```
 
 ## Mitigation
 
