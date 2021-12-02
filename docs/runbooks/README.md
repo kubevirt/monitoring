@@ -46,6 +46,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [VirtControllerRESTErrorsBurst](VirtControllerRESTErrorsBurst.md)
 * [VirtControllerRESTErrorsHigh](VirtControllerRESTErrorsHigh.md)
 * [VirtHandlerDaemonSetRolloutFailing](VirtHandlerDaemonSetRolloutFailing.md)
+* [VirtHandlerRESTErrorsHigh](VirtHandlerRESTErrorsHigh.md)
 * [VirtOperatorDown](VirtOperatorDown.md)
 * [VirtOperatorRESTErrorsBurst](VirtOperatorRESTErrorsBurst.md)
 * [VirtOperatorRESTErrorsHigh](VirtOperatorRESTErrorsHigh.md)
