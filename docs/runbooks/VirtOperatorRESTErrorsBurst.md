@@ -2,7 +2,7 @@
 
 ## Meaning
 
-More than 80% of the rest calls in virt-operator pods failed in the last hour. 
+More than 80% of the rest calls in virt-operator pods failed in the last 5 minutes. 
 
 ## Impact
 
