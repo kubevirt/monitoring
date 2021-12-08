@@ -16,7 +16,7 @@ The validation and rejection of the Virtual Machines is done by the Template Val
 
 - Check the logs of the Template Validator pods:
 	- `export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"`
-	- `kubectl -n $NAMESPACE logs -l name=virt-template-validator`
+	- `kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator`
 	- Look for lines similar to this to find clues for the source of the invalid Virtual Machines:
 	  `{"component":"kubevirt-template-validator","level":"info","msg":"evalution summary for ubuntu-3166wmdbbfkroku0:\nminimal-required-memory applied: FAIL, value 1073741824 is lower than minimum [2147483648]\n\nsucceeded=false","pos":"admission.go:25","timestamp":"2021-09-28T17:59:10.934470Z"}`
  

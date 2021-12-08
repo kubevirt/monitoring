@@ -23,7 +23,7 @@ With all Template Validator's pods down the Vms will not be validated against th
  
 - Check virt-template-validator's pods logs and describe.
     - `kubectl -n $NAMESPACE describe pods -l name=virt-template-validator`
-    - `kubectl -n $NAMESPACE logs -l name=virt-template-validator`
+    - `kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator`
 
 ## Mitigation
 

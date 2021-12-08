@@ -15,12 +15,12 @@ With SSP Operator not reconciling, the dependant components may not deploy at al
 - Check the logs of the ssp-operator pod for errors:
     - `export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"`
     - `kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator`
-    - `kubectl -n $NAMESPACE logs -l control-plane=ssp-operator`
+    - `kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator`
 - Check if the Template Validator is up, and if not check it's logs for errors.
     - `export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"`
     - `kubectl -n $NAMESPACE get pods -l name=virt-template-validator`
     - `kubectl -n $NAMESPACE describe pods -l name=virt-template-validator`
-    - `kubectl -n $NAMESPACE logs -l name=virt-template-validator`    
+    - `kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator`    
 
  
 ## Mitigation
