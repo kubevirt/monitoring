@@ -15,6 +15,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [CDIDataVolumeUnusualRestartCount](CDIDataVolumeUnusualRestartCount.md)
 * [CDINotReady](CDINotReady.md)
 * [CDIOperatorDown](CDIOperatorDown.md)
+* [CDIStorageProfilesIncomplete](CDIStorageProfilesIncomplete.md)
 * [CnaoDown](CnaoDown.md)
 * [HPPNotReady](HPPNotReady.md)
 * [HPPOperatorDown](HPPOperatorDown.md)
