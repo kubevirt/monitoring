@@ -11,6 +11,12 @@ The changes made manually on the templates are lost.
 ## Diagnosis
 
 The common templates should never be modified manually, find out if you are misusing the common templates by making such modifications.
+
+- Check the logs of the SSP Operator pods:
+	- `export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"`
+	- `kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator`
+	- Look for lines similar to this to find the names of the restored Common Templates:
+	  `Changes reverted in common template: <template name>`
  
 ## Mitigation
 
