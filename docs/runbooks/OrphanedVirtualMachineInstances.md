@@ -1,8 +1,8 @@
-# OrphanedVirtualMachineImages
+# OrphanedVirtualMachineInstances
 
 ## Meaning
 
-This alert fires when a VMI (virt-launcher-* pod) is running on a node that does not have a running `virt-handler-*` pod.  
+This alert fires when a VMI (virt-launcher-* pod) is running on a node that does not have a running `virt-handler-*` pod.
 
 ## Impact
 
@@ -48,7 +48,7 @@ NAME                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NOD
 virt-handler            2         2         2       2            2           kubernetes.io/os=linux   4h
 ```
 
-The DaemonSet is considered healthy if Desired, Ready and Available are all the same number.  
+The DaemonSet is considered healthy if Desired, Ready and Available are all the same number.
 
 
 ### Unhealthy virt-handler DaemonSet
@@ -57,7 +57,7 @@ Check the DaemonSets status to see what the issues are with deploying the pods.
 `kubectl describe daemonset virt-handler --all-namespaces`
 
 
-Another way to check the status is to get the object and read through its status object.  
+Another way to check the status is to get the object and read through its status object.
 
 `kubectl get daemonset virt-handler --all-namespaces -o yaml | jq .status`
 
