@@ -3,7 +3,5 @@
 aliases:
   approvers:
       - sradco
-      - erkanerol
   code-reviewers:
       - sradco
-      - erkanerol
