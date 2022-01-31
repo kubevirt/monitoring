@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 
@@ -35,14 +35,6 @@ func parseArguments() *releaseData {
 		org:      org,
 		projects: createProjects(*configFile, baseDir, org),
 	}
-}
-
-func getToken(githubTokenPath string) string {
-	tokenBytes, err := ioutil.ReadFile(githubTokenPath)
-	if err != nil {
-		log.Fatalf("ERROR accessing github token: %s ", err)
-	}
-	return strings.TrimSpace(string(tokenBytes))
 }
 
 func createProjects(configFile string, baseDir string, org string) []*project {
@@ -97,8 +89,11 @@ func (r *releaseData) createDoc() {
 	defer r.outFile.Close()
 
 	r.writeHeader()
-	r.writeTOC()
-	r.writeMetrics()
+
+	metrics := r.parseMetrics()
+
+	r.writeTOC(metrics)
+	r.writeMetrics(metrics)
 }
 
 func createFile() *os.File {
@@ -116,36 +111,54 @@ func (r *releaseData) writeHeader() {
 	r.outFile.WriteString("They reflect and describe exactly what is being exposed.\n\n")
 }
 
-func (r *releaseData) writeTOC() {
-	r.outFile.WriteString("## Table of Contents\n\n")
+func (r *releaseData) parseMetrics() map[string]string {
+	metrics := make(map[string]string)
+
 	for _, p := range r.projects {
-		r.outFile.WriteString("- [" + p.name + "](#" + p.name + ")\n")
+		content, err := readLines(p.repoDir + "/" + p.metricsDocPath)
+		if err == nil {
+			parsed := p.parseMetricsDoc(content)
+			if len(parsed) != 0 {
+				metrics[p.name] = parsed
+			}
+		}
+	}
+
+	return metrics
+}
+
+func (r *releaseData) writeTOC(metrics map[string]string) {
+	r.outFile.WriteString("## Table of Contents\n\n")
+
+	for _, p := range r.projects {
+		if _, ok := metrics[p.name]; ok {
+			r.outFile.WriteString("- [" + p.name + "](#" + p.name + ")\n")
+		}
 	}
 
 	r.outFile.WriteString("\n")
 }
 
-func (r *releaseData) writeMetrics() {
+func (r *releaseData) writeMetrics(metrics map[string]string) {
 	for _, p := range r.projects {
-		p.writeComponentMetrics(r.outFile)
+		if content, ok := metrics[p.name]; ok {
+			p.writeComponentMetrics(r.outFile, content)
+		}
 	}
 }
 
-func (p *project) writeComponentMetrics(outFile *os.File) {
+func (p *project) writeComponentMetrics(outFile *os.File, content string) {
 	outFile.WriteString("<div id='" + p.name + "'></div>\n\n")
-	outFile.WriteString(fmt.Sprintf("## [%s - %s](https://github.com/kubevirt/%s/releases/tag/%s)\n\n", p.name, p.version, p.name, p.version))
 
-	content, err := readLines(p.repoDir + "/" + p.metricsDocPath)
-	if err != nil {
-		outFile.WriteString("No metrics to report\n\n")
+	resp, err := http.Get(fmt.Sprintf("https://api.github.com/repos/kubevirt/%s/releases/tags/%s", p.name, p.version))
+
+	if err != nil || resp.StatusCode != 200 {
+		outFile.WriteString(fmt.Sprintf("## [%s](https://github.com/kubevirt/%s/tree/%s)\n\n", p.name, p.name, p.version))
 	} else {
-		parsed := p.parseMetricsDoc(content)
-		if len(parsed) == 0 {
-			outFile.WriteString("No metrics to report\n\n")
-		} else {
-			outFile.WriteString(parsed)
-		}
+		outFile.WriteString(fmt.Sprintf("## [%s - %s](https://github.com/kubevirt/%s/releases/tag/%s)\n\n", p.name, p.version, p.name, p.version))
 	}
+
+	outFile.WriteString(content)
 }
 
 func readLines(path string) ([]string, error) {
