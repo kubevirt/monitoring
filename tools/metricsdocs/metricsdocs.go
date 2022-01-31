@@ -20,24 +20,20 @@ func main() {
 
 func parseArguments() *releaseData {
 	cacheDir := flag.String("cache-dir", "/tmp/release-tool", "The base directory used to cache git repos in")
-	githubTokenFile := flag.String("github-token-file", "", "Name of file containing the github token")
 	configFile := flag.String("config-file", "", "Name of file containing the components versions")
 
 	flag.Parse()
 
-	if *githubTokenFile == "" {
-		log.Fatal("--github-token-file is a required argument")
-	} else if *configFile == "" {
+	if *configFile == "" {
 		log.Fatal("--config-file is a required argument")
 	}
 
 	org := "kubevirt"
 	baseDir := fmt.Sprintf("%s/%s/", *cacheDir, org)
-	gitToken := getToken(*githubTokenFile)
 
 	return &releaseData{
 		org:      org,
-		projects: createProjects(*configFile, baseDir, org, gitToken),
+		projects: createProjects(*configFile, baseDir, org),
 	}
 }
 
@@ -49,7 +45,7 @@ func getToken(githubTokenPath string) string {
 	return strings.TrimSpace(string(tokenBytes))
 }
 
-func createProjects(configFile string, baseDir string, org string, token string) []*project {
+func createProjects(configFile string, baseDir string, org string) []*project {
 	config := getConfig(configFile)
 
 	var projects []*project
@@ -66,7 +62,7 @@ func createProjects(configFile string, baseDir string, org string, token string)
 			version: version,
 
 			repoDir:        baseDir + n.name,
-			repoUrl:        fmt.Sprintf("https://%s@github.com/%s/%s.git", token, org, n.name),
+			repoUrl:        fmt.Sprintf("https://github.com/%s/%s.git", org, n.name),
 			metricsDocPath: n.metricsDocPath,
 		})
 	}
