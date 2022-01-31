@@ -9,14 +9,12 @@ All metrics documented here are auto-generated in each component repository and 
 - [containerized-data-importer](#containerized-data-importer)
 - [cluster-network-addons-operator](#cluster-network-addons-operator)
 - [ssp-operator](#ssp-operator)
-- [node-maintenance-operator](#node-maintenance-operator)
 - [hostpath-provisioner-operator](#hostpath-provisioner-operator)
-- [hostpath-provisioner](#hostpath-provisioner)
 - [hyperconverged-cluster-operator](#hyperconverged-cluster-operator)
 
 <div id='kubevirt'></div>
 
-## [kubevirt - main](https://github.com/kubevirt/kubevirt/releases/tag/main)
+## [kubevirt](https://github.com/kubevirt/kubevirt/tree/main)
 
 ### kubevirt_info
 Version information.
@@ -133,7 +131,7 @@ Amount of time spent by each vcpu while waiting on I/O.
 
 <div id='containerized-data-importer'></div>
 
-## [containerized-data-importer - main](https://github.com/kubevirt/containerized-data-importer/releases/tag/main)
+## [containerized-data-importer](https://github.com/kubevirt/containerized-data-importer/tree/main)
 
 ### kubevirt_cdi_clone_dv_unusual_restartcount_total
 Total restart count in CDI Data Volume cloner pod
@@ -147,7 +145,7 @@ CDI operator status
 Total restart count in CDI Data Volume upload server pod
 <div id='cluster-network-addons-operator'></div>
 
-## [cluster-network-addons-operator - main](https://github.com/kubevirt/cluster-network-addons-operator/releases/tag/main)
+## [cluster-network-addons-operator](https://github.com/kubevirt/cluster-network-addons-operator/tree/main)
 
 ### kubevirt_cnao_cr_kubemacpool_deployed
 KubeMacpool is deployed by CNAO CR
@@ -155,7 +153,7 @@ KubeMacpool is deployed by CNAO CR
 CNAO CR Ready
 <div id='ssp-operator'></div>
 
-## [ssp-operator - master](https://github.com/kubevirt/ssp-operator/releases/tag/master)
+## [ssp-operator](https://github.com/kubevirt/ssp-operator/tree/master)
 
 ### kubevirt_ssp_num_of_operator_reconciling_properly
 The total number of ssp-operator pods reconciling with no errors
@@ -167,27 +165,15 @@ The total number of vms rejected by virt-template-validator
 The total number of running virt-template-validator pods
 ### kubevirt_ssp_total_restored_common_templates
 The total number of common templates restored by the operator back to their original state
-<div id='node-maintenance-operator'></div>
-
-## [node-maintenance-operator - master](https://github.com/kubevirt/node-maintenance-operator/releases/tag/master)
-
-No metrics to report
-
 <div id='hostpath-provisioner-operator'></div>
 
-## [hostpath-provisioner-operator - main](https://github.com/kubevirt/hostpath-provisioner-operator/releases/tag/main)
+## [hostpath-provisioner-operator](https://github.com/kubevirt/hostpath-provisioner-operator/tree/main)
 
 ### kubevirt_hpp_operator_up_total
 The total number of running hostpath-provisioner-operator pods
-<div id='hostpath-provisioner'></div>
-
-## [hostpath-provisioner - main](https://github.com/kubevirt/hostpath-provisioner/releases/tag/main)
-
-No metrics to report
-
 <div id='hyperconverged-cluster-operator'></div>
 
-## [hyperconverged-cluster-operator - main](https://github.com/kubevirt/hyperconverged-cluster-operator/releases/tag/main)
+## [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator/tree/main)
 
 ### kubevirt_hco_out_of_band_modifications_count
 Count of out-of-band modifications overwritten by HCO
