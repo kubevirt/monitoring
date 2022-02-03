@@ -107,7 +107,7 @@ func createFile() *os.File {
 func (r *releaseData) writeHeader() {
 	r.outFile.WriteString("# KubeVirt components metrics\n\n")
 	r.outFile.WriteString("This document aims to help users that are not familiar with metrics exposed by all the KubeVirt components.\n")
-	r.outFile.WriteString("All metrics documented here are auto-generated in each component repository and gathered here.")
+	r.outFile.WriteString("All metrics documented here are auto-generated in each component repository and gathered here.\n")
 	r.outFile.WriteString("They reflect and describe exactly what is being exposed.\n\n")
 }
 
