@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -45,7 +46,7 @@ func createProjects(configFile string, baseDir string, org string) []*project {
 		version, ok := config[n.short+"_VERSION"]
 
 		if !ok {
-			log.Fatalf("ERROR config doesn't contain '%s_VERSION' for %s", n.short, n.name)
+			log.Fatalf("ERROR: config doesn't contain '%s_VERSION' for %s", n.short, n.name)
 		}
 
 		projects = append(projects, &project{
@@ -65,7 +66,7 @@ func createProjects(configFile string, baseDir string, org string) []*project {
 func getConfig(configFile string) map[string]string {
 	config, err := godotenv.Read(configFile)
 	if err != nil {
-		log.Fatalf("ERROR reading %s config file", configFile)
+		log.Fatalf("ERROR: reading %s config file", configFile)
 	}
 
 	return config
@@ -75,11 +76,11 @@ func (r *releaseData) checkoutProjects() {
 	for _, p := range r.projects {
 		err := p.gitCheckoutUpstream()
 		if err != nil {
-			log.Fatalf("ERROR checking out upstream: %s\n", err)
+			log.Fatalf("ERROR: checking out upstream: %s\n", err)
 		}
 		err = p.gitSwitchToBranch(p.version)
 		if err != nil {
-			log.Fatalf("ERROR changing to version branch: %s\n", err)
+			log.Fatalf("ERROR: changing to version branch: %s\n", err)
 		}
 	}
 }
@@ -99,7 +100,7 @@ func (r *releaseData) createDoc() {
 func createFile() *os.File {
 	file, err := os.Create("docs/metrics.md")
 	if err != nil {
-		log.Fatalf("ERROR creating output file: %s", err)
+		log.Fatalf("ERROR: creating output file: %s", err)
 	}
 	return file
 }
@@ -115,12 +116,14 @@ func (r *releaseData) parseMetrics() map[string]string {
 	metrics := make(map[string]string)
 
 	for _, p := range r.projects {
-		content, err := readLines(p.repoDir + "/" + p.metricsDocPath)
-		if err == nil {
-			parsed := p.parseMetricsDoc(content)
-			if len(parsed) != 0 {
-				metrics[p.name] = parsed
-			}
+		content, err := readLines(path.Join(p.repoDir, "/", p.metricsDocPath))
+		if err != nil {
+			log.Printf("WARNING: %s project does not contain any metrics documentation in '%s'", p.name, p.version)
+		}
+
+		parsed := p.parseMetricsDoc(content)
+		if len(parsed) != 0 {
+			metrics[p.name] = parsed
 		}
 	}
 

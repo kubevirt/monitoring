@@ -22,6 +22,7 @@ func (p *project) gitCheckoutUpstream() error {
 func (p *project) gitUpdateFromUpstream() error {
 	_, err := gitCommand("-C", p.repoDir, "checkout", "main")
 	if err != nil {
+		log.Printf("INFO: repository %s does not have 'main' branch, falling back to 'master'", p.name)
 		_, err = gitCommand("-C", p.repoDir, "checkout", "master")
 		if err != nil {
 			return err
