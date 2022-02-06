@@ -20,6 +20,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [CnaoDown](CnaoDown.md)
 * [HPPNotReady](HPPNotReady.md)
 * [HPPOperatorDown](HPPOperatorDown.md)
+* [HPPSharingPoolPathWithOS](HPPSharingPoolPathWithOS.md)
 * [KubeMacPoolDown](KubeMacPoolDown.md)
 * [KubeMacPoolDuplicateMacsFound](KubeMacPoolDuplicateMacsFound.md)
 * [KubeVirtComponentExceedsRequestedCPU](KubeVirtComponentExceedsRequestedCPU.md)
