@@ -1,7 +1,14 @@
 ## Monitoring Guidelines
+
+- [Monitoring Guidelines](#monitoring-guidelines)
+  - [KubeVirt Metrics](#kubevirt-metrics)
+    - [Naming a New KubeVirt Metrics](#naming-a-new-kubevirt-metrics)
+  - [KubeVirt Recording Rules](#kubevirt-recording-rules)
+    - [Naming a New KubeVirt Recording Rule](#naming-a-new-kubevirt-recording-rule)
+  - [KubeVirt Alerts Rules](#kubevirt-alerts-rules)
  
 ### KubeVirt Metrics
-#### Naming a New KubeVirt Metrics:
+#### Naming a New KubeVirt Metrics
 
 The KubeVirt metrics should align with the Kubernetes metrics names.
 
@@ -15,42 +22,39 @@ The KubeVirt Users should have the same experience when searching for a node, co
    3.  Network operator metrics should have a `kubevirt_network_` prefix
    4.  Storage operator metrics should have a `kubevirt_cdi_` prefix
    5.  SSP operator metrics should have a `kubevirt_ssp_` prefix
+   6.  HPP Operator metrics should have a `kubevirt_hpp_` prefix
 
-For Example, see the following Kubernetes network metrics:
-- **node**_network_receive_packets_total
-- **node**_network_transmit_packets_total
-- **container**_network_receive_packets_total
-- **container**_network_transmit_packets_total
 
-The KubeVirt metrics for vmi should be:
-- **kubevirt_vmi**_network_receive_packets_total
-- **Kubevirt_vmi**_network_transmit_packets_total
+    For Example, see the following Kubernetes network metrics:
+    - **node**_network_receive_packets_total
+    - **node**_network_transmit_packets_total
+    - **container**_network_receive_packets_total
+    - **container**_network_transmit_packets_total
+
+    The KubeVirt metrics for vmi should be:
+    - **kubevirt_vmi**_network_receive_packets_total
+    - **Kubevirt_vmi**_network_transmit_packets_total
+
+
+3. Metric `Help` message MUST be verbose, since it is being propagated to the [metrics.md](https://github.com/kubevirt/kubevirt/blob/main/docs/metrics.md) file, when running `make-generate`.
 
 ### KubeVirt Recording Rules
 
-#### Naming a New KubeVirt Recording Rule:
+#### Naming a New KubeVirt Recording Rule
 
 Use [recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) when doing calculations or when using the same query for other alerts or dashboards, instead of repeating the same query in many places.
 
 The Prometheus recording rules appear in Prometheus as metrics.
 
-In order to easily identify the KubeVirt recording rules, they should have a `kubevirt_` prefix.
+In order to easily identify the KubeVirt recording rules, they should follow the same naming conventions as the metrics.
 
 ### KubeVirt Alerts Rules
 
-When creating a KubeVirt alert rule, please see the following :
+When creating a KubeVirt alert rule, please follow the [OpenShift Alerting Consistency Guide](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/alerting-consistency.md#alerting-consistency).
 
-1. Use [recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) when doing calculations.
-2. Create an alert runbook at [kubevirt/monitoring repository](https://github.com/kubevirt/monitoring/tree/main/docs/runbooks).
-3. Alert rules must include:  
-   3.1. `runbook_url` label, with the link to your runbook from step #2.  
-   3.2. `severity` label. One of: `critical`, `warning`, `info`.
+In addition to the [OpeShift Style Guide](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/alerting-consistency.md#style-guide) the KubeVirt alerts MUST include:
+1. `kubernetes_operator_part_of` label indicating the operator name. Value should be set to `kubevirt`.
+2. `kubernetes_operator_component` label indicating the value of the sub operator name.
 
-       NOTE:
-       - Critical alerts - When the service is down and you loss critical functionality, an action is required immediately.
-       - Warning alerts - When an alert require user intervention. A more serious issue may develop if this is not resolved soon.
-       - Info alerts - When a minor problem has been detected. It should be reviewed and not ignored.
-   3.3. `kubernetes_operator_part_of` label with `kubevirt` value.  
-   3.4. `kubernetes_operator_component` label with the value of the sub operator name.
-
-4. Alert `message` must be verbose, since it is being propagated to the [metrics.md](https://github.com/kubevirt/kubevirt/blob/main/docs/metrics.md) file, when running `make-generate`.
+**Note:**
+KubeVirt alert runbooks are saved at [kubevirt/monitoring repository](https://github.com/kubevirt/monitoring/tree/main/docs/runbooks).
