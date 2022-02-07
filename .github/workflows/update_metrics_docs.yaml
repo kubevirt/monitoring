@@ -1,0 +1,42 @@
+name: Auto-Update Metrics Documentation
+
+on:
+  schedule:
+    - cron:  '0 5 * * *'
+
+jobs:
+  update_metrics_docs:
+    name: Auto-Update Metrics Documentation
+    if: (github.repository == 'kubevirt/monitoring')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-go@v2
+      with:
+        go-version: '1.17'
+
+    - name: Generate new metrics documentation
+      id: generate_metrics_docs
+      run: CONFIG_FILE=./tools/metricsdocs/config make metricsdocs
+
+    - uses: peter-evans/create-pull-request@v3
+      with:
+        title: Update metrics documentation
+        commit-message: Update metrics documentation
+        body: |
+          Update metrics documentation
+
+          Release Note:
+          ```release-note
+          NONE
+          ```
+        author: GitHub <noreply@github.com>
+        signoff: true
+        branch: gh_actions/update_metrics_docs
+        delete-branch: true
+        assignees: sradco
+        reviewers: sradco
+        team-reviewers: owners, maintainers
+
