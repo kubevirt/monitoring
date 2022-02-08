@@ -69,4 +69,15 @@ $ kubectl get dataimportcron cron-test -o yaml | grep -B 5 storageClassName
         storageClassName: rook-ceph-block
 ```
 
+### Disconnected Environment
+
+For a cluster installed in a restricted network, the default golden images cannot be pulled because they are out of reach, thus the alert will be fired.  
+In that case, it is encouraged to disable the feature gate `enableCommonBootImageImport` to opt-out from automatic updates of the common data import cron templates and refrain from this alert being fired.  
+This can be done by patching the HyperConverged CR:
+```bash
+$ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type json -p '[{"op": "replace", "path": "/spec/featureGates/enableCommonBootImageImport", "value": false}]'
+```
+More information about this feature gate can be found in [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate).
+
+
 In other cases, please open an issue and attach the artifacts gathered in the Diagnosis section.
