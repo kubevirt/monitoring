@@ -118,12 +118,15 @@ func (r *releaseData) parseMetrics() map[string]string {
 	for _, p := range r.projects {
 		content, err := readLines(path.Join(p.repoDir, "/", p.metricsDocPath))
 		if err != nil {
-			log.Printf("WARNING: %s project does not contain any metrics documentation in '%s'", p.name, p.version)
+			log.Printf("WARNING: %s project does not contain metrics documentation file in '%s'", p.name, p.version)
+			continue
 		}
 
 		parsed := p.parseMetricsDoc(content)
 		if len(parsed) != 0 {
 			metrics[p.name] = parsed
+		} else {
+			log.Printf("WARNING: %s project metrics documentation file is empty in '%s'", p.name, p.version)
 		}
 	}
 
