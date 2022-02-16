@@ -31,4 +31,4 @@ of course with your chosen pool name/pool path instead.
 ## Mitigation
 
 Using the data obtained in the diagnosis section, it is possible to prevent the pool path from being shared with OS.  
-The specification on how to achieve that varies and is generally handled uniquely per-case according to node contraints.
+The specification on how to achieve that varies and is generally handled uniquely per-case according to node constraints.
