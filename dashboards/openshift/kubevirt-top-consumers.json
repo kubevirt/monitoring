@@ -152,7 +152,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(topk (5 , sum (avg_over_time(kubevirt_vmi_memory_available_bytes[$period]) - avg_over_time(kubevirt_vmi_memory_usable_bytes[$period]))by(name, namespace)))>0",
+          "expr": "sort_desc(topk(5, sum (avg_over_time(kubevirt_vmi_memory_available_bytes[$period]) - avg_over_time(kubevirt_vmi_memory_usable_bytes[$period]))by(name, namespace)))>0",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -978,7 +978,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_vcpu_wait_seconds[$period])) by (namespace, name))) >0",
+          "expr": "sort_desc(topk(5, sum(rate(kubevirt_vmi_vcpu_wait_seconds[$period])) by (namespace, name)))>0",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1254,7 +1254,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(topk (5 , sum (avg_over_time(kubevirt_vmi_memory_available_bytes[$__rate_interval]) - avg_over_time(kubevirt_vmi_memory_usable_bytes[$__rate_interval]))by(name, namespace)))>0",
+          "expr": "sort_desc(topk(5, sum (avg_over_time(kubevirt_vmi_memory_available_bytes[$__rate_interval]) - avg_over_time(kubevirt_vmi_memory_usable_bytes[$__rate_interval]))by(name, namespace)))>0",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -1560,7 +1560,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(sum(irate(kubevirt_vmi_storage_iops_read_total[$__rate_interval])+ irate(kubevirt_vmi_storage_iops_write_total[$__rate_interval])) by (name, namespace))>0",
+          "expr": "sort_desc(sum(irate(kubevirt_vmi_storage_iops_read_total[$__rate_interval]) + irate(kubevirt_vmi_storage_iops_write_total[$__rate_interval])) by (name, namespace))>0",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -1764,7 +1764,7 @@
           "expr": "sort_desc(sum(irate(kubevirt_vmi_vcpu_wait_seconds{}[$__rate_interval])) by (name, namespace))>0",
           "format": "time_series",
           "interval": "",
-          "legendFormat": "{name}} / {{namespace}}",
+          "legendFormat": "{{name}} / {{namespace}}",
           "refId": "A"
         }
       ],
