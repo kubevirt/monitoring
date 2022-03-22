@@ -56,9 +56,13 @@ DataImportCrons are widely used for golden images and likely serve as a source t
 
 ## Mitigation
 
-A common issue when opting in to golden images auto-polling is not having a default storage class set.  
+### No storage class defined (default, or per DataImportCron)
+
+A common issue when opting in to golden images auto-polling is not having a _default storage class_ set.
+
 Ensure you have a default storage class set in the cluster *or*  
-if you're using a custom DataImportCron, verify there is an explicit storage class set in the DataImportCron definition:
+If you're using a custom DataImportCron and no default storage class is set, verify that there is an explicit storage class set in the DataImportCron definition:
+
 ```bash
 $ kubectl get dataimportcron cron-test -o yaml | grep -B 5 storageClassName
           url: docker://.../cdi-func-test-tinycore
@@ -68,6 +72,18 @@ $ kubectl get dataimportcron cron-test -o yaml | grep -B 5 storageClassName
             storage: 5Gi
         storageClassName: rook-ceph-block
 ```
+
+When no storage class is defined, the DataVolume controller will fail to create PVCs and an event will be triggered:  
+`DataVolume.storage spec is missing accessMode and no storageClass to choose profile`
+
+Once a default storage class has been defined, updated versions of CDI should resolve this issue automatically. If it does not resolve within a few seconds:
+
+* Find all of the affected DataImportCrons
+* Determine the DV associated with each DataImportCron
+* Make sure each DV has an empty status which is an indicator of the issue
+* Delete each of these DVs
+
+CDI will then recreate the DVs with proper reference to the default storage class.
 
 ### Disconnected Environment
 
