@@ -18,6 +18,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [CDIOperatorDown](CDIOperatorDown.md)
 * [CDIStorageProfilesIncomplete](CDIStorageProfilesIncomplete.md)
 * [CnaoDown](CnaoDown.md)
+* [CnaoNmstateMigration](CnaoNmstateMigration.md)
 * [HPPNotReady](HPPNotReady.md)
 * [HPPOperatorDown](HPPOperatorDown.md)
 * [HPPSharingPoolPathWithOS](HPPSharingPoolPathWithOS.md)
