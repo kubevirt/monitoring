@@ -56,5 +56,12 @@ In addition to the [OpeShift Style Guide](https://github.com/openshift/enhanceme
 1. `kubernetes_operator_part_of` label indicating the operator name. Value should be set to `kubevirt`.
 2. `kubernetes_operator_component` label indicating the value of the sub operator name.
 
+Optional labels:
+1. `priority` label indicating the alert's level of importance and the order in which it should be fixed.
+  * Valid priorities are: `high`, `medium`, or `low`.
+    The higher the priority, the sooner the alert should be resolved.
+  * If the alert doesn't include a `priority` label, we can assume it is a `medium` priority alert.
+2. `infra_alert` label indicating alerts that are related to the infrastructure of the operator. Boolean.
+
 **Note:**
-KubeVirt alert runbooks are saved at [kubevirt/monitoring repository](https://github.com/kubevirt/monitoring/tree/main/docs/runbooks).
+KubeVirt alert runbooks are saved in [kubevirt/monitoring repository](https://github.com/kubevirt/monitoring/tree/main/docs/runbooks).
