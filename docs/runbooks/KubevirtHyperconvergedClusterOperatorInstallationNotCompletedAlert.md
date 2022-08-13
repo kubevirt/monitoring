@@ -1,24 +1,27 @@
 # KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert
+<!-- Edited: apinnick@redhat.com, Aug 2022 --> 
 
 ## Meaning
-The `KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert` alert means that the HypeConverged cluster operator (HCO) is running, but the `HyperConverged` custom resource does not exist for more than an hour.
+This alert fires when the HyperConverged Cluster Operator (HCO) runs for more than an hour without a `HyperConverged` custom resource (CR).
 
-There are two reasons for that to happen: First, after installation of HCO, it is required to create the `HyperConverged` custom resource in order to complete the installation. The purpose of this alert is to guide the user to complete the installation by creating the `HyperConverged` custom resource. 
+This alert has the following causes:
 
-The other reason for this alert is during uninstallation of HCO. In this case, the user is instructed to remove the `HyperConverged` custom resource before uninstalling the operator. If the `HyperConverged` custom resource was indeed removed, but the HCO is still installed and running for more than an hour, the alert will be triggered. In this case, the alert can usually be safely ignored.
+- Installation: You installed the HCO but you did not create the `HyperConverged` CR.
+
+- Uninstall: You removed the `HyperConverged` CR before uninstalling the HCO and the HCO is still running.
 
 ## Mitigation
-In case of installation, just create the `HyperConverged` custom resource to complete the installation; for example, to create the `HyperConverged` custom resource with default values, do:
+- Installation: Create a `HyperConverged` CR with its default values:
 
-```bash
-cat <<EOF | kubectl apply -f -
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-  name: hco-operatorgroup
-  namespace: kubevirt-hyperconverged
-spec: {}
-EOF
-```
+  ```bash
+  $ cat <<EOF | kubectl apply -f -
+  apiVersion: operators.coreos.com/v1
+  kind: OperatorGroup
+  metadata:
+    name: hco-operatorgroup
+    namespace: kubevirt-hyperconverged
+  spec: {}
+  EOF
+  ```
 
-In case of uninstallation, if HCO is still installed and running for more than an hour after removing the `HyperConverged` custom resource, complete the process by uninstalling HCO. If for some reason, HCO is still running (uninstallation is stuck), this issue should be solved in order to cancel the alert.
+- Uninstall: Uninstall the HCO. If the uninstall process continues to run, you must resolve that issue in order to cancel the alert.
