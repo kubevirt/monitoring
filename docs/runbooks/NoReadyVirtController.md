@@ -2,51 +2,52 @@
 
 ## Meaning
 
-From a high-level perspective the virt-controller is responsible for all the cluster wide virtualization functionality.
+This alert triggers when no available `virt-controller` devices have been detected for 5 minutes.
 
-This controller is responsible for monitoring the VMI (CRDs) and managing the associated pods. The controller will make sure to create and manage the life-cycle of the pods associated to the VMI objects.
+A `virt-controller` handles monitoring the custom resource definitions (CRDs) of a virtual machine instance (VMI) and managing the associated pods. The device creates pods for VMIs and manages the life-cycle of the pods.
 
-A VMI object will always be associated to a pod during it's life-time, however, due to i.e. migration of a VMI the pod instance might change over time.
-
-This alert is triggered when no ready virt controllers were detected for the last 5 min.
+Therefore, `virt-controller` devices are critical for all cluster-wide virtualization functionality.
 
 ## Impact
-Complete failure in VM lifecycle management i.e. launching a new VM instance or shutting down an existing VM instance.
+Any actions related to VM life-cycle management fail. This notably includes:
+
+- Launching a new VM instance
+
+- Shutting down an existing VM instance
 
 
 ## Diagnosis
 
-- Set the environment variable NAMESPACE
+- Set the `NAMESPACE` environment variable.
+    ```
+    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+    ```
 
+- Run the following command to verify a `virt-controller` device is available.
     ```
-    export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
-
-- Run
-    ```
-    kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
+    $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
     ```
 
 ## Mitigation
-- Check the status of the virt-controller deployment to find out more information. The following commands will provide the associated events and show if there are any issues with pulling an image, crashing pod, etc. 
+1. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as failures to pull images, or crashing pods.
     ```
-    kubectl -n $NAMESPACE get deploy virt-controller -o yaml
+    $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
     ```
     ```
-    kubectl -n $NAMESPACE describe deploy virt-controller
-    ```
-
-- Get virt-controller pods
-    ```
-    get pods -n $NAMESPACE |grep virt-controller
+    $ kubectl -n $NAMESPACE describe deploy virt-controller
     ```
 
-- Inspect the logs for each virt-controller
+2. Obtain the names of `virt-controller` pods.
     ```
-    kubectl logs -n $NAMESPACE <virt-controller-XYZ>
+    $ get pods -n $NAMESPACE |grep virt-controller
     ```
 
-- Check if there are issues with the nodes. For example, if they are in a NotReady state.
+3. Inspect the logs for each `virt-controller`.
     ```
-    kubectl get nodes
+    $ kubectl logs -n $NAMESPACE <virt-controller-XYZ>
+    ```
+
+4. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state.
+    ```
+    $ kubectl get nodes
     ```
