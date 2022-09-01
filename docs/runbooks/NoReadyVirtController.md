@@ -18,18 +18,18 @@ Any actions related to VM life-cycle management fail. This notably includes:
 
 ## Diagnosis
 
-- Set the `NAMESPACE` environment variable.
+- Set the `NAMESPACE` environment variable as follows:
     ```
     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
     ```
 
-- Run the following command to verify a `virt-controller` device is available.
+- Run the following command to verify a `virt-controller` device is available:
     ```
     $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
     ```
 
 ## Mitigation
-1. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as failures to pull images, or crashing pods.
+1. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
     ```
     $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
     ```
@@ -37,17 +37,17 @@ Any actions related to VM life-cycle management fail. This notably includes:
     $ kubectl -n $NAMESPACE describe deploy virt-controller
     ```
 
-2. Obtain the names of `virt-controller` pods.
+2. Obtain the names of `virt-controller` pods:
     ```
     $ get pods -n $NAMESPACE |grep virt-controller
     ```
 
-3. Inspect the logs for each `virt-controller`.
+3. Inspect the logs for each `virt-controller`:
     ```
     $ kubectl logs -n $NAMESPACE <virt-controller-XYZ>
     ```
 
-4. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state.
+4. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
     ```
     $ kubectl get nodes
     ```
