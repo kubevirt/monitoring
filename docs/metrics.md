@@ -44,7 +44,7 @@ Indication for a virt-controller that is ready to take the lead. Type: Gauge.
 ### kubevirt_vmi_cpu_affinity
 The vcpu affinity details. Type: Counter.
 
-### kubevirt_vmi_filesystem_total_bytes
+### kubevirt_vmi_filesystem_capacity_bytes_total
 Total VM filesystem capacity in bytes. Type: Gauge.
 
 ### kubevirt_vmi_filesystem_used_bytes
@@ -56,7 +56,7 @@ Current balloon bytes. Type: Gauge.
 ### kubevirt_vmi_memory_available_bytes
 Amount of `usable` memory as seen by the domain. Type: Gauge.
 
-### kubevirt_vmi_memory_domain_total_bytes
+### kubevirt_vmi_memory_domain_bytes_total
 The amount of memory in bytes allocated to the domain. The `memory` value in domain xml file. Type: Gauge.
 
 ### kubevirt_vmi_memory_pgmajfault
@@ -193,6 +193,8 @@ Total count of duplicate KubeMacPool MAC addresses. Type: Gauge.
 
 ## [ssp-operator](https://github.com/kubevirt/ssp-operator/tree/master)
 
+### kubevirt_ssp_common_templates_restored_total
+The total number of common templates restored by the operator back to their original state. Type: Counter.
 ### kubevirt_ssp_num_of_operator_reconciling_properly
 The total number of ssp-operator pods reconciling with no errors. Type: Gauge.
 ### kubevirt_ssp_operator_up_total
@@ -201,8 +203,6 @@ The total number of running ssp-operator pods. Type: Gauge.
 The total number of vms rejected by virt-template-validator. Type: Counter.
 ### kubevirt_ssp_template_validator_up_total
 The total number of running virt-template-validator pods. Type: Gauge.
-### kubevirt_ssp_total_restored_common_templates
-The total number of common templates restored by the operator back to their original state. Type: Counter.
 <div id='hostpath-provisioner-operator'></div>
 
 ## [hostpath-provisioner-operator](https://github.com/kubevirt/hostpath-provisioner-operator/tree/main)
