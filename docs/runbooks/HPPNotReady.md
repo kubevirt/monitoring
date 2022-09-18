@@ -1,32 +1,47 @@
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
+
 # HPPNotReady
 
 ## Meaning
 
-The hostpath-provisioner (HPP) is used to dynamically provision hostPath volumes to provide storage for PVCs.  
-The HPPNotReady alert is indicative of a HPP installation being in a degraded state;  
-- Not progressing
-- Not available to use
+The HPPNotReady alert fires when an HPP installation is in a degraded state. 
+
+The hostpath provisioner (HPP) dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs).  
 
 ## Impact
 
-HPP is simply not usable, its components are not ready & stopped progressing towards a ready state and hence require action.
+HPP is not usable. Its components are not ready and they are not progressing towards a ready state.
 
 ## Diagnosis
 
-- Check hostpath-provisioner-operator's pod namespace:
-	```bash
-	export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
-	```
+1. Set the `HPP_NAMESPACE` environment variable:
+```bash
+ export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
+```
 
-- Check to see if any of the HPP components are currently not ready.
-	```bash
-	kubectl -n $HPP_NAMESPACE get all -l k8s-app=hostpath-provisioner
-	```
+2. Check for HPP components that are currently not ready:
+```bash
+$ kubectl -n $HPP_NAMESPACE get all -l k8s-app=hostpath-provisioner
+```
  
-- Check the failing corresponding pod logs and describe (substitute <corresponding_pod_name>).
-    - `kubectl -n $HPP_NAMESPACE describe pods <corresponding_pod_name>`
-    - `kubectl -n $HPP_NAMESPACE logs <corresponding_pod_name>`
+3. Obtain the details of the failing pod:
+```bash
+$ kubectl -n $HPP_NAMESPACE describe pods <pod>
+```
+4. Check the logs of the failing pod:
+```bash
+$ kubectl -n $HPP_NAMESPACE logs <pod>
+```
 
 ## Mitigation
 
-Please open an issue and attach the artifacts gathered in the Diagnosis section.
+Based on the information obtained during Diagnosis, try to find and resolve the cause of the issue.
+
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
