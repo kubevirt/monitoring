@@ -16,7 +16,24 @@ This error is most frequently caused by one of the following problems:
 
 - The `virt-handler` pod cannot reach the apiserver. This is commonly caused by DNS issues on the node and networking connectivity issues.
 
-Check `virt-handler` logs to identify if it can connect to the apiserver. (TBA how?)
+Check whether `virt-handler` can connect to the apiserver. To do so:
+
+1. Obtain the name of the `virt-handler` pod.
+
+    ```
+    $ kubectl get pods -n <KubeVirt-Install-Namespace>
+    ```
+
+2. Review the logs for `virt-handler` and check its connectivity to the apiserver.
+
+    ```
+    $ kubectl logs -n <KubeVirt-Install-Namespace> <virt-handler-pod-name>
+    ```
+
 
 ## Mitigation
-If the `virt-handler` cannot connect to the apiserver, delete the pod to force a restart. (TBA how?)
+If the `virt-handler` cannot connect to the apiserver, delete the pod to force a restart.
+
+```
+$ kubectl delete -n <KubeVirt Install Namespace> <virt-handler-pod-name>
+```
