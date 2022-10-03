@@ -2,42 +2,46 @@
 
 ## Meaning
 
-More than one virt-controller pod should be ready to ensure high-availability. The current default number of replicas is 2.
+This alert fires when a low number of `virt-controller` devices is detected. More than one `virt-controller` pod should be available to ensure high availability. The current default number of replicas is 2.
+
+A `virt-controller` handles monitoring the custom resource definitions (CRDs) of a virtual machine instance (VMI) and managing the associated pods. The device creates pods for VMIs and manages the life-cycle of the pods.
+
+Therefore, `virt-controller` devices are critical for all cluster-wide virtualization functionality.
 
 ## Impact
-This impacts availability of the virt-controller, which is responsible of managing Kubevirt's resources (e.g. VMIs) and their life-cycles, hence effects Kubevirt's responsiveness as a whole.
-With low number of virt-controller replicas the cluster might be less responsive (some requests may be missed, etc'), but it is not guaranteed. 
-The more severe danger is if another virt-lancher instance crashes Kubevirt might be totally unresponsive.
+
+The responsiveness of KubeVirt may become negatively affected. For example, certain requests may be missed.
+
+In addition, if another `virt-launcher` instance terminates unexpectedly, KubeVirt may become completely unresponsive.
 
 ## Diagnosis
-- Set the environment variable NAMESPACE
-
+1. Set the NAMESPACE environment variable as follows:
     ```
-    export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
-
-- Check to see if there are any running virt-controller pods:
-    ```
-    kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
+    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
     ```
 
-- Further check not ready or crashing virt-controller pods:
+2. Verify that any running `virt-controller` are available:
     ```
-    kubectl -n $NAMESPACE logs virt-launcher-<unique id>
+    $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
+    ```
+
+3. Check whether any `virt-controller` pods have terminated unexpectedly or are in a `NotReady` state:
+    ```
+    $ kubectl -n $NAMESPACE logs virt-launcher-<unique-id>
     ```
     ```
-    kubectl -n $NAMESPACE describe pod/virt-launcher-<unique id>
+    $ kubectl -n $NAMESPACE describe pod/virt-launcher-<unique-id>
     ```
 
 ## Mitigation
 
-There can be several reasons. Like:
+This alert can have a variety of causes, including:
 
 - Not enough memory on the cluster
 - Nodes are down
-- API server is overloaded (e.g. Scheduler has a lot of work and therefore is not 100% available)
+- The API server is overloaded. For example, the scheduler may be under heavy load and therefore not completely available.
 - Networking issues
 
-Try to identify the root cause and fix it.
+Verify whether any of these applies to your deployment, and fix it if possible. (TODO: Add how?)
 
-In other cases, please open an issue and attach the artifacts gathered in the Diagnosis section.
+If this does not fix the problem, open an issue (TBA where!) and attach to it the artifacts gathered in the Diagnosis section.
