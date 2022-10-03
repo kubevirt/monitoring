@@ -16,18 +16,18 @@ This error is most frequently caused by one of the following problems:
 
 Check whether `virt-handler` can connect to the apiserver. To do so:
 
-1. List all the the `virt-handler` pods
+1. List all the the `virt-handler` pods:
     ```
      $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
     ```
 
-2. Obtain the name of the `virt-handler` pod.
+2. Obtain the name of the `virt-handler` pod:
 
     ```
     $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
     ```
 
-3. Review the logs for `virt-handler` and check its connectivity to the apiserver.
+3. Review the logs for `virt-handler` and check its connectivity to the apiserver:
 
     ```
     $ kubectl logs -n  $NAMESPACE <virt-handler-pod-name>
@@ -35,9 +35,10 @@ Check whether `virt-handler` can connect to the apiserver. To do so:
 
 
 ## Mitigation
-If the `virt-handler` cannot connect to the apiserver, delete the pod to force a restart.
+If the `virt-handler` cannot connect to the apiserver, delete the pod to force a restart:
 
 ```
-$ kubectl delete -n <KubeVirt Install Namespace> <virt-handler-pod-name>
+$ kubectl delete -n <kubevirt-install-namespace> <virt-handler-pod-name>
 ```
+
 
