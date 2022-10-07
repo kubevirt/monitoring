@@ -2,7 +2,7 @@
 
 ## Meaning
 
-This alert fires when no `virt-operator` pod in a `Ready` state has been detected for 10 minutes. The virt-operator deployment has a default replica of two `virt-operator` pods.
+This alert fires when no `virt-operator` pod in a `Ready` state has been detected for 10 minutes.
 
 The `virt-operator` is the first operator to start in a cluster. Its primary responsibilities include the following: 
 
@@ -18,27 +18,29 @@ This alert indicates a failure at the level of the cluster.
 
 As a result, critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, are currently not available.
 
+The virt-operator deployment has a default replica of two `virt-operator` pods.
+
 Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
 
 ## Diagnosis
 
 
-1. Obtain the namespace data of the `virt-operator` deployment
+1. Obtain the namespace data of the `virt-operator` deployment:
     ```
     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
     ```
 
-2. Obtain the name of the `virt-operator` deployment.
+1. Obtain the name of the `virt-operator` deployment:
     ```
     $ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
     ```
 
-3. Generate the description of the `virt-operator` deployment.
+1. Generate the description of the `virt-operator` deployment:
     ```
     $ kubectl -n $NAMESPACE describe deploy virt-operator
     ```
 
-4. Check for node issues, such as a `NotReady` state:
+1. Check for node issues, such as a `NotReady` state:
     ```
     $ kubectl get nodes
     ```
