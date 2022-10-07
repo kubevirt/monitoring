@@ -2,23 +2,53 @@
 
 ## Meaning
 
-This alert is triggered when some virt operators are running but, not in the `Ready` state in the past 10 minutes. The virt-operator deployment has a default replica of 2 pods.
+This alert fires when one or more `virt-operator` pods are running, but none of these pods have been in a `Ready` state for the last 10 minutes. 
+
+The `virt-operator` is the first operator to start in a cluster. Its primary responsibilities include the following: 
+
+- Installing, live updating, and live upgrading a cluster
+
+- Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
+
+- Certain cluster-wide tasks, such as certificate rotation and infrastructure management
+
 
 ## Impact
 
-The virt-operator is the first k8s operator coming alive in a KubeVirt cluster. Its primary responsibilities are installation, live-update, live-upgrade of a KubeVirt cluster, monitoring the life-cycle of top-level controllers, such as virt-controller, virt-handler, virt-launcher, etc. and manage their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks, such as certificate rotation and some infrastructure management, etc. Note that virt-operator is not directly responsible for virtual machines in the cluster, its temporal unavailability should not affect the custom workloads. 
+This alert indicates that a cluster-level failure may occur, and critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, may become unavailable. Such a state would also trigger the `NoReadyVirtOperator` alert.
 
-When observed this alert, and the `NoReadyVirtOperator` alert is not triggered, the virt-operator becomes a single point of failure.
+The `virt-operator` deployment has a default replica of two `virt-operator` pods.
+
+Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
 
 ## Diagnosis
 
-- Check the status of the virt-operator deployment to find out more information. The following commands will provide the associated events and show if there are any specific issues.
-- `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
-  - `kubectl -n $NAMESPACE get deploy virt-operator -o yaml`
-  - `kubectl -n $NAMESPACE describe deploy virt-operator`
-- Check if there are issues with the nodes for control-plane and masters. For example, if they are in a NotReady state.
-- `kubectl get nodes`
+1. Obtain the namespace data of the `virt-operator` deployment:
+    ```
+    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+    ```
 
+1. Obtain the name of the `virt-operator` deployment:
+    ```
+    $ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
+    ```
+
+1. Generate the description of the `virt-operator` deployment:
+    ```
+    $ kubectl -n $NAMESPACE describe deploy virt-operator
+    ```
+
+1. Check for node issues, such as a `NotReady` state:
+    ```
+    $ kubectl get nodes
+    ```
+    
 ## Mitigation
 
-There can be several reasons, try to identify the root cause and fix it. If you cannot fix it, please open an issue and attach the artifacts gathered in the Diagnosis section.
+This alert can have a number of causes, including:
+
+- TBA possible causes!
+
+Verify whether any of these applies to your deployment, and fix it if possible (TBA how?).
+
+If this does not fix the problem, open an issue (TBA where!) and attach to it the artifacts gathered in the Diagnosis section.
