@@ -3,28 +3,32 @@
 ## Meaning
 
 The `Cluster-network-addons-operator` (CNAO) deploys additional networking components on top of the cluster.
-This alert fires when CNAO is down.
+This alert fires when the CNAO is down.
 
 ## Impact
 
-With CNAO down, the cluster cannot reconcile changes to virtual machine components. As a result, the changes might fail to take effect.
+If the CNAO is not running, the cluster cannot reconcile changes to virtual machine components. As a result, the changes might fail to take effect.
 
 ## Diagnosis
 
-- Check CNAO's operator pod namespace:
+1. Obtain the namespace of the CNAO pod:
 	```
 	$ export NAMESPACE="$(kubectl get deployment -A | grep cluster-network-addons-operator | awk '{print $1}')"
 	```
 
-- Check to see if CNAO's operator pod is down:
+1. Check the status of the CNAO pod:
 	```
 	$ kubectl -n $NAMESPACE get pods -l name=cluster-network-addons-operator
 	```
  
-- Check CNAO's operator pod logs and description:
+1. Check the CNAO pod logs:
     ```
-	$ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
     $ kubectl -n $NAMESPACE logs -l name=cluster-network-addons-operator
+	```
+
+1. Generate the CNAO pod description:
+	```
+	$ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
 	```
 
 ## Mitigation
