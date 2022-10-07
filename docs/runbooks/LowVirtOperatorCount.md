@@ -2,26 +2,55 @@
 
 ## Meaning
 
-This alert is triggered when there is only one virt-operator pod that is running in `Ready` state in the past hour. 
+This alert fires when only one `virt-operator` pod in a `Ready` state has been running for the last 60 minutes. 
+
+The `virt-operator` is the first operator to start in a cluster. Its primary responsibilities include the following: 
+
+- Installing, live updating, and live upgrading a cluster
+
+- Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
+
+- Certain cluster-wide tasks, such as certificate rotation and infrastructure management
 
 ## Impact
 
-The virt-operator is the first k8s operator coming alive in a KubeVirt cluster. Its primary responsibilities are installation, live-update, live-upgrade of a KubeVirt cluster, monitoring the life-cycle of top-level controllers, such as virt-controller, virt-handler, virt-launcher, etc. and manage their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks, such as certificate rotation and some infrastructure management, etc.  Note that virt-operator is not directly responsible for virtual machines in the cluster, its temporal unavailability should not affect the custom workloads. 
+This alert indicates that `virt-operator` cannot provide high availability (HA) for the deployment.
 
-More than one virt-operator pod should be in the Ready state when KubeVirt is deployed with high-availability. The virt-operator deployment has a default replica of 2 pods.
+For HA to work reliably, two or more `virt-operator` pods in a `Ready` state must be available. The `virt-operator` deployment has a default replica of two `virt-operator` pods.
 
-This alter indicates the downgrade of the availability of virt-operator.
+Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its decreased availability does not significantly affect custom workloads.
+
 
 ## Diagnosis
 
-Check the states of virt-operator pods:
-- `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
-- `kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator`
+1. Obtain the namespace data of the `virt-operator` deployment:
+    ```
+    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+    ```
 
-Check in-depth virt-operator pods that are in trouble:
-- `kubectl -n $NAMESPACE logs <pod-name>`.
-- `kubectl -n $NAMESPACE describe pod <pod-name>`.
+1. Check the states of `virt-operator` pods:
+
+    ```
+    $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
+    ```
+
+1. Review the logs of the affected `virt-operator` pods:
+    ```
+    $ kubectl -n $NAMESPACE logs <pod-name>
+    ```
+
+1.  Generate the descriptions of the affected `virt-operator` pods:
+
+    ```
+    $ kubectl -n $NAMESPACE describe pod <pod-name>
+    ```
 
 ## Mitigation
 
-There can be several reasons, try to identify the root cause and fix it. If you cannot fix it, please open an issue and attach the artifacts gathered in the Diagnosis section.
+This alert can have a number of causes, including:
+
+- TBA possible causes!
+
+Verify whether any of these applies to your deployment, and fix it if possible (TBA how?).
+
+If this does not fix the problem, open an issue (TBA where!) and attach to it the artifacts gathered in the Diagnosis section.
