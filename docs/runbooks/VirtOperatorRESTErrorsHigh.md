@@ -2,23 +2,53 @@
 
 ## Meaning
 
-More than 5% of the rest calls in virt-operator pods failed in the last hour.
+More than 5% of REST calls in `virt-operator` pods failed in the last 60 minutes. 
+
+This is most likely because `virt-operator` has partially lost connection to the API server.
 
 ## Impact
 
-This alert suggests that the virt-operator is potentially lost the connection to the apiserver. Cluster-level actions such as upgrading and controller reconciliation can be delayed. Customer workloads, i.e. VM and VMI, should not be affected.
+Cluster-level actions, such as upgrading and controller reconciliation, may be delayed. 
+
+However, customer workloads, such as virtual machines (VMs) and VMIs, are not likely to be affected.
 
 ## Diagnosis
 
-Two common types of errors may lead to this alert:
-- The apiserver is overloaded and we run into timeouts. Issues like this can be identified by checking the apiserver metrics and looking at its response times, overall calls.  For users without cluster privileges, logs of KubeVirt apiserver pods can be fetched with `kubectl logs` command.
-- The virt-operator pod cannot reach the apiserver. Common issues are network connectivity issues such as DNS issues on the node. Check virt-operator logs to verify whether it can connect to the apiserver at all.
-    - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
-    - `kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator`
-    - `kubectl -n $NAMESPACE logs <pod-name>`.
-    - `kubectl -n $NAMESPACE describe pod <pod-name>`.
+This error is most frequently caused by one of the following problems:
+
+- The API server is overloaded, which causes timeouts. To verify if this is the case, check the metrics of the API server, and view its response times and overall calls.
+
+- The `virt-operator` pod cannot reach the API server. This is commonly caused by DNS issues on the node and networking connectivity issues.
+
+Check whether `virt-operator` can connect to the API server.
+
+1. List all `virt-operator` pods:
+    ```
+     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+    ```
+
+1. Obtain the name of the `virt-operator` pod:
+
+    ```
+    $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
+    ```
+
+1. Review the logs for `virt-operator` and check its connectivity to the API server:
+
+    ```
+    $ kubectl -n $NAMESPACE logs <virt-operator-pod-name>
+    ```
+
+1. Obtain the description of the `virt-operator` pod:
+    
+    ```
+    $ kubectl -n $NAMESPACE describe pod <virt-operator-pod-name>
+    ```
 
 ## Mitigation
 
-If there is indication that the virt-operator cannot connect to the apiserver, delete the pod to force a restart. In this case the issue is normally related to DNS or CNI issues outside of the scope of kubevirt.
+If `virt-operator` cannot connect to the API server, delete the pod to force a restart:
 
+```
+$ kubectl delete -n <kubevirt-install-namespace> <virt-operator-pod-name>
+```
