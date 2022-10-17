@@ -26,6 +26,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [KubeMacPoolDuplicateMacsFound](KubeMacPoolDuplicateMacsFound.md)
 * [KubeVirtComponentExceedsRequestedCPU](KubeVirtComponentExceedsRequestedCPU.md)
 * [KubeVirtComponentExceedsRequestedMemory](KubeVirtComponentExceedsRequestedMemory.md)
+* [KubeVirtMultipleSchedulingVMI](KubeVirtMultipleSchedulingVMI.md)
 * [KubeVirtVMIExcessiveMigrations](KubeVirtVMIExcessiveMigrations.md)
 * [KubeVirtVMStuckInErrorState](KubeVirtVMStuckInErrorState.md)
 * [KubeVirtVMStuckInMigratingState](KubeVirtVMStuckInMigratingState.md)
