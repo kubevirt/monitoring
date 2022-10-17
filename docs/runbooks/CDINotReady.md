@@ -1,32 +1,41 @@
 # CDINotReady
+<!--Edited by davozeni, 17.10.2022-->
 
 ## Meaning
 
-The CDINotReady alert is indicative of a CDI installation being in a degraded state;  
+The CDINotReady alert indicates that a containerized data importer (CDI) installation is in a degraded state:
+
 - Not progressing
+
 - Not available to use
 
 ## Impact
 
-CDI is simply not usable - users cannot build Virtual Machine Disks on PVCs using CDI's DataVolumes.  
-It's components are not ready & stopped progressing towards a ready state and hence require action.
+CDI is not usable, so users cannot build Virtual Machine Disks on PVCs using CDI's DataVolumes. 
+CDI components are not ready and they stopped progressing towards a ready state.
 
 ## Diagnosis
 
-- Check cdi-operator's pod namespace:
+1. Check the pod namespace of `cdi-operator`:
 	```bash
-	export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
+	$ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
 	```
 
-- Check to see if any of the CDI components are currently not ready.
+1. Check for CDI components that are currently not ready:
 	```bash
-	kubectl -n $CDI_NAMESPACE get deploy -l cdi.kubevirt.io
+	$ kubectl -n $CDI_NAMESPACE get deploy -l cdi.kubevirt.io
 	```
- 
-- Check the failing deployments' corresponding pod logs and describe (substitute <corresponding_pod_name>).
-    - `kubectl -n $CDI_NAMESPACE describe pods <corresponding_pod_name>`
-    - `kubectl -n $CDI_NAMESPACE logs <corresponding_pod_name>`
+
+1. Check the description of the failing pod:
+	```bash
+	$ kubectl -n $CDI_NAMESPACE describe pods <failing-pod>
+	```
+
+1. Check the logs of the failing pod:
+	```bash
+	$ kubectl -n $CDI_NAMESPACE logs <failing-pod>
+	```
 
 ## Mitigation
 
-Please open an issue and attach the artifacts gathered in the Diagnosis section.
+Open an issue and attach the artifacts gathered in the Diagnosis section.
