@@ -2,35 +2,54 @@
 
 ## Meaning
 
-Virt-api REST calls are failing in a very high rate.
-Alert will be fired when more than 80% of the REST calls failed in virt-api for the last 5 minutes.
+More than 80% of REST calls have failed in `virt-api` in the last 5 minutes.
 
 ## Impact
 
-Very high rate of failed REST calls to virt-api could lead to slow response / execution of API calls,
-and can even lead to API calls being completely dismissed.
+Very high rate of failed REST calls to `virt-api` may lead to slow response and execution of API calls, and potentially to API calls being completely dismissed.
 
-Currently running VM workloads should not be affected.
+However, currently running virtual machine workloads are not likely to be affected. 
 
 ## Diagnosis
 
-- Set the environment variable `NAMESPACE`
-  ```
-  export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-  ```
+1. Set the `NAMESPACE` environment variable as follows:
+   ```
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
 
-- Check to see how many running virt-api pods exist.
-  ```
-  kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
-  ```
+1. Check how many `virt-api` pods are running on your deployment:
+   ```
+   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
+   ```
 
-- For these pods, try to see the logs with `kubectl logs` and pod status via `kubectl describe`
+1. For each of the `virt-api` pods, display its logs:
+   ```
+   $ kubectl logs -n  $NAMESPACE <virt-api-pod-name>
+   ```
+
+1. Display the states of the `virt-api` pods:
+   ```
+   $ kubectl describe -n $NAMESPACE <virt-api-pod-name>
+   ```
+
+1. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
+   ```
+   $ kubectl get nodes
+   ```
+
+1. Check the status of the `virt-api` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
+   ```
+   $ kubectl -n $NAMESPACE get deploy virt-api -o yaml
+   ```
+   ```
+   $ kubectl -n $NAMESPACE describe deploy virt-api
+   ```
 
 ## Mitigation
-There can be several reasons for virt-api pods to be down, identify the root cause and fix it.
 
-- Check the status of the virt-api deployment to find out more information. The following commands will provide the associated events and show if there are any issues with pulling an image, crashing pod, etc.
-    - `kubectl -n $NAMESPACE get deploy virt-api -o yaml`
-    - `kubectl -n $NAMESPACE describe deploy virt-api`
-- Check if there are issues with the nodes. For example, if they are in a NotReady state.
-    - `kubectl get nodes`
+If any of the mentioned commands outputs an error, attempt to fix the cause.
+
+The possible fixes may include the following:
+
+- TODO: give some more specific info here!
+
