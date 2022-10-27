@@ -1,70 +1,39 @@
 # CDIDataImportCronOutdated
+<!--edited by apinnick, Oct. 2022-->
 
 ## Meaning
 
-DataImportCron is in charge of recurring polling of latest version disk images as PVCs, commonly into a 'golden image' namespace;   
-These are PVCs that always get updated with latest version,  
-serving as a trustworthy clone source for created VMs (created from latest image of OS).  
+This alert fires when `DataImportCron` cannot poll or import the latest disk image versions.
 
-This alert fires when a DataImportCron fails to create a corresponding PVC or keep its corresponding PVC updated (new `:latest` exists, we can't update to it).
+`DataImportCron` polls disk images, checking for the latest versions, and imports the images as persistent volume claims (PVCs). This process ensures that PVCs are updated to the latest version so that they can be used as reliable clone sources or golden images for virtual machines (VMs).
 
-**Note**:  
-In the golden-image use case, `latest` is simply the latest OS version of the distribution.  
-In the non-golden-image case, as described above, we are merely referring to the latest hash of the image that is available.
+For golden images, _latest_ refers to the latest operating system of the distribution. For other disk images, _latest_ refers to the latest hash of the image that is available.
 
 ## Impact
 
-VMs are created from outdated disk images *or* VMs fail to start because there is no source PVC to clone from.
+VMs might be created from outdated disk images.
+
+VMs might fail to start because no source PVC is available for cloning.
 
 ## Diagnosis
 
-### Distinguish between golden images and regular crons
-DataImportCrons are widely used for golden images and likely serve as a source to create VM disks from, and thus it is vital for them to be up to date.
-- Find the erronous DataImportCron's namespace & name:
-	```bash
-	kubectl get dataimportcron -A -o json | jq -r '.items[] | select(.status.conditions[] | select(.type == "UpToDate" and .status == "False")) | .metadata.namespace + "/" + .metadata.name'
-	```
-	Output is returned as namespace/name - golden image crons will reside in the `openshift-virtualization-os-images` namespace.
+1. Check the cluster for a default storage class:
+  ```bash
+  $ kubectl get sc
+  ```
+The output displays the storage classes with `(default)` beside the name of the default storage class. You must set a default storage class, either on the cluster or in the `DataImportCron` specification, in order for the `DataImportCron` to poll and import golden images. If no storage class is defined, the DataVolume controller fails to create PVCs and the following event is displayed: `DataVolume.storage spec is missing accessMode and no storageClass to choose profile`.
 
-- With golden image crons, verify a default storge class is configured:
-	```bash
-	kubectl get sc
-	```
-	A single storage class should be marked with `(default)` next to its name.
-
-### Diagnosis artifacts
-- Substitute `<cron_namespace>`, `<cron_name>` to find the DataImportCron's corresponding DataVolume (resides in same namespace as cron):
-	```bash
-	kubectl -n <cron_namespace> get dataimportcron <cron_name> -o json | jq .status.lastImportedPVC.name
-	```
- 
-- Substitute `<dv_name>` with the above output to check for error messages:
-    ```bash
-	kubectl -n <cron_namespace> get dv <dv_name> -o yaml
-	```
-
-- Find cdi-operator's pod namespace:
-	```bash
-	export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
-	```
-- Check cdi controller logs for error messages:
-	```bash
-	kubectl logs -n $CDI_NAMESPACE deployment/cdi-deployment
-	```
-
-- Follow the instructions in the 'Mitigation' section.
-
-## Mitigation
-
-### No storage class defined (default, or per DataImportCron)
-
-A common issue when opting in to golden images auto-polling is not having a _default storage class_ set.
-
-Ensure you have a default storage class set in the cluster *or*  
-If you're using a custom DataImportCron and no default storage class is set, verify that there is an explicit storage class set in the DataImportCron definition:
-
-```bash
-$ kubectl get dataimportcron cron-test -o yaml | grep -B 5 storageClassName
+2. Obtain the `DataImportCron` namespace and name:
+  ```bash
+  $ kubectl get dataimportcron -A -o json | jq -r '.items[] | select(.status.conditions[] \
+    | select(.type == "UpToDate" and .status == "False")) | .metadata.namespace + "/" + .metadata.name'
+  ```
+3. If a default storage class is not defined on the cluster, check the `DataImportCron` specification for a default storage class:
+  ```bash
+  $ kubectl get dataimportcron <dataimportcron> -o yaml | grep -B 5 storageClassName
+  ```
+Example output:
+```yaml
           url: docker://.../cdi-func-test-tinycore
       storage:
         resources:
@@ -72,28 +41,40 @@ $ kubectl get dataimportcron cron-test -o yaml | grep -B 5 storageClassName
             storage: 5Gi
         storageClassName: rook-ceph-block
 ```
+4. Obtain the name of the `DataVolume` associated with the `DataImportCron` object:
+  ```bash
+  $ kubectl -n <namespace> get dataimportcron <dataimportcron> -o json | jq .status.lastImportedPVC.name
+  ```
+5. Check the `DataVolume` log for error messages:
+  ```bash
+  $ kubectl -n <namespace> get dv <datavolume> -o yaml
+  ```
+6. Set the `CDI_NAMESPACE` environment variable:
+  ```bash
+  $ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
+  ```
+7. Check the `cdi-deployment` log for error messages:
+  ```bash
+  $ kubectl logs -n $CDI_NAMESPACE deployment/cdi-deployment
+  ```
 
-When no storage class is defined, the DataVolume controller will fail to create PVCs and an event will be triggered:  
-`DataVolume.storage spec is missing accessMode and no storageClass to choose profile`
+## Mitigation
 
-Once a default storage class has been defined, updated versions of CDI should resolve this issue automatically. If it does not resolve within a few seconds:
+1. Set a default storage class, either on the cluster or in the `DataImportCron` specification, to poll and import golden images. The updated Containerized Data Importer (CDI) should resolve the issue within a few seconds.
 
-* Find all of the affected DataImportCrons
-* Determine the DV associated with each DataImportCron
-* Make sure each DV has an empty status which is an indicator of the issue
-* Delete each of these DVs
+2. If the issue does not resolve itself, delete the data volumes associated with the affected `DataImportCron` objects. The CDI will recreate the data volumes with the default storage class.
 
-CDI will then recreate the DVs with proper reference to the default storage class.
+3. If your cluster is installed in a restricted network environment, disable the `enableCommonBootImageImport` feature gate in order to opt out of automatic updates:
+  ```bash
+  $ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type json -p '[{"op": "replace", "path": "/spec/featureGates/enableCommonBootImageImport", "value": false}]'
+  ```
 
-### Disconnected Environment
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+See the [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate) for more information.
 
-For a cluster installed in a restricted network, the default golden images cannot be pulled because they are out of reach, thus the alert will be fired.  
-In that case, it is encouraged to disable the feature gate `enableCommonBootImageImport` to opt-out from automatic updates of the common data import cron templates and refrain from this alert being fired.  
-This can be done by patching the HyperConverged CR:
-```bash
-$ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type json -p '[{"op": "replace", "path": "/spec/featureGates/enableCommonBootImageImport", "value": false}]'
-```
-More information about this feature gate can be found in [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate).
+If you cannot resolve the issue, see the following resources:
 
-
-In other cases, please open an issue and attach the artifacts gathered in the Diagnosis section.
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
