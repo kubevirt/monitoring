@@ -1,28 +1,48 @@
 # SSPFailingToReconcile
+<!--apinnick, Nov 2022-->
 
 ## Meaning
 
-This alert indicates that while the operator's pod is up, it's reconcile cycle is consistently failing.
-It may mean a number of things, including failing to update the resources it is responsible for,
-failing to deploy the Template Validator or failing to deploy or update the common-templates.
+This alert fires when the reconcile cycle of the Scheduling, Scale and Performance (SSP) Operator fails repeatedly, although the SSP Operator is running.
 
 ## Impact
 
-With SSP Operator not reconciling, the dependant components may not deploy at all and/or changes in the components are not reconciled, as a result the common templates and template validator may not be updated or reset in case they fail.
+Dependent components might not be deployed. Changes in the components might not be reconciled. As a result, the common templates and/or the Template Validator might not be updated or reset if they fail.
 
 ## Diagnosis
 
-- Check the logs of the ssp-operator pod for errors:
-    - `export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"`
-    - `kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator`
-    - `kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator`
-- Check if the Template Validator is up, and if not check it's logs for errors.
-    - `export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"`
-    - `kubectl -n $NAMESPACE get pods -l name=virt-template-validator`
-    - `kubectl -n $NAMESPACE describe pods -l name=virt-template-validator`
-    - `kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator`    
-
+1. Export the `NAMESPACE` environment variable:
+  ```bash
+  $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+  ```
+2. Obtain the details of the `ssp-operator` pods:
+  ```bash
+  $ kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator
+  ```
+3. Check the `ssp-operator` logs for errors:
+  ```bash
+  $ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator
+  ```
+4. Obtain the status of the `virt-template-validator` pods:
+  ```bash
+  $ kubectl -n $NAMESPACE get pods -l name=virt-template-validator
+  ```
+5. Obtain the details of the `virt-template-validator` pods:
+  ```bash
+  $ kubectl -n $NAMESPACE describe pods -l name=virt-template-validator
+  ```
+6. Check the `virt-template-validator` logs for errors:
+  ```bash
+  $ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
+  ```
  
 ## Mitigation
 
-Please open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--KVstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
