@@ -1,30 +1,42 @@
 # SSPTemplateValidatorDown
+<!--apinnick, Nov 2022-->
 
 ## Meaning
 
-The Template Validator is responsible for validating the Virtual Machines do not violate the templates they are assigned to.
-This alert fires when all the Template Validator's pods are down.
+This alert fires when all the Template Validator pods are down.
+
+The Template Validator checks virtual machines (VMs) to ensure that they do not violate their templates.
 
 ## Impact
 
-With all Template Validator's pods down the Vms will not be validated against the templates they are associated with.
+VMs are not validated against their templates. As a result, VMs might be created with specifications that do not match their respective workloads.
 
 ## Diagnosis
 
-- Check virt-template-validator's operator pod namespace:
-	```
-	export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
-	```
-
-- Check to see if virt-template-validator's pod is currently down.
-	```
-	kubectl -n $NAMESPACE get pods -l name=virt-template-validator
-	```
- 
-- Check virt-template-validator's pods logs and describe.
-    - `kubectl -n $NAMESPACE describe pods -l name=virt-template-validator`
-    - `kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator`
+1. Set the `NAMESPACE` environment variable:
+  ```bash
+  $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+  ```
+2. Obtain the status of the `virt-template-validator` pods:
+  ```bash
+  $ kubectl -n $NAMESPACE get pods -l name=virt-template-validator
+  ```
+3. Obtain the details of the `virt-template-validator` pods:
+  ```bash
+  $ kubectl -n $NAMESPACE describe pods -l name=virt-template-validator
+  ```
+4. Check the  `virt-template-validator` logs for error messages:
+  ```bash
+  $ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
+  ```
 
 ## Mitigation
 
-Please open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--KVstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
