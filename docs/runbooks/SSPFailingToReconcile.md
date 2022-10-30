@@ -5,6 +5,8 @@
 
 This alert fires when the reconcile cycle of the Scheduling, Scale and Performance (SSP) Operator fails repeatedly, although the SSP Operator is running.
 
+The SSP Operator is responsible for deploying and reconciling the common templates and the Template Validator.
+
 ## Impact
 
 Dependent components might not be deployed. Changes in the components might not be reconciled. As a result, the common templates and/or the Template Validator might not be updated or reset if they fail.
