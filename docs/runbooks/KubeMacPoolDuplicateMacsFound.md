@@ -18,7 +18,7 @@ Duplicate MAC addresses on the same LAN might cause network issues.
   $ kubectl get pod -A -l control-plane=mac-controller-manager --no-headers \
     -o custom-columns=":metadata.namespace,:metadata.name"
   ```
-1. Obtain the duplicate MAC addresses from the `kubemacpool-mac-controller` logs:
+2. Obtain the duplicate MAC addresses from the `kubemacpool-mac-controller` logs:
   ```bash
   $ kubectl logs -n <namespace> <kubemacpool_mac_controller> | grep "already allocated"
   ```
@@ -33,7 +33,7 @@ Duplicate MAC addresses on the same LAN might cause network issues.
 ## Mitigation
 
 1. Update the VMs to remove the duplicate MAC addresses.
-1. Restart the `kubemacpool-mac-controller` pod:
+2. Restart the `kubemacpool-mac-controller` pod:
   ```bash
   $ kubectl delete pod -n <namespace> <kubemacpool_mac_controller>
   ```
