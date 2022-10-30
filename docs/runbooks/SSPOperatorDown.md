@@ -1,30 +1,43 @@
 # SSPOperatorDown
+<!--apinnick, Nov. 2022-->
 
 ## Meaning
 
-The SSP Operator is responsible for deploying and reconciling the common-templates and the template validator.
-This alert fires when the SSP operator is down.
+This alert fires when all the Scheduling, Scale and Performance (SSP) Operator pods are down.
+
+The SSP Operator is responsible for deploying and reconciling the common templates and the Template Validator.
 
 ## Impact
 
-With SSP Operator down, the dependant components may not deploy at all and/or changes in the components are not reconciled, as a result the common templates and template validator may not be updated or reset in case they fail.
+Dependent components might not be deployed. Changes in the components might not be reconciled. As a result, the common templates and/or the Template Validator might not be updated or reset if they fail.
 
 ## Diagnosis
 
-- Check ssp-operator's pod namespace:
-	```
-	export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
-	```
-
-- Check to see if ssp-operator's pod is currently down.
-	```
-	kubectl -n $NAMESPACE get pods -l control-plane=ssp-operator
-	```
- 
-- Check ssp-operator's pod logs and describe.
-    - `kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator`
-    - `kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator`
+1. Set the `NAMESPACE` environment variable:
+  ```bash
+  $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+  ```
+2. Check the status of the `ssp-operator` pods.
+  ```bash
+  $ kubectl -n $NAMESPACE get pods -l control-plane=ssp-operator
+  ```
+3. Obtain the details of the `ssp-operator` pods:
+  ```bash
+  $ kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator
+  ```
+4. Check the `ssp-operator` logs for error messages:
+  ```bash
+  $ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator
+  ```
 
 ## Mitigation
 
-Please open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--KVstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
+
