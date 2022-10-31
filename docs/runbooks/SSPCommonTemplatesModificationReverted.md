@@ -1,25 +1,35 @@
 # SSPCommonTemplatesModificationReverted
+<!--apinnick Nov 2022-->
 
 ## Meaning
 
-This alert indicates that one or more common templates were changed by the ssp operator as part of its reconciliation procedure.
-If any changes were made to a common template manually or by a script they were reverted by the operator.
+This alert fires when the Scheduling, Scale, and Performance (SSP) Operator reverts changes to common templates as part of its reconciliation procedure.
+
+The SSP Operator deploys and reconciles the common templates and the Template Validator. If a user or script changes a common template, the changes are reverted by the SSP Operator.
 
 ## Impact
 
-The changes made manually on the templates are lost.
+Changes to common templates are overwritten.
+
 ## Diagnosis
 
-The common templates should never be modified manually, find out if you are misusing the common templates by making such modifications.
+1. Set the `NAMESPACE` environment variable:
+```bash
+$ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+```
 
-- Check the logs of the SSP Operator pods:
-	- `export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"`
-	- `kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator`
-	- Look for lines similar to this to find the names of the restored Common Templates:
-	  `Changes reverted in common template: <template name>`
+2. Check the `ssp-operator` logs for templates with reverted changes:
+```bash
+$ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator | grep 'common template' -C 3
+```
  
 ## Mitigation
 
-Do not modify common templates. If necessary, copy the one you need and modify the copy.
-Refer to the [templates documentation](https://kubevirt.io/user-guide/virtual_machines/templates/) to find out more.
+Try to identify and resolve the cause of the changes.
 
+Ensure that changes are made only to copies of templates, and not to the templates themselves.
+
+<!--USstart-->
+See the [documentation](https://kubevirt.io/user-guide/virtual_machines/templates) for details.
+<!--USend-->
+<!-- No downstream link. Modules cannot contain xrefs.-->
