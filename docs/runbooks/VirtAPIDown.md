@@ -1,31 +1,47 @@
 # VirtAPIDown
+<!--apinnick Nov 2022-->
 
 ## Meaning
 
-This alert fires when all KubeVirt API servers are down.
+This alert fires when all the API Server pods are down.
 
 ## Impact
 
-Without KubeVirt API servers, no API call around KubeVirt entities can be made anymore.
+KubeVirt objects cannot send API calls.
 
 ## Diagnosis
 
-- Set the environment variable `NAMESPACE`
-	```
-	export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-	```
-
-- Check to see if there are any running virt-api pods.
-	```
-	kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
-	```
+1. Set the `NAMESPACE` environment variable:
+  ```bash
+  $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+  ```
+2. Check the status of the `virt-api` pods:
+  ```bash
+  $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
+  ```
+3. Check the status of the `virt-api` deployment:
+  ```bash
+  $ kubectl -n $NAMESPACE get deploy virt-api -o yaml
+  ```
+4. Check the `virt-api` deployment details for issues such as crashing pods or image pull failures:
+  ```bash
+  $ kubectl -n $NAMESPACE describe deploy virt-api
+  ```
+5. Check for issues such as nodes in a `NotReady` state:
+  ```bash
+  $ kubectl get nodes
+  ```
 
 ## Mitigation
 
-There can be several reasons for virt-api pods to be down, identify the root cause and fix it.
+Identify the root cause and resolve it.
 
-- Check the status of the virt-api deployment to find out more information. The following commands will provide the associated events and show if there are any issues with pulling an image, crashing pod, etc. 
-	- `kubectl -n $NAMESPACE get deploy virt-api -o yaml`
-    - `kubectl -n $NAMESPACE describe deploy virt-api`
-- Check if there are issues with the nodes. For example, if they are in a NotReady state.
-	- `kubectl get nodes`
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--KVstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
+
