@@ -1,38 +1,43 @@
 # CDIDataVolumeUnusualRestartCount
+<!--apinnick Nov 2022-->
 
 ## Meaning
 
-The `.RestartCount` field for DataVolumes counts the number of times that the CDI ephemeral workload pod was restarted;  
-In the case of an HTTP import for example, the `.RestartCount` field will watch the amount of times the CDI importer pod was restarted.  
-
-This alert fires when the restart count of any DataVolume is > 3.
+This alert fires when a `DataVolume` object restarts more than three times.
 
 ## Impact
 
-On the occasion of reaching more than 3 restarts, it is very unlikely that the DataVolume's operation (build a VM disk on PVC) will converge to success and thus action/investigation needs to be taken.
+Data volumes are responsible for importing and creating a virtual machine disk on a persistent volume claim. If a data volume restarts more than three times, these operations are unlikely to succeed. You must diagnose and resolve the issue.
 
 ## Diagnosis
 
-- Find the erronous DataVolume's name & namespace:
-	```bash
-	kubectl get dv -A -o json | jq -r '.items[] | select(.status.restartCount>3)' | jq '.metadata.name, .metadata.namespace'
-	```
-
-- Substitute `<dv_name>`, `<dv_namespace>` with the output from the previous command, to find it's corresponding worker pod (resides in same namespace as DataVolume):
-	```bash
-	kubectl get pods -n <dv_namespace> -o json | jq -r '.items[] | select(.metadata.ownerReferences[] | select(.name=="<dv_name>")).metadata.name'
-	```
- 
-- Substitute `<worker_pod>` with the above output to check the failing deployments' corresponding pod logs and describe:
-    - `kubectl -n <dv_namespace> describe pods <worker_pod>`
-    - `kubectl -n <dv_namespace> logs <worker_pod>`
+1. Obtain the name and namespace of the data volume:
+  ```bash
+  $ kubectl get dv -A -o json | jq -r '.items[] | select(.status.restartCount>3)' | jq '.metadata.name, .metadata.namespace'
+  ```
+2. Check the status of the pods associated with the data volume:
+  ```bash
+  $ kubectl get pods -n <namespace> -o json | jq -r '.items[] | select(.metadata.ownerReferences[] | select(.name=="<dv_name>")).metadata.name'
+  ```
+3. Obtain the details of the pods:
+  ```bash
+  $ kubectl -n <namespace> describe pods <pod>
+  ```
+4. Check the pod logs for error messages:
+  ```bash
+  $ kubectl -n <namespace> describe logs <pod>
+  ```
 
 ## Mitigation
 
-In some cases, the error could be simply a URL typo for example, in such case you will see a 404 in the artifacts collected above.  
-You could then start over by:
-- Deleting the DV
-- Correcting the URL on the DV manifest
-- Creating it again
+Delete the data volume, resolve the issue, and create a new data volume.
 
-In other cases, please open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--KVstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
+
