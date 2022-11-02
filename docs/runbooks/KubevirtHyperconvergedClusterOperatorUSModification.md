@@ -1,39 +1,40 @@
 # KubevirtHyperconvergedClusterOperatorUSModification
+<!--apinnick, Nov 2022-->
 
 ## Meaning
 
-The HyperConverged Cluster Operator configures kubevirt and its supporting operators in an opinionated way and overwrites
-its operands when there is an unexpected change to them. Users are expected to not modify the operands directly. If 
-such a change is a must, and is not supported by HCO API, it is possible to use special annotations to force HCO to set
-the required changes in the required operator. For more details, see
-[here](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#jsonpatch-annotations)
+This alert fires when a JSON Patch annotation is used to change an operand of the HyperConverged Cluster Operator (HCO).
 
-However, this method may be risky and considered unsafe. 
+HCO configures KubeVirt and its supporting operators in an opinionated way and overwrites its operands when there is an unexpected change to them. Users must not modify the operands directly.
 
-HCO fires this alert  when one of these annotations are in use.
+However, if a change is required and it is not supported by the HCO API, you can force HCO to set a change in an operator by using JSON Patch annotations. These changes are not reverted by HCO during its reconciliation process.
+
+<!--KVstart-->
+See the [Kubevirt documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#jsonpatch-annotations) for details.
+<!--KVend-->
 
 ## Impact
 
-Just an information about using of unsafe modifications.
+Incorrect use of JSON Patch annotations might lead to unexpected results or an unstable environment.
 
+Upgrading a system with JSON Patch annotations is dangerous because the structure of the component custom resources might change.
 
 ## Diagnosis
-Check the alert details. `annotation_name` refers to specific unsafe jsonpatch annotation in the HyperConverged resource.
 
+Check the `annotation_name` in the alert details to identify the JSON Patch annotation:
 ```
 Labels
     alertname=KubevirtHyperconvergedClusterOperatorUSModification
     annotation_name=kubevirt.kubevirt.io/jsonpatch
     severity=info
 ```
-In the example above, the kind of specific jsonpatch annotation is `kubevirt.kubevirt.io/jsonpatch`.
 
 ## Mitigation
-Make sure that the change that is defined in the jsonpatch annotation is required, and that using the jsonpatch annotation
-is the only way to make this change. If the HyperConverged API supports this modification, please prefer modifying the
-HyperConverged resource.
 
-If you believe this jsonpatch annotation is generic and can benefit others, please apply an RFE to add a new API to
-support this modification, by filing a bug in [Red Hat bugzilla](https://bugzilla.redhat.com/).
+It is best to use the HCO API to change an operand. However, if the change can only be done with a JSON Patch annotation, proceed with caution.
 
-If there is no other way, consider this alert as information only.
+Remove JSON Patch annotations before upgrade to avoid potential issues.
+
+<!--KVstart-->
+If the JSON Patch annotation is generic and useful, you can submit an RFE to add the modification to the API by filing a [bug](https://bugzilla.redhat.com/).
+<!--KVend-->
