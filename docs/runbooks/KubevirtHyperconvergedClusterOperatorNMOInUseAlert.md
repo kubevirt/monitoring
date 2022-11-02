@@ -1,20 +1,35 @@
 # KubevirtHyperconvergedClusterOperatorNMOInUseAlert
+<!-- Edited by apinnick, Nov 2022-->
 
 ## Meaning
-Starting from version 4.11.0, Node Maintenance Operator (NMO) is no longer included in OpenShift Virtualization.  
-This alert is being fired if both of the following conditions are met:
-- OpenShift version is 4.11 or higher.
-- The integrated NMO is being used, i.e. one or more custom resources of Kind `NodeMaintenance` and API group of `nodemaintenance.kubevirt.io` have been found on the cluster.
 
-Existence of such a custom resource indicates that the targeted node specified in `spec.nodeName` was put into a maintenance mode, which means the node is [cordoned](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#cordon) and server-side [drained](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/#use-kubectl-drain-to-remove-a-node-from-service).
+<!--DS: This alert fires when _integrated_ Node Maintenance Operator (NMO) custom resources (CRs) are detected. This alert only affects {VirtProductName} 4.10.-->
+
+<!--DS: The Node Maintenance Operator is not included with {VirtProductName} 4.11.0 or later. Instead, the Operator is installed from OperatorHub.-->
+
+<!--DS: The presence of `NodeMaintenance` CRs belonging to the `nodemaintenance.kubevirt.io` API group indicates that the node specified in `spec.nodeName` was put into maintenance mode. The target node has been cordoned off and drained.-->
+
+<!--USstart-->
+This alert fires when _integrated_ Node Maintenance Operator (NMO) custom resources (CRs) are detected. This alert only affects OKD 1.6.
+
+The presence of `NodeMaintenance` CRs belonging to the `nodemaintenance.kubevirt.io` API group indicates that the node specified in `spec.nodeName` was put into maintenance mode. The target node has been [cordoned off](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#cordon) and [drained](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/#use-kubectl-drain-to-remove-a-node-from-service).
+<!--USend-->
 
 ## Impact
-Upgrade to OpenShift Virtualization v4.11 is blocked until all integrated NMO custom resources (`nodemaintenance.kubevirt.io`) are removed.
+
+<!--DS: You cannot upgrade to {VirtProductName} 4.11.-->
+<!--USstart-->
+You cannot upgrade to OKD 1.7.
+<!--USend-->
 
 ## Diagnosis
-- `Upgradeable` condition in HyperConverged CR is false:
+
+1. Check the `kubevirt-hyperconverged` resource to see whether it is upgradeable:
 ```bash
 $ kubectl get hco kubevirt-hyperconverged -o json | jq -r '.status.conditions[] | select(.type == "Upgradeable")'
+```
+Example output:
+```json
 {
   "lastTransitionTime": "2022-05-26T09:23:21Z",
   "message": "NMO custom resources have been found",
@@ -24,20 +39,37 @@ $ kubectl get hco kubevirt-hyperconverged -o json | jq -r '.status.conditions[] 
 }
 ```
 
-- A warning event is emitted to the ClusterServiceVersion (CSV):
-```bash
-  Warning  NotUpgradeable      2m12s (x5 over 2m50s)   kubevirt-hyperconverged     Node Maintenance Operator custom resources nodemaintenances.nodemaintenance.kubevirt.io have been found.
-  Please remove them to allow upgrade. You can use NMO standalone operator if keeping the node(s) under maintenance is still required. 
+2. Check for a ClusterServiceVersion (CSV) warning event such as the following:
+```
+Warning  NotUpgradeable      2m12s (x5 over 2m50s)   kubevirt-hyperconvergedNode
+Maintenance Operator custom resources nodemaintenances.nodemaintenance.kubevirt.io 
+have been found.
+Please remove them to allow upgrade. You can use NMO standalone operator if
+keeping the node(s) under maintenance is still required.
 ```
 
-- NMO custom resource(s) from API group `nodemaintenance.kubevirt.io` exists:
+3. Check for NMO CRs belonging to the `nodemaintenance.kubevirt.io` API group:
 ```bash
 $ kubectl get nodemaintenances.nodemaintenance.kubevirt.io
-NAME                   AGE
-nodemaintenance-test   5m33s 
 ```
-## Mitigation
-1. If the targeted node(s) should remain in maintenance mode throughout the upgrade of OpenShift Virtualization, please install the standalone Node Maintenance Operator from OperatorHub and create a corresponding custom resource targeting the same node(s), with API group and version of `nodemaintenance.nodemaintenance.medik8s.io/v1beta1`. Then, remove all previous NMO CRs from API Group `nodemaintenance.nodemaintenance.kubevirt.io/v1beta1`.
-2. If the maintenance mode on these nodes is no longer required, just remove the old NMO CRs. You can install the standalone Node Maintenance Operator independently of OpenShift Virtualization.
+Example output:
+```
+NAME                   AGE
+nodemaintenance-test   5m33s
+```
 
-Once all old (`nodemaintenance.nodemaintenance.kubevirt.io`) NMO custom resources are removed, the alert is cleared and the upgrade to OpenShift Virtualization v4.11 is no longer blocked by this reason.
+## Mitigation
+
+Remove all NMO CRs belonging to the `nodemaintenance.nodemaintenance.kubevirt.io/` API group. After the integrated NMO resources are removed, the alert is cleared and you can upgrade.
+
+If a node must remain in maintenance mode during upgrade, install the Node Maintenance Operator from OperatorHub. Then, create an NMO CR belonging to the `nodemaintenance.nodemaintenance.medik8s.io/v1beta1` API group and version for the node.
+
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+See the [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate) for more information.
+
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
