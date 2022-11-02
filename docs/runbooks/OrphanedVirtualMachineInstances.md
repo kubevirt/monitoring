@@ -1,77 +1,66 @@
 # OrphanedVirtualMachineInstances
+<!--apinnick Nov 2022-->
 
 ## Meaning
 
-This alert fires when a VMI (virt-launcher-* pod) is running on a node that does not have a running `virt-handler-*` pod.
+This alert fires when a virtual machine instance (VMI), or `virt-launcher` pod, runs on a node that does not have a running `virt-handler` pod. Such a VMI is called _orphaned_.
 
 ## Impact
 
-When a node does not have a running `virt-handler` any VMI running on that node is considered orphaned. VMIs being orphaned means that they are no longer manageable.
+Orphaned VMIs cannot be managed.
 
 ## Diagnosis
 
-You can confirm the alert by finding which nodes your virt-handler pods are running on.
+1. Check the status of the `virt-handler` pods to view the nodes on which they are running:
+  ```bash
+  $ kubectl get pods --all-namespaces -o wide -l kubevirt.io=virt-handler
+  ```
+2. Check the status of the VMIs to identify VMIs running on nodes that do not have a running `virt-handler` pod:
+  ```bash
+  $ kubectl get vmis --all-namespaces
+  ```
+3. Check the status of the `virt-handler` daemon:
+  ```bash
+  $ kubectl get daemonset virt-handler --all-namespaces
+  ```
 
-```bash
-kubectl get pods --all-namespaces -o wide -l kubevirt.io=virt-handler
+Example output:
 ```
-*Output:*
+NAME                  DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+virt-handler          2         2         2       2            2           kubernetes.io/os=linux   4h
 ```
-NAME                 READY   STATUS    RESTARTS   AGE  IP               NODE     NOMINATED NODE   READINESS GATES
-virt-handler-vhqsp   1/1     Running   0          4h   10.244.140.80    node02   <none>           <none>
-virt-handler-xd8jc   1/1     Running   0          4h   10.244.196.168   node01   <none>           <none>
-```
-
-Then check to see which nodes the VMIs are running on. If they are running on a node that a virt-handler pod does not exist on - those VMIs are orphaned.
-
-```bash
-kubectl get vmis --all-namespaces
-```
-
-*Output:*
-```
-NAMESPACE   NAME            AGE   PHASE       IP    NODENAME
-default     vmi-ephemeral   4s    Scheduled         node02
-```
+The daemon set is considered healthy if the `Desired`, `Ready`, and `Available` columns contain the same value.
 
 ## Mitigation
 
-Check to see if the DaemonSet that controls the `virt-handler-*` pods is healthy.
+If the `virt-handler` daemon set is not healthy:
 
-```bash
-kubectl get daemonset virt-handler --all-namespaces
-```
+1. Check the `virt-handler` daemon set for pod deployment issues:
+  ```bash
+  $ kubectl get daemonset virt-handler --all-namespaces -o yaml | jq .status
+  ```
+2. Check the status of the nodes:
+  ```bash
+  $ kubectl get nodes
+  ```
 
-*Output:*
-```
-NAME                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
-virt-handler            2         2         2       2            2           kubernetes.io/os=linux   4h
-```
+If the `virt-handler` daemon set is healthy:
 
-The DaemonSet is considered healthy if Desired, Ready and Available are all the same number.
+1. Check the `spec.workloads` stanza of the `kubevirt` resource for a workloads placement policy:
+  ```bash
+  $ kubectl get kubevirt kubevirt --all-namespaces -o yaml
+  ```
+2. If a workloads placement policy exists, add the node with the VMI to the policy.
 
+There are other possible causes for a `virt-handler` pod being removed from a node, such as changes to the node's taints and tolerations or to a pod's scheduling rules.
 
-### Unhealthy virt-handler DaemonSet
-Check the DaemonSets status to see what the issues are with deploying the pods.
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 
-`kubectl describe daemonset virt-handler --all-namespaces`
+<!--KVstart-->
+See [How Daemon Pods are scheduled](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#how-daemon-pods-are-scheduled) for more information.
 
+If you cannot resolve the issue, see the following resources:
 
-Another way to check the status is to get the object and read through its status object.
-
-`kubectl get daemonset virt-handler --all-namespaces -o yaml | jq .status`
-
-
- You should also check the health of the clusters nodes.
-
-`kubectl get nodes`
-
-### Healthy virt-handler DaemonSet
-
-Check to see if there is a `workloads` placement policy on the kubevirt resource. This will be under `spec.workloads`.
-
-`kubectl get kubevirt kubevirt --all-namespaces -o yaml`
-
-If there is a placement policy you can make adjustments so that the node that is running the VMI is included in the placement policy.
-
-It could also be that there has been a change to a node's taints/tolerations or a pod's scheduling rules. You can read more about [scheduling policies](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) to find why the virt-handler pod was removed from the node.
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
