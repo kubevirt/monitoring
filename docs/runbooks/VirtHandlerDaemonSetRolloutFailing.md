@@ -1,23 +1,31 @@
 # VirtHandlerDaemonSetRolloutFailing
+<!--apinnick, Nov 2022-->
 
 ## Meaning
 
-Some virt-handler DaemonSet fail to roll out after 15 minutes. This alert suggests that in the cluster, at least one worker node does not have the virt-handler DaemonSet pod successfully rolled out in the given time. 
+The `virt-handler` daemon set has failed to deploy on one or more worker nodes after 15 minutes.
 
 ## Impact
 
-The severity of the alert is as `warning`. This alert does not mean that the failure of rollouts of all virt-handler DaemonSet. Therefore it should not affect normal VM life-cycle if the cluster is not overloaded. 
+This alert is a warning. It does not indicate that all `virt-handler` daemon sets have failed to deploy. Therefore, the normal lifecycle of virtual machines is not affected unless the cluster is overloaded.
 
 ## Diagnosis
 
-The diagnosis is to show that at least one worker node does not have a virt-handler pod running. One can follow these steps to identify the nodes associated with the failed rollouts:
-- List all the pods in the virt-handler DaemonSet with 
-  - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
-  - `kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler`
-- For each virt-handler pod, find out the name of the worker node the pod is deployed on with 
-  - `kubectl -n $NAMESPACE get pod <virt-handler-pod-name> -o jsonpath='{.spec.nodeName}'`
+Identify worker nodes that do not have a running `virt-handler` pod:
+
+1. Export the `NAMESPACE` environment variable:
+  ```bash
+  $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+  ```
+2. Check the status of the `virt-handler` pods to identify pods that have not deployed:
+  ```bash
+  $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
+  ```
+3. Obtain the name of the worker node of the `virt-handler` pod:
+  ```bash
+  $ kubectl -n $NAMESPACE get pod <virt-handler_pod> -o jsonpath='{.spec.nodeName}'
+  ```
 
 ## Mitigation
 
-A common reason for this alert is that the nodes associated with the failed rollouts run out of resources. For such case, one can delete some non-DaemonSet pods from the affected nodes. 
-
+If the `virt-handler` pods failed to deploy because of insufficient resources, you can delete other pods on the affected worker node.
