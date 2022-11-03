@@ -1,85 +1,92 @@
 # OutdatedVirtualMachineInstanceWorkloads
+<!-- Edited by apinnick Nov 2022-->
 
 ## Meaning
 
-There are VMIs running in outdated virt-launcher pods 24 hours after the KubeVirt control plane update has completed.
+This alert fires when running virtual machine instances (VMIs) in outdated `virt-launcher` pods are detected 24 hours after the KubeVirt control plane has been updated.
 
 ## Impact
 
-VMIs that have not been updated to run in the most recent virt-launcher pod may not have access to new KubeVirt features and will not have received any security fixes associated with the virt-launcher pod update.
+Outdated VMIs might not have access to new KubeVirt features.
+
+Outdated VMIs will not receive the security fixes associated with the `virt-launcher` pod update.
 
 ## Diagnosis
 
-You can identify the VMIs that are out-of-date by using the `kubevirt.io/outdatedLauncherImage` label as a label selector when listing VMIs. Below is an example of a command that will list all out-of-date VMIs across all namespaces within the cluster.
-
+1. Identify the outdated VMIs:
 ```bash
-kubectl get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
+$ kubectl get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
+```
+2. Check the `KubeVirt` custom resource (CR) to determine whether `workloadUpdateMethods` is configured in the `workloadUpdateStrategy` stanza:
+```bash
+$ kubectl get kubevirt kubevirt --all-namespaces -o yaml
+```
+3. Check each outdated VMI to determine whether it is live-migratable:
+```bash
+$ kubectl get vmi <vmi> -o yaml
+```
+Example output:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+...
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: null
+      message: cannot migrate VMI which does not use masquerade to connect to the pod network
+      reason: InterfaceNotLiveMigratable
+      status: "False"
+      type: LiveMigratable
 ```
 
 ## Mitigation
 
-### Check if automated workload updates are enabled
+### Configuring automated workload updates
 
-Check the KubeVirt CR used to install KubeVirt to see if the `workloadUpdateStrategy` is configured on the KubeVirt CR's spec.
+<!--DS: Update the `HyperConverged` CR to enable automatic workload updates.>
+<!--USstart-->
+Update the `KubeVirt` CR to enable automatic workload updates.
 
-Below is an example with automated workload updates enabled. With this configuration, workloads which are live migratable will always be live migrated and non live migratable workloads will be evicted which causes a restart when `RunStrategy: Always` is used on the corresponding VM definition
+See [Updating KubeVirt Workloads](https://kubevirt.io/user-guide/operations/updating_and_deletion/#updating-kubevirt-workloads) for more information.
+<!--USend-->
 
-```
-apiVersion: kubevirt.io/v1
-kind: KubeVirt
-metadata:
-  name: kubevirt
-  namespace: kubevirt
-spec:
-  imagePullPolicy: IfNotPresent
-  workloadUpdateStrategy:
-    workloadUpdateMethods:
-      - LiveMigrate
-      - Evict
-    batchEvictSize: 10
-    batchEvictInterval: "1m"
-```
+### Stopping a VM associated with a non-live-migratable VMI
 
-If automated workload updates are not enabled, consider enabling them. This will cause the KubeVirt control plane to automatically update the VMI workloads using the methods defined in the `workloadUpdateMethods` field.
-
-More information about automated workload updates can be found in our user guide [here](https://kubevirt.io/user-guide/operations/updating_and_deletion/#updating-kubevirt-workloads)
-
-### Automated workload updates are enabled but VMIs are still out-of-date
-
-Identify the VMIs that are out of date. Check each impacted VMI to see if they are live migratable or not by looking for the ```LiveMigratable``` condition within the VMI's status.
-
-If a VMI is not live migratable, and the `evict` method is not chosen as a `workloadUpdateMethods` value on the KubeVirt CR, then the only path forward is to stop the VMI. If the VMI is controlled by a corresponding VM with `runStrategy: always` set, then a new VMI will immediately spin up in an updated virt-launcher pod to replace the stopped VMI. This is the equivalent of a restart action.
-
-If the VMI is live migratable and the migration is failing, then the previous option of stopping the VMI is still possible here, but it will result in the workload being interrupted.
-
-Below is an example of how to stop a VM named `my-vm` in namespace `my-namespace` using `virtctl`
-
+If a VMI is not live-migratable and if `runStrategy: always` is set in the corresponding `VirtualMachine` object, you can update the VMI by manually stopping the virtual machine (VM):
 ```bash
-virctl stop --namespace my-namespace my-vm
+$ virctl stop --namespace <namespace> <vm>
 ```
 
-### Manually updating VMIs
+A new VMI spins up immediately in an updated `virt-launcher` pod to replace the stopped VMI. This is the equivalent of a restart action.
 
-To manually update VMIs, either manually create migration objects for migratable VMIs (non distructive), or manually stop VMIs (distructive) which are not live migratable.
+Note: Manually stopping a _live-migratable_ VM is destructive and not recommended because it interrupts the workload.
 
-With live migration, the VMIs will be migrated into an updated virt-launcher container.
+### Migrating a live-migratable VMI
+   
+If a VMI is live-migratable, you can update it by creating a `VirtualMachineInstanceMigration` object that targets a specific running VMI. The VMI is migrated into an updated `virt-launcher` pod.
 
-With stop (and potentially restart when the VMI is controlled by a VM), any replacement VMIs will be started in updated virt-launcher containers. 
-
-Below is an example of how to manually execute a live migration by posting a VirtualMachineInstanceMigration object to the cluster that targets a specific running VM. In this example, the VM is called `my-vm` which is running in the namespace `my-namespace`.
-
-```bash
-cat << EOF > migration.yaml
+1. Create a `VirtualMachineInstanceMigration` manifest and save it as `migration.yaml`:
+```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstanceMigration
 metadata:
-  name: my-vm-migration-job
-  namespace: my-namespace
+  name: <migration_name>
+  namespace: <namespace>
 spec:
-  vmiName: my-vm
-EOF
-
-kubectl create -f migration.yaml
-
+  vmiName: <vmi_name>
 ```
 
+2. Create a `VirtualMachineInstanceMigration` object to trigger the migration:
+```bash
+$ kubectl create -f migration.yaml
+```
+
+<!--DS: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
