@@ -1,9 +1,11 @@
+<!-- Edited by Jiří Herrmann, 3 Nov 2022 -->
+
 # CnaoDown
 
 ## Meaning
 
-The `Cluster-network-addons-operator` (CNAO) deploys additional networking components on top of the cluster.
-This alert fires when the CNAO is down.
+This alert fires when the `Cluster-network-addons-operator` (CNAO) is down.
+The CNAO deploys additional networking components on top of the cluster.
 
 ## Impact
 
@@ -11,26 +13,33 @@ If the CNAO is not running, the cluster cannot reconcile changes to virtual mach
 
 ## Diagnosis
 
-1. Obtain the namespace of the CNAO pod:
+1. Set the `NAMESPACE` environment variable:
 	```
 	$ export NAMESPACE="$(kubectl get deployment -A | grep cluster-network-addons-operator | awk '{print $1}')"
 	```
 
-1. Check the status of the CNAO pod:
+2. Check the status of the `cluster-network-addons-operator` pod:
 	```
 	$ kubectl -n $NAMESPACE get pods -l name=cluster-network-addons-operator
 	```
  
-1. Check the CNAO pod logs:
+3. Check the `cluster-network-addons-operator` logs for error messages:
     ```
     $ kubectl -n $NAMESPACE logs -l name=cluster-network-addons-operator
 	```
 
-1. Generate the CNAO pod description:
+4. Obtain the details of the `cluster-network-addons-operator` pods:
 	```
 	$ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
 	```
 
 ## Mitigation
 
-Open an issue (TBA where?) and attach the artifacts gathered in the Diagnosis section.
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--KVstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
