@@ -17,60 +17,62 @@ A virtual machine (VM) that migrates too frequently might experience degraded pe
   ```bash
   $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq .items[].status.allocatable
   ```
-  Example output:
-  ```
-  {
-    "cpu": "3500m",
-    "devices.kubevirt.io/kvm": "1k",
-    "devices.kubevirt.io/sev": "0",
-    "devices.kubevirt.io/tun": "1k",
-    "devices.kubevirt.io/vhost-net": "1k",
-    "ephemeral-storage": "38161122446",
-    "hugepages-1Gi": "0",
-    "hugepages-2Mi": "0",
-    "memory": "7000128Ki",
-    "pods": "250"
-  }
-  ```
+
+Example output:
+```
+{
+  "cpu": "3500m",
+  "devices.kubevirt.io/kvm": "1k",
+  "devices.kubevirt.io/sev": "0",
+  "devices.kubevirt.io/tun": "1k",
+  "devices.kubevirt.io/vhost-net": "1k",
+  "ephemeral-storage": "38161122446",
+  "hugepages-1Gi": "0",
+  "hugepages-2Mi": "0",
+  "memory": "7000128Ki",
+  "pods": "250"
+}
+```
 2. Check the status of the worker node:
   ```bash
   $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq .items[].status.conditions
   ```
-  Example output:
-  ```
-  {
-    "lastHeartbeatTime": "2022-05-26T07:36:01Z",
-    "lastTransitionTime": "2022-05-23T08:12:02Z",
-    "message": "kubelet has sufficient memory available",
-    "reason": "KubeletHasSufficientMemory",
-    "status": "False",
-    "type": "MemoryPressure"
-  },
-  {
-    "lastHeartbeatTime": "2022-05-26T07:36:01Z",
-    "lastTransitionTime": "2022-05-23T08:12:02Z",
-    "message": "kubelet has no disk pressure",
-    "reason": "KubeletHasNoDiskPressure",
-    "status": "False",
-    "type": "DiskPressure"
-  },
-  {
-    "lastHeartbeatTime": "2022-05-26T07:36:01Z",
-    "lastTransitionTime": "2022-05-23T08:12:02Z",
-    "message": "kubelet has sufficient PID available",
-    "reason": "KubeletHasSufficientPID",
-    "status": "False",
-    "type": "PIDPressure"
-  },
-  {
-    "lastHeartbeatTime": "2022-05-26T07:36:01Z",
-    "lastTransitionTime": "2022-05-23T08:24:15Z",
-    "message": "kubelet is posting ready status",
-    "reason": "KubeletReady",
-    "status": "True",
-    "type": "Ready"
-  }
-  ```
+
+Example output:
+```
+{
+  "lastHeartbeatTime": "2022-05-26T07:36:01Z",
+  "lastTransitionTime": "2022-05-23T08:12:02Z",
+  "message": "kubelet has sufficient memory available",
+  "reason": "KubeletHasSufficientMemory",
+  "status": "False",
+  "type": "MemoryPressure"
+},
+{
+  "lastHeartbeatTime": "2022-05-26T07:36:01Z",
+  "lastTransitionTime": "2022-05-23T08:12:02Z",
+  "message": "kubelet has no disk pressure",
+  "reason": "KubeletHasNoDiskPressure",
+  "status": "False",
+  "type": "DiskPressure"
+},
+{
+  "lastHeartbeatTime": "2022-05-26T07:36:01Z",
+  "lastTransitionTime": "2022-05-23T08:12:02Z",
+  "message": "kubelet has sufficient PID available",
+  "reason": "KubeletHasSufficientPID",
+  "status": "False",
+  "type": "PIDPressure"
+},
+{
+  "lastHeartbeatTime": "2022-05-26T07:36:01Z",
+  "lastTransitionTime": "2022-05-23T08:24:15Z",
+  "message": "kubelet is posting ready status",
+  "reason": "KubeletReady",
+  "status": "True",
+  "type": "Ready"
+}
+```
 3. Log in to the worker node and verify that the `kubelet` service is running:
   ```bash
   $ systemctl status kubelet
