@@ -19,13 +19,13 @@ The VMs are not created or modified. As a result, the environment might not beha
   ```bash
   $ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
   ```
-  Example:
-  ```
-  {"component":"kubevirt-template-validator","level":"info","msg":"evalution 
-  summary for ubuntu-3166wmdbbfkroku0:\nminimal-required-memory applied: FAIL, 
-  value 1073741824 is lower than minimum [2147483648]\n\nsucceeded=false",
-  "pos":"admission.go:25","timestamp":"2021-09-28T17:59:10.934470Z"}
-  ```
+Example:
+```
+{"component":"kubevirt-template-validator","level":"info","msg":"evalution 
+summary for ubuntu-3166wmdbbfkroku0:\nminimal-required-memory applied: FAIL, 
+value 1073741824 is lower than minimum [2147483648]\n\nsucceeded=false",
+"pos":"admission.go:25","timestamp":"2021-09-28T17:59:10.934470Z"}
+```
 
 ## Mitigation
 

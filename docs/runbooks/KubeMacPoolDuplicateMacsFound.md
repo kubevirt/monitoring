@@ -24,11 +24,11 @@ Duplicate MAC addresses on the same LAN might cause network issues.
   ```
   The output displays the MAC address and the namespace, name, and interface of the VMs with the duplicate MAC addresses.
 
-  Example:
-  ```
-  mac address 02:00:ff:ff:ff:ff already allocated to vm/kubemacpool-test/testvm, br1, 
-  conflict with: vm/kubemacpool-test/testvm2, br1
-  ```
+Example:
+```
+mac address 02:00:ff:ff:ff:ff already allocated to vm/kubemacpool-test/testvm, br1, 
+conflict with: vm/kubemacpool-test/testvm2, br1
+```
 
 ## Mitigation
 
