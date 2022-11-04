@@ -1,3 +1,5 @@
+<!-- Edited by Jiří Herrmann, 4 Nov 2022 -->
+
 # LowVirtOperatorCount 
 
 ## Meaning
@@ -8,7 +10,7 @@ The `virt-operator` is the first operator to start in a cluster. Its primary res
 
 - Installing, live updating, and live upgrading a cluster
 
-- Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
+- Monitoring the lifecycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
 
 - Certain cluster-wide tasks, such as certificate rotation and infrastructure management
 
@@ -23,23 +25,23 @@ Note, however, that `virt-operator` is not directly responsible for virtual mach
 
 ## Diagnosis
 
-1. Obtain the namespace data of the `virt-operator` deployment:
+1. Set the `NAMESPACE` environment variable:
     ```
     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
     ```
 
-1. Check the states of `virt-operator` pods:
+2. Check the states of `virt-operator` pods:
 
     ```
     $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
     ```
 
-1. Review the logs of the affected `virt-operator` pods:
+3. Review the logs of the affected `virt-operator` pods:
     ```
     $ kubectl -n $NAMESPACE logs <pod-name>
     ```
 
-1.  Generate the descriptions of the affected `virt-operator` pods:
+4. Obtain the details of the affected `virt-operator` pods:
 
     ```
     $ kubectl -n $NAMESPACE describe pod <pod-name>
@@ -47,10 +49,11 @@ Note, however, that `virt-operator` is not directly responsible for virtual mach
 
 ## Mitigation
 
-This alert can have a number of causes, including:
+<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 
-- TBA possible causes!
+<!--KVstart-->
+If you cannot resolve the issue, see the following resources:
 
-Verify whether any of these applies to your deployment, and fix it if possible (TBA how?).
-
-If this does not fix the problem, open an issue (TBA where!) and attach to it the artifacts gathered in the Diagnosis section.
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--KVend-->
