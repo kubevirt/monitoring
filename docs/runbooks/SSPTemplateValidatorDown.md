@@ -32,11 +32,11 @@ VMs are not validated against their templates. As a result, VMs might be created
 
 ## Mitigation
 
-<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 
-<!--KVstart-->
+<!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
-<!--KVend-->
+<!--USend-->
