@@ -32,7 +32,7 @@ Data volumes are responsible for importing and creating a virtual machine disk o
 
 Delete the data volume, resolve the issue, and create a new data volume.
 
-<!--DS: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
