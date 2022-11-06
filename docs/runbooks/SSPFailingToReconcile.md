@@ -40,7 +40,7 @@ Dependent components might not be deployed. Changes in the components might not 
  
 ## Mitigation
 
-<!--DS: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
