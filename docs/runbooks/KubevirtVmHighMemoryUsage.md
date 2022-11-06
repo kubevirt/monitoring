@@ -1,34 +1,32 @@
 # KubevirtVmHighMemoryUsage
+<!-- edited by apinnick, Nov 2022 -->
 
 ## Meaning
 
-The container, that is hosting the Virtual Machine, has less than 20 MB free memory and is close to its memory limit.
+This alert fires when a container hosting a virtual machine (VM) has less than 20 MB free memory.
 
 ## Impact
 
-When the container memory usage will exceed the memory limit, the Virtual Machine will be terminated by the runtime.
+The virtual machine running inside the container is terminated by the runtime if the container's memory limit is exceeded.
 
 ## Diagnosis
 
-- Check compute container memory resource request and limit:
-```
-kubectl get pod <virt launcher pod name> -o yaml
-```
-Look for container name: compute
+1. Obtain the `virt-launcher` pod details:
+  ```bash
+  $ kubectl get pod <virt-launcher> -o yaml
+  ```
 
-- Try to identify processes with high memory usage:
-```
-kubectl exec -it <virt launcher pod name> -c compute -- top
-```
+2. Identify `compute` container processes with high memory usage in the `virt-launcher` pod:
+  ```bash
+  $ kubectl exec -it <virt-launcher> -c compute -- top
+  ```
 
 ## Mitigation
 
-Consider changing container memory limit.
-
-Memory resource request and limit are set in VirtualMachine object spec.
+Increase the memory limit in the `VirtualMachine` specification.
 
 Example:
-```
+```yaml
 spec:
   running: false
   template:
