@@ -1,27 +1,30 @@
 # LowKVMNodesCount
+<!--edited by apinnick Nov 2022-->
 
 ## Meaning
 
-Low number of nodes with KVM resource available.
-
-Alert will fire if less than 2 nodes in the cluster have KVM resource available.
+This alert fires when fewer than two nodes in the cluster have KVM resources.
 
 ## Impact
 
-Virtual Machine will not be scheduled and run if there are no nodes with KVM resource available.
+The cluster must have at least two nodes with KVM resources for live migration.
 
-Virtual Machine can not be migrated if less than 2 nodes in the cluster have KVM resource available.
+Virtual machines cannot be scheduled or run if no nodes have KVM resources.
 
 ## Diagnosis
 
-Verify that nodes have KVM resource available.
+Identify the nodes with KVM resources:
 ```
-kubectl get nodes -o jsonpath='{.items[*].status.allocatable}' | grep devices.kubevirt.io/kvm
+$ kubectl get nodes -o jsonpath='{.items[*].status.allocatable}' | grep devices.kubevirt.io/kvm
 ```
 
 ## Mitigation
 
-[Validate hardware virtualization support](https://kubevirt.io/user-guide/operations/installation/#validate-hardware-virtualization-support)
+<!--DS: Install KVM on the nodes without KVM resources.-->
+<!--USstart-->
+Validate the [hardware virtualization support](https://kubevirt.io/user-guide/operations/installation/#validate-hardware-virtualization-support).
 
-If hardware virtualization is not available, then a [software emulation fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md) can be enabled.  
-( **Note:** Software emulation is not supported in OpenShift Virtualization )
+If hardware virtualization is not available, [software emulation](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md) can be enabled.
+
+**Note:** OpenShift Virtualization does not support software emulation.
+<!--USend-->
