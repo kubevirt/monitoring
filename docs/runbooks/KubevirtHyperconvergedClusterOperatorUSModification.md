@@ -9,9 +9,9 @@ HCO configures KubeVirt and its supporting operators in an opinionated way and o
 
 However, if a change is required and it is not supported by the HCO API, you can force HCO to set a change in an operator by using JSON Patch annotations. These changes are not reverted by HCO during its reconciliation process.
 
-<!--KVstart-->
+<!--USstart-->
 See the [Kubevirt documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#jsonpatch-annotations) for details.
-<!--KVend-->
+<!--USend-->
 
 ## Impact
 
@@ -35,6 +35,6 @@ It is best to use the HCO API to change an operand. However, if the change can o
 
 Remove JSON Patch annotations before upgrade to avoid potential issues.
 
-<!--KVstart-->
+<!--USstart-->
 If the JSON Patch annotation is generic and useful, you can submit an RFE to add the modification to the API by filing a [bug](https://bugzilla.redhat.com/).
-<!--KVend-->
+<!--USend-->

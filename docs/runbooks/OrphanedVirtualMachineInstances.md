@@ -54,13 +54,13 @@ If the `virt-handler` daemon set is healthy:
 
 There are other possible causes for a `virt-handler` pod being removed from a node, such as changes to the node's taints and tolerations or to a pod's scheduling rules.
 
-<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 
-<!--KVstart-->
+<!--USstart-->
 See [How Daemon Pods are scheduled](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#how-daemon-pods-are-scheduled) for more information.
 
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
-<!--KVend-->
+<!--USend-->
