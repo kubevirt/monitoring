@@ -1,44 +1,45 @@
+<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+
 # VirtApiRESTErrorsBurst
-<!--Edited by jherrman, 17.10.2022-->
 
 ## Meaning
 
-More than 80% of REST calls have failed in `virt-api` in the last 5 minutes.
+More than 80% of REST calls have failed in the `virt-api` pods in the last 5 minutes.
 
 ## Impact
 
-Very high rate of failed REST calls to `virt-api` may lead to slow response and execution of API calls, and potentially to API calls being completely dismissed.
+A very high rate of failed REST calls to `virt-api` might lead to slow response and execution of API calls, and potentially to API calls being completely dismissed.
 
 However, currently running virtual machine workloads are not likely to be affected. 
 
 ## Diagnosis
 
-1. Set the `NAMESPACE` environment variable as follows:
+1. Set the `NAMESPACE` environment variable:
    ```
    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
    ```
 
-1. Check how many `virt-api` pods are running on your deployment:
+2. Obtain the list of `virt-api` pods on your deployment:
    ```
    $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
    ```
 
-1. For each of the `virt-api` pods, display its logs:
+3. Check the `virt-api` logs for error messages:
    ```
    $ kubectl logs -n  $NAMESPACE <virt-api-pod-name>
    ```
 
-1. Display the states of the `virt-api` pods:
+4. Obtain the details of the `virt-api` pods:
    ```
    $ kubectl describe -n $NAMESPACE <virt-api-pod-name>
    ```
 
-1. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
+5. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
    ```
    $ kubectl get nodes
    ```
 
-1. Check the status of the `virt-api` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
+6. Check the status of the `virt-api` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
    ```
    $ kubectl -n $NAMESPACE get deploy virt-api -o yaml
    ```
@@ -48,9 +49,10 @@ However, currently running virtual machine workloads are not likely to be affect
 
 ## Mitigation
 
-If any of the mentioned commands outputs an error, attempt to fix the cause.
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
 
-The possible fixes may include the following:
-
-- TODO: give some more specific info here!
-
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
