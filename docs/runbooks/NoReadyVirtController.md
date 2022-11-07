@@ -1,3 +1,5 @@
+<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+
 # NoReadyVirtController
 
 ## Meaning
@@ -9,21 +11,17 @@ A `virt-controller` handles monitoring the custom resource definitions (CRDs) of
 Therefore, `virt-controller` devices are critical for all cluster-wide virtualization functionality.
 
 ## Impact
-Any actions related to VM life-cycle management fail. This notably includes:
-
-- Launching a new VM instance
-
-- Shutting down an existing VM instance
+Any actions related to VM lifecycle management fail. This notably includes launching a new VMI or shutting down an existing VMI.
 
 
 ## Diagnosis
 
-- Set the `NAMESPACE` environment variable as follows:
+1. Set the `NAMESPACE` environment variable:
     ```
     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
     ```
 
-- Run the following command to verify a `virt-controller` device is available:
+2. Verify a `virt-controller` device is available:
     ```
     $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
     ```
@@ -39,15 +37,24 @@ Any actions related to VM life-cycle management fail. This notably includes:
 
 2. Obtain the names of `virt-controller` pods:
     ```
-    $ get pods -n $NAMESPACE |grep virt-controller
+    $ get pods -n $NAMESPACE | grep virt-controller
     ```
 
 3. Inspect the logs for each `virt-controller`:
     ```
-    $ kubectl logs -n $NAMESPACE <virt-controller-XYZ>
+    $ kubectl logs -n $NAMESPACE <virt-controller>
     ```
 
-4. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
+4. Check the nodes for problems, suchs as a `NotReady` state:
     ```
     $ kubectl get nodes
     ```
+
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
+
