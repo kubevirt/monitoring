@@ -1,3 +1,5 @@
+<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+
 # NoReadyVirtOperator 
 
 ## Meaning
@@ -25,32 +27,32 @@ Note, however, that `virt-operator` is not directly responsible for virtual mach
 ## Diagnosis
 
 
-1. Obtain the namespace data of the `virt-operator` deployment:
+1. Set the `NAMESPACE` environment variable:
     ```
     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
     ```
 
-1. Obtain the name of the `virt-operator` deployment:
+2. Obtain the name of the `virt-operator` deployment:
     ```
     $ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
     ```
 
-1. Generate the description of the `virt-operator` deployment:
+3. Generate the description of the `virt-operator` deployment:
     ```
     $ kubectl -n $NAMESPACE describe deploy virt-operator
     ```
 
-1. Check for node issues, such as a `NotReady` state:
+4. Check for node issues, such as a `NotReady` state:
     ```
     $ kubectl get nodes
     ```
 
 ## Mitigation
 
-This alert can have a number of causes, including:
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
 
-- TBA possible causes!
-
-Verify whether any of these applies to your deployment, and fix it if possible (TBA how?).
-
-If this does not fix the problem, open an issue (TBA where!) and attach to it the artifacts gathered in the Diagnosis section.
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
