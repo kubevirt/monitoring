@@ -10,7 +10,7 @@ The `virt-operator` is the first operator to start in a cluster. Its primary res
 
 - Installing, live updating, and live upgrading a cluster
 
-- Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
+- Monitoring the lifecycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
 
 - Certain cluster-wide tasks, such as certificate rotation and infrastructure management
 
