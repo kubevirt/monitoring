@@ -3,7 +3,7 @@
 
 ## Meaning
 
-The CDINotReady alert indicates that a containerized data importer (CDI) installation is in a degraded state:
+This alert fires when a containerized data importer (CDI) installation is in a degraded state:
 
 - Not progressing
 
