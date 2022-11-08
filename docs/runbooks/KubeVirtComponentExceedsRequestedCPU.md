@@ -1,41 +1,43 @@
 # KubeVirtComponentExceedsRequestedCPU
+<!--edited by apinnick Nov 2022-->
 
 ## Meaning
 
-This alert fires when the amount of CPU that is being used by a container is more than what was requested.
+This alert fires when a component's CPU usage exceeds the requested limit.
 
 ## Impact
 
-If this alert consistently fires this could mean that the node's CPU resources are not being optimally used and could be overloaded.  
+Usage of CPU resources is not optimal and the node might be overloaded.
 
 ## Diagnosis
 
-- Set the environment variable `NAMESPACE`
-	```
-	export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-	```
-
-- Check to see what the cpu resource limit is.
-	```
-	kubectl -n $NAMESPACE get deployment <name-of-resource-firing-alert> -o yaml | grep requests: -A 2
-	```
-
-- Check actual resource usage using promQL
-  ```  
-  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace="$NAMESPACE",container="<name-of-resource-firing-alert>"}
-  ```
+1. Set the `NAMESPACE` environment variable:
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
+2. Check the component's CPU request limit:
+```bash
+$ kubectl -n $NAMESPACE get deployment <component> -o yaml | grep requests: -A 2
+```
+3. Check the actual CPU usage by using a PromQL query:
+```  
+node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace="$NAMESPACE",container="<component>"}
+```
+See the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/) for more information.
 
 ## Mitigation
 
-After checking the actual resource usage, determine what a better resource request is for the resource and update it using the `customizeComponents` option on the KubeVirt CR. 
-
-```
+<!--DS: Update the CPU request limit in the `HCO` custom resource.-->
+<!--USstart-->
+Update the CPU resource request in the `KubeVirt` custom resource as in the following example:
+```yaml
 spec:
   customizeComponents:
     patches:
     - type:
-      resourceName: < name-of-resource-firing-alert >
+      resourceName: <component>
       resourceType: < Deployment|DaemonSet >
       type: strategic
-      patch: '{"spec":{"template":{"spec":{"containers":[{"name":"< name-of-resource-firing-alert >","resources":{"requests":{"cpu":" < new-CPU-request > "}}}]}}}}'
+      patch: '{"spec":{"template":{"spec":{"containers":[{"name":"<component>","resources":{"requests":{"cpu":" <cpu_request> "}}}]}}}}'
 ```
+<!--USend-->
