@@ -15,37 +15,37 @@ However, currently running virtual machine workloads are not likely to be affect
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```
+```bash
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
 
 2. Obtain the list of `virt-api` pods on your deployment:
-```
+```bash
 $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
 ```
 
 3. Check the `virt-api` logs for error messages:
-```
+```bash
 $ kubectl logs -n  $NAMESPACE <virt-api>
 ```
 
 4. Obtain the details of the `virt-api` pods:
-```
+```bash
 $ kubectl describe -n $NAMESPACE <virt-api>
 ```
 
 5. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
-```
+```bash
 $ kubectl get nodes
 ```
 
 6. Check the status of the `virt-api` deployment:
-```
+```bash
 $ kubectl -n $NAMESPACE get deploy virt-api -o yaml
 ```
 
 7. Obtain the details of the `virt-api` deployment:
-```
+```bash
 $ kubectl -n $NAMESPACE describe deploy virt-api
 ```
 
