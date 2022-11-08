@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # LowReadyVirtControllersCount
 
@@ -15,28 +15,37 @@ This alert indicates that a cluster-level failure might occur, which would cause
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-
-  ```
-  $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-  ```
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
 2. Verify a `virt-controller` device is available:
-  ```
-  $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
-  ```
+```bash
+$ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
+```
+3. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
+```bash
+$ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
+```
+```bash
+$ kubectl -n $NAMESPACE describe deploy virt-controller
+```
+
+4. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
+```bash
+$ kubectl get nodes
+```
 
 ## Mitigation
-1. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
-    ```
-    $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
-    ```
-    ```
-    $ kubectl -n $NAMESPACE describe deploy virt-controller
-    ```
-2. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
-    ```
-    $ kubectl get nodes
-    ```
+
+This alert can have a variety of causes, including:
+
+- Not enough memory on the cluster
+- Nodes are down
+- The API server is overloaded. For example, the scheduler might be under heavy load and therefore not completely available.
+- Networking issues
+
+Identify the root cause and fix it, if possible.
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->

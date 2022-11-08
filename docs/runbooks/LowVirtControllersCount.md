@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # LowVirtControllersCount
 
@@ -16,22 +16,22 @@ In addition, if another `virt-launcher` instance terminates unexpectedly, KubeVi
 
 ## Diagnosis
 1. Set the NAMESPACE environment variable:
-    ```
-    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
 2. Verify that running `virt-controller` pods are available:
-    ```
-    $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
-    ```
+```bash
+$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
+```
 
 3. Check whether any `virt-controller` pods have terminated unexpectedly or are in a `NotReady` state:
-    ```
-    $ kubectl -n $NAMESPACE logs virt-launcher-<unique-id>
-    ```
-    ```
-    $ kubectl -n $NAMESPACE describe pod/virt-launcher-<unique-id>
-    ```
+```bash
+$ kubectl -n $NAMESPACE logs virt-launcher-<unique-id>
+```
+```bash
+$ kubectl -n $NAMESPACE describe pod/virt-launcher-<unique-id>
+```
 
 ## Mitigation
 
