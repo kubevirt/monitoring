@@ -1,36 +1,44 @@
 # LowVirtAPICount
+<!--edited by apinnick Nov 2022-->
 
 ## Meaning
 
-This alert is fired when for the whole 60 minutes there is only 1 virt-api pod available, although there are at least 2 nodes available for scheduling.
+This alert fires when only one available `virt-api` pod is detected during a 60-minute period, although at least two nodes are available for scheduling.
 
 ## Impact
 
-Virt-api pod becomes a single point of failure, can lead to API calls outage in case of eviction.
+An API call outage might occur during node eviction because the `virt-api` pod becomes a single point of failure.
 
 ## Diagnosis
 
-- Set the environment variable NAMESPACE
+1. Set the `NAMESPACE` environment variable:
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
-```
-export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+2. Check the number of available `virt-api` pods:
+```bash
+$ kubectl get deployment -n $NAMESPACE virt-api -o jsonpath='{.status.readyReplicas}'
 ```
 
-- Run
+3. Check the status of the `virt-api` deployment for error conditions:
+```bash
+$ kubectl -n $NAMESPACE get deploy virt-api -o yaml
 ```
-kubectl get deployment -n $NAMESPACE virt-api -o jsonpath='{.status.readyReplicas}'
+
+4. Check the nodes for issues such as nodes in a `NotReady` state:
+```bash
+$ kubectl get nodes
 ```
 
 ## Mitigation
 
-- Check the status of the virt-api deployment to find out more information. The following commands will provide the associated events and show if there are any issues with pulling an image, crashing pod, etc. 
-```
-kubectl -n $NAMESPACE get deploy virt-api -o yaml
-```
-```
-kubectl -n $NAMESPACE describe deploy virt-api
-```
-- Check if there are issues with the nodes. For example, if they are in a NotReady state.
-```
-kubectl get nodes
-```
+Try to identify the root cause and to resolve the issue.
+
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
