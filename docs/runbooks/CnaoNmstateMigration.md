@@ -6,15 +6,16 @@
 
 This alert fires when the `nmstate` API is deployed, but the Kubernetes NMState Operator is not installed.
 
-In a future update, the `Cluster-network-addons-operator` (CNAO) will stop supporting `kubernetes-nmstate` deployments. Instead of using the CNAO to deploy `kubernetes-nmstate`, it is recommended to install the stand-alone Kubernetes NMState Operator.
+The Cluster Network Addons Operator (CNAO) does not support `kubernetes-nmstate` deployments in OpenShift Virtualization 4.11 and later.
+
+This alert only affects OpenShift Virtualization 4.10.
 
 ## Impact
 
-In a future update, using the CNAO to deploy `kubernetes-nmstate` will cause upgrading your cluster to fail.
+You cannot upgrade your cluster to OpenShift Virtualization 4.11.
 
 ## Mitigation
 
-Install the stand-alone Kubernetes NMState Operator.
+Install the Kubernetes NMState Operator from the OperatorHub. CNAO automatically transfers the `kubernetes-nmstate` deployment to the Operator. 
 
-Afterwards, the CNAO automatically transfers the `kubernetes-nmstate` deployment to the Kubernetes NMState Operator.
-
+Afterwards, you can upgrade to OpenShift Virtualization 4.11.
