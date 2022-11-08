@@ -14,10 +14,9 @@ A virtual machine (VM) that migrates too frequently might experience degraded pe
 ## Diagnosis
 
 1. Verify that the worker node has sufficient resources:
-  ```bash
-  $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq .items[].status.allocatable
-  ```
-
+```bash
+$ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq .items[].status.allocatable
+```
 Example output:
 ```
 {
@@ -34,10 +33,9 @@ Example output:
 }
 ```
 2. Check the status of the worker node:
-  ```bash
-  $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq .items[].status.conditions
-  ```
-
+```bash
+$ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq .items[].status.conditions
+```
 Example output:
 ```
 {
@@ -74,13 +72,13 @@ Example output:
 }
 ```
 3. Log in to the worker node and verify that the `kubelet` service is running:
-  ```bash
-  $ systemctl status kubelet
-  ```
+```bash
+$ systemctl status kubelet
+```
 4. Check the `kubelet` journal log for error messages:
-  ```bash
-  $ journalctl -r -u kubelet
-  ```
+```bash
+$ journalctl -r -u kubelet
+```
 
 ## Mitigation
 
@@ -89,7 +87,6 @@ Ensure that the worker nodes have sufficient resources (CPU, memory, disk) to ru
 If the problem persists, try to identify the root cause and resolve the issue. 
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
-
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

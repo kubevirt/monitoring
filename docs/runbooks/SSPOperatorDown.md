@@ -14,26 +14,25 @@ Dependent components might not be deployed. Changes in the components might not 
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-  ```bash
-  $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
-  ```
+```bash
+$ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+```
 2. Check the status of the `ssp-operator` pods.
-  ```bash
-  $ kubectl -n $NAMESPACE get pods -l control-plane=ssp-operator
-  ```
+```bash
+$ kubectl -n $NAMESPACE get pods -l control-plane=ssp-operator
+```
 3. Obtain the details of the `ssp-operator` pods:
-  ```bash
-  $ kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator
-  ```
+```bash
+$ kubectl -n $NAMESPACE describe pods -l control-plane=ssp-operator
+```
 4. Check the `ssp-operator` logs for error messages:
-  ```bash
-  $ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator
-  ```
+```bash
+$ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator
+```
 
 ## Mitigation
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
-
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

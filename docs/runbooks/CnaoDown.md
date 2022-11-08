@@ -14,32 +14,31 @@ If the CNAO is not running, the cluster cannot reconcile changes to virtual mach
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-	```
-	$ export NAMESPACE="$(kubectl get deployment -A | grep cluster-network-addons-operator | awk '{print $1}')"
-	```
+```bash
+$ export NAMESPACE="$(kubectl get deployment -A | grep cluster-network-addons-operator | awk '{print $1}')"
+```
 
 2. Check the status of the `cluster-network-addons-operator` pod:
-	```
-	$ kubectl -n $NAMESPACE get pods -l name=cluster-network-addons-operator
-	```
+```bash
+$ kubectl -n $NAMESPACE get pods -l name=cluster-network-addons-operator
+```
  
 3. Check the `cluster-network-addons-operator` logs for error messages:
-    ```
-    $ kubectl -n $NAMESPACE logs -l name=cluster-network-addons-operator
-	```
+```bash
+$ kubectl -n $NAMESPACE logs -l name=cluster-network-addons-operator
+```
 
 4. Obtain the details of the `cluster-network-addons-operator` pods:
-	```
-	$ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
-	```
+```bash
+$ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
+```
 
 ## Mitigation
 
-<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
-
-<!--KVstart-->
+<!--US: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DSstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
-<!--KVend-->
+<!--DSend-->
