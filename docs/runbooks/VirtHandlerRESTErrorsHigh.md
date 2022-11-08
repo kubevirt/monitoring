@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # VirtHandlerRESTErrorsHigh
 
@@ -14,35 +14,32 @@ This error is most frequently caused by one of the following problems:
 
 ## Impact
 
-Node-related actions, such as starting and migrating workloads, are delayed on the node that `virt-handler` is running on. Running workloads is not affected, but reporting their current status might be delayed.
+Node-related actions, such as starting and migrating workloads, are delayed on the node that `virt-handler` is running on. Running workloads are not affected, but reporting their current status might be delayed.
 
 ## Diagnosis
 
 Check whether `virt-handler` can connect to the API server:
 
 1. Set the `NAMESPACE` environment variable:
-    ```
-     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
-2. Obtain the name of the `virt-handler` pod:
-
-    ```
-    $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
-    ```
+2. Check the status of the `virt-handler` pod:
+```bash
+$ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
+```
 
 3. Check the `virt-handler` logs for error messages when connecting to the API server:
-
-    ```
-    $ kubectl logs -n  $NAMESPACE <virt-handler-pod-name>
-    ```
+```bash
+$ kubectl logs -n  $NAMESPACE <virt-handler>
+```
 
 
 ## Mitigation
 If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
-
-```
-$ kubectl delete -n <install-namespace> <virt-handler-pod-name>
+```bash
+$ kubectl delete -n <install-namespace> <virt-handler>
 ```
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
