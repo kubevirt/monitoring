@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # LowReadyVirtOperatorsCount 
 
@@ -26,28 +26,26 @@ Note, however, that `virt-operator` is not directly responsible for virtual mach
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-    ```
-    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+```
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
 2. Obtain the name of the `virt-operator` deployment:
-    ```
-    $ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
-    ```
+```
+$ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
+```
 
 3. Obtain the details of the `virt-operator` deployment:
-    ```
-    $ kubectl -n $NAMESPACE describe deploy virt-operator
-    ```
+```
+$ kubectl -n $NAMESPACE describe deploy virt-operator
+```
 
 4. Check for node issues, such as a `NotReady` state:
-    ```
-    $ kubectl get nodes
-    ```
+```
+$ kubectl get nodes
+```
     
 ## Mitigation
-
-<!--CNV: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->

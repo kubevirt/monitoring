@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # LowVirtOperatorCount 
 
@@ -26,26 +26,25 @@ Note, however, that `virt-operator` is not directly responsible for virtual mach
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-    ```
-    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+```
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
-2. Check the states of `virt-operator` pods:
+2. Check the states of the `virt-operator` pods:
 
-    ```
-    $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
-    ```
+```
+$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
+```
 
 3. Review the logs of the affected `virt-operator` pods:
-    ```
-    $ kubectl -n $NAMESPACE logs <pod-name>
-    ```
+```
+$ kubectl -n $NAMESPACE logs <virt-operator>
+```
 
 4. Obtain the details of the affected `virt-operator` pods:
-
-    ```
-    $ kubectl -n $NAMESPACE describe pod <pod-name>
-    ```
+```
+$ kubectl -n $NAMESPACE describe pod <virt-operator>
+```
 
 ## Mitigation
 
