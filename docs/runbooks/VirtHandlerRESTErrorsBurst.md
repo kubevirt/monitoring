@@ -14,36 +14,33 @@ This error is most frequently caused by one of the following problems:
 
 ## Impact
 
-Running workloads on the affected node are not impacted, but status updates are not propagated and node-related actions, such as migrations, fail.
+Status updates are not propagated and node-related actions, such as migrations, fail. However, running workloads on the affected node are not impacted.
 
 ## Diagnosis
 
 Check whether `virt-handler` can connect to the API server.
 
 1. Set the `NAMESPACE` environment variable:
-    ```
-     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
-2. Obtain the name of the `virt-handler` pod:
-
-    ```
-    $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
-    ```
+2. Check the status of the `virt-handler` pod:
+```bash
+$ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
+```
 
 3. Check the `virt-handler` logs for error messages when connecting to the API server:
-
-    ```
-    $ kubectl logs -n  $NAMESPACE <virt-handler-pod-name>
-    ```
+```bash
+$ kubectl logs -n  $NAMESPACE <virt-handler>
+```
 
 
 ## Mitigation
 
 If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
-
-```
-$ kubectl delete -n <install-namespace> <virt-handler-pod-name>
+```bash
+$ kubectl delete -n $NAMESPACE <virt-handler>
 ```
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
