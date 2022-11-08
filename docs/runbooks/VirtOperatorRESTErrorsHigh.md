@@ -1,3 +1,5 @@
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
+
 # VirtOperatorRESTErrorsHigh 
 
 ## Meaning
@@ -18,37 +20,32 @@ However, customer workloads, such as virtual machines (VMs) and VM instances (VM
 
 ## Diagnosis
 
-Check whether `virt-operator` can connect to the API server.
-
 1. Set the `NAMESPACE` environment variable:
-    ```
-     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+```
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
-2. Obtain the available `virt-operator` pods:
-
-    ```
-    $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
-    ```
+2. Check the status of the `virt-operator` pods:
+```
+$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
+```
 
 3. Check the `virt-operator` logs for error messages when connecting to the API server:
+```
+$ kubectl -n $NAMESPACE logs <virt-operator>
+```
 
-    ```
-    $ kubectl -n $NAMESPACE logs <virt-operator-pod-name>
-    ```
-
-4. Obtain the details of the `virt-operator` pod:
-    
-    ```
-    $ kubectl -n $NAMESPACE describe pod <virt-operator-pod-name>
-    ```
+4. Obtain the details of the `virt-operator` pod:    
+```
+$ kubectl -n $NAMESPACE describe pod <virt-operator>
+```
 
 ## Mitigation
 
 If the `virt-operator` pod cannot connect to the API server, delete the pod to force a restart:
 
 ```
-$ kubectl delete -n <install-namespace> <virt-operator-pod-name>
+$ kubectl delete -n <install-namespace> <virt-operator>
 ```
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
