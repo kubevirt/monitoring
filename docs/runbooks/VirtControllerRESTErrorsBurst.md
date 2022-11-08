@@ -21,17 +21,17 @@ Status updates are not propagated and actions like migrations cannot take place.
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```
+```bash
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
 
 2. List the available `virt-controller` pods:
-```
+```bash
 $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-controller
 ```
 
 3. Check the `virt-controller` logs for error messages when connecting to the API server:
-```
+```bash
 $ kubectl logs -n  $NAMESPACE <virt-controller>
 ```
 
@@ -39,7 +39,7 @@ $ kubectl logs -n  $NAMESPACE <virt-controller>
 ## Mitigation
 
 If the `virt-controller` pod cannot connect to the API server, delete the pod to force a restart:
-```
+```bash
 $ kubectl delete -n $NAMESPACE <virt-controller>
 ```
 
