@@ -12,14 +12,14 @@ The VMs are not created or modified. As a result, the environment might not beha
 ## Diagnosis
 
 1. Export the `NAMESPACE` environment variable:
-  ```bash
-  $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
-  ```
+```bash
+$ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+```
 2. Check the `virt-template-validator` logs for errors that might indicate the cause:
-  ```bash
-  $ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
-  ```
-Example:
+```bash
+$ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
+```
+Example output:
 ```
 {"component":"kubevirt-template-validator","level":"info","msg":"evalution 
 summary for ubuntu-3166wmdbbfkroku0:\nminimal-required-memory applied: FAIL, 
