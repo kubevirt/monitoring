@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # VirtControllerRESTErrorsBurst
 
@@ -20,32 +20,27 @@ Status updates are not propagated and actions like migrations cannot take place.
 
 ## Diagnosis
 
-Check whether `virt-controller` can connect to the API server.
-
-1. Set the `NAMESPACE` environment variable::
-    ```
-     $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+1. Set the `NAMESPACE` environment variable:
+```
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
 2. List the available `virt-controller` pods:
+```
+$ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-controller
+```
 
-    ```
-    $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-controller
-    ```
-
-3. Check the virt-controller logs for error messages when connecting to the API server:
-
-    ```
-    $ kubectl logs -n  $NAMESPACE <virt-controller-pod-name>
-    ```
+3. Check the `virt-controller` logs for error messages when connecting to the API server:
+```
+$ kubectl logs -n  $NAMESPACE <virt-controller>
+```
 
 
 ## Mitigation
 
 If the `virt-controller` pod cannot connect to the API server, delete the pod to force a restart:
-
 ```
-$ kubectl delete -n <install-namespace> <virt-controller-pod-name>
+$ kubectl delete -n $NAMESPACE <virt-controller>
 ```
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
