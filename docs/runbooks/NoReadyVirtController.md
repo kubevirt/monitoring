@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # NoReadyVirtController
 
@@ -17,38 +17,41 @@ Any actions related to VM lifecycle management fail. This notably includes launc
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-    ```
-    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
 2. Verify a `virt-controller` device is available:
-    ```
-    $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
-    ```
+```bash
+$ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
+```
+
+3. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
+```bash
+$ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
+```
+```bash
+$ kubectl -n $NAMESPACE describe deploy virt-controller
+```
+
+4. Obtain the details of the `virt-controller` pods:
+```bash
+$ get pods -n $NAMESPACE | grep virt-controller
+```
+
+5. Inspect the logs for each `virt-controller`:
+```bash
+$ kubectl logs -n $NAMESPACE <virt-controller>
+```
+
+6. Check the nodes for problems, suchs as a `NotReady` state:
+```bash
+$ kubectl get nodes
+```
 
 ## Mitigation
-1. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
-    ```
-    $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
-    ```
-    ```
-    $ kubectl -n $NAMESPACE describe deploy virt-controller
-    ```
 
-2. Obtain the names of `virt-controller` pods:
-    ```
-    $ get pods -n $NAMESPACE | grep virt-controller
-    ```
-
-3. Inspect the logs for each `virt-controller`:
-    ```
-    $ kubectl logs -n $NAMESPACE <virt-controller>
-    ```
-
-4. Check the nodes for problems, suchs as a `NotReady` state:
-    ```
-    $ kubectl get nodes
-    ```
+Based on the information obtained during Diagnosis, try to find and resolve the cause of the issue.
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
