@@ -23,17 +23,17 @@ This alert indicates a failure at the level of the cluster. As a result, critica
 
 1. Configure the `NAMESPACE` environment variable:
 ```bash
-$ `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
 
 2. Obtain the details of the `virt-operator` pods:
 ```bash
-$ `kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator`
+$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
 ```
 
 3. Inspect `virt-operator` pod logs:
 ```bash
-$ `kubectl -n $NAMESPACE logs <pod>
+$ kubectl -n $NAMESPACE logs <virt-operator>
 ```
 
 Log messages that contain `Started leading` or `acquire leader` indicate the leader status of a given `virt-operator` pod.
@@ -55,7 +55,7 @@ I1130 12:15:20.533792       1 leaderelection.go:243] attempting to acquire leade
 
 4. Obtain the details of the affected `virt-operator` pods:
 ```bash
-$ `kubectl -n $NAMESPACE describe pod <virt-operator>
+$ kubectl -n $NAMESPACE describe pod <virt-operator>
 ```
 
 ## Mitigation
