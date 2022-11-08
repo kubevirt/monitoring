@@ -1,14 +1,20 @@
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
+
 # CnaoNmstateMigration
 
 ## Meaning
 
-Cluster-network-addons-operator (CNAO) will stop support of kubernetes-nmstate deployment.
-This alert fires when nmstate is deployed, but there is no Kubernetes NMState Operator installed.
+This alert fires when the `nmstate` API is deployed, but the Kubernetes NMState Operator is not installed.
+
+In a future update, the `Cluster-network-addons-operator` (CNAO) will stop supporting `kubernetes-nmstate` deployments. Instead of using the CNAO to deploy `kubernetes-nmstate`, it is recommended to install the stand-alone Kubernetes NMState Operator.
 
 ## Impact
 
-Having kubernetes-nmstate deployed via CNAO will block future upgrade.
+In a future update, using the CNAO to deploy `kubernetes-nmstate` will cause upgrading your cluster to fail.
 
 ## Mitigation
 
-Please, install standalone Kubernetes NMState Operator. After Kubernetes NMState Operator is installed, CNAO will hand over the kubernetes-nmstate deployment to the NMState Operator automatically.
+Install the stand-alone Kubernetes NMState Operator.
+
+Afterwards, the CNAO automatically transfers the `kubernetes-nmstate` deployment to the Kubernetes NMState Operator.
+
