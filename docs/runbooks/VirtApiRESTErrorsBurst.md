@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 # VirtApiRESTErrorsBurst
 
@@ -15,39 +15,43 @@ However, currently running virtual machine workloads are not likely to be affect
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-   ```
-   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-   ```
+```
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
 2. Obtain the list of `virt-api` pods on your deployment:
-   ```
-   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
-   ```
+```
+$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
+```
 
 3. Check the `virt-api` logs for error messages:
-   ```
-   $ kubectl logs -n  $NAMESPACE <virt-api-pod-name>
-   ```
+```
+$ kubectl logs -n  $NAMESPACE <virt-api>
+```
 
 4. Obtain the details of the `virt-api` pods:
-   ```
-   $ kubectl describe -n $NAMESPACE <virt-api-pod-name>
-   ```
+```
+$ kubectl describe -n $NAMESPACE <virt-api>
+```
 
 5. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
-   ```
-   $ kubectl get nodes
-   ```
+```
+$ kubectl get nodes
+```
 
-6. Check the status of the `virt-api` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
-   ```
-   $ kubectl -n $NAMESPACE get deploy virt-api -o yaml
-   ```
-   ```
-   $ kubectl -n $NAMESPACE describe deploy virt-api
-   ```
+6. Check the status of the `virt-api` deployment:
+```
+$ kubectl -n $NAMESPACE get deploy virt-api -o yaml
+```
+
+7. Obtain the details of the `virt-api` deployment:
+```
+$ kubectl -n $NAMESPACE describe deploy virt-api
+```
 
 ## Mitigation
+
+Based on the information obtained during Diagnosis, try to identify the root cause and resolve the issue.
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
