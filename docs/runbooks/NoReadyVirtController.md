@@ -6,7 +6,7 @@
 
 This alert fires when no available `virt-controller` devices have been detected for 5 minutes.
 
-A `virt-controller` handles monitoring the custom resource definitions (CRDs) of a virtual machine instance (VMI) and managing the associated pods. The device creates pods for VMIs and manages the lifecycle of the pods.
+The virt controller handles monitoring the custom resource definitions (CRDs) of a virtual machine instance (VMI) and managing the associated pods. The device creates pods for VMIs and manages the lifecycle of the pods.
 
 Therefore, `virt-controller` devices are critical for all cluster-wide virtualization functionality.
 
@@ -21,7 +21,7 @@ Any actions related to VM lifecycle management fail. This notably includes launc
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
 
-2. Verify a `virt-controller` device is available:
+2. Verify the number of `virt-controller` devices:
 ```bash
 $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
 ```
@@ -30,22 +30,23 @@ $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.rea
 ```bash
 $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
 ```
+
 4. Obtain the details of the `virt-controller` deployment to check for status conditions such as crashing pods or failure to pull images:
 ```bash
 $ kubectl -n $NAMESPACE describe deploy virt-controller
 ```
 
-4. Obtain the details of the `virt-controller` pods:
+5. Obtain the details of the `virt-controller` pods:
 ```bash
 $ get pods -n $NAMESPACE | grep virt-controller
 ```
 
-5. Inspect the logs for each `virt-controller`:
+6. Check the logs of the `virt-controller` pods for error messages:
 ```bash
 $ kubectl logs -n $NAMESPACE <virt-controller>
 ```
 
-6. Check the nodes for problems, suchs as a `NotReady` state:
+7. Check the nodes for problems, suchs as a `NotReady` state:
 ```bash
 $ kubectl get nodes
 ```
