@@ -1,27 +1,64 @@
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
+
 # VirtOperatorDown 
 
 ## Meaning
 
-This alert is triggered when there was no virt-operator pod detected in the `Running` state in the past 10 minutes. The virt-operator deployment has a default replica of 2 pods.
+This alert fires when no `virt-operator` pod in the `Running` state has been detected for 10 minutes. 
+
+The `virt-operator` is the first operator to start in a cluster. Its primary responsibilities include the following: 
+
+- Installing, live updating, and live upgrading a cluster
+
+- Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
+
+- Certain cluster-wide tasks, such as certificate rotation and infrastructure management
+
+The `virt-operator` deployment has a default replica of 2 pods.
 
 ## Impact
 
-The virt-operator is the first k8s operator coming alive in a KubeVirt cluster. Its primary responsibilities are installation, live-update, live-upgrade of a KubeVirt cluster, monitoring the life-cycle of top-level controllers, such as virt-controller, virt-handler, virt-launcher, etc. and manage their reconciliation. In addition, virt-operator is responsible for cluster-wide tasks, such as certificate rotation and some infrastructure management, etc.  Note that virt-operator is not directly responsible for virtual machines in the cluster, its temporal unavailability should not affect the custom workloads. 
+This alert indicates a failure at the level of the cluster. As a result, critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, are currently not available.
 
-This alert indicates a failure at the level of the KubeVirt cluster. Critical cluster-wide management functionalities such as certification rotation, KubeVirt upgrade, and reconciliation of KubeVirt controllers, are not available for the time being.
+Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
 
 ## Diagnosis
 
-- Check the status of the virt-operator deployment to find out more information. The following commands will provide the associated events and show if there are any specific issues.
-- `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
-  - `kubectl -n $NAMESPACE get deploy virt-operator -o yaml`
-  - `kubectl -n $NAMESPACE describe deploy virt-operator`
-- Check the status of the virt-operator pods for further information: 
-  - `export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"`
-  - `kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-operator`
-- Check if there are issues with the nodes for control-plane and masters. For example, if they are in a NotReady state.
-- `kubectl get nodes`
+Check the status of the virt-operator deployment to find out more information. The following commands will provide the associated events and show if there are any specific issues.
+
+1. Set the `NAMESPACE` environment variable:
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
+
+2. Obtain the name of the `virt-operator` deployment:
+```bash
+$ `kubectl -n $NAMESPACE get deploy virt-operator -o yaml`
+```
+
+3. Generate the description of the `virt-operator` deployment:
+```bash
+$ `kubectl -n $NAMESPACE describe deploy virt-operator`
+```
+
+4. Check the status of the `virt-operator` pods:
+```bash
+$ `kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-operator`
+```
+
+5. Check for node issues, such as a `NotReady` state:
+```bash
+$ `kubectl get nodes`
+```
 
 ## Mitigation
 
-There can be several reasons, try to identify the root cause and fix it. If you cannot fix it, please open an issue and attach the artifacts gathered in the Diagnosis section.
+Based on the information obtained during Diagnosis, try to find and resolve the cause of the issue.
+
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
