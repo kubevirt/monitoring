@@ -6,7 +6,7 @@
 
 This alert fires when one or more `virt-operator` pods are running, but none of these pods have been in a `Ready` state for the last 10 minutes. 
 
-The `virt-operator` is the first operator to start in a cluster. Its primary responsibilities include the following: 
+The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
 
 - Installing, live updating, and live upgrading a cluster
 
