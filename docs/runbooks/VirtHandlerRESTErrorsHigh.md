@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 # VirtHandlerRESTErrorsHigh
 
@@ -6,9 +6,9 @@
 
 More than 5% of REST calls failed in `virt-handler` in the last 60 minutes. This alert usually indicates that the `virt-handler` pods have partially lost connection to the API server.
 
-This error is most frequently caused by one of the following problems:
+This error is frequently caused by one of the following problems:
 
-- The apiserver is overloaded, which causes timeouts. To verify if this is the case, check the metrics of the API server, and view its response times and overall calls.
+- The API server is overloaded, which causes timeouts. To verify if this is the case, check the metrics of the API server, and view its response times and overall calls.
 
 - The `virt-handler` pod cannot reach the API server. This is commonly caused by DNS issues on the node and networking connectivity issues.
 
@@ -17,8 +17,6 @@ This error is most frequently caused by one of the following problems:
 Node-related actions, such as starting and migrating workloads, are delayed on the node that `virt-handler` is running on. Running workloads are not affected, but reporting their current status might be delayed.
 
 ## Diagnosis
-
-Check whether `virt-handler` can connect to the API server:
 
 1. Set the `NAMESPACE` environment variable:
 ```bash

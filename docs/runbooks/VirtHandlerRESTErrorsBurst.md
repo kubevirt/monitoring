@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 # VirtHandlerRESTErrorsBurst
 
@@ -6,7 +6,7 @@
 
 More than 80% of REST calls failed in `virt-handler` in the last 5 minutes. This alert usually indicates that the `virt-handler` pods cannot connect to the API server.
 
-This error is most frequently caused by one of the following problems:
+This error is frequently caused by one of the following problems:
 
 - The API server is overloaded, which causes timeouts. To verify if this is the case, check the metrics of the API server, and view its response times and overall calls.
 
@@ -17,8 +17,6 @@ This error is most frequently caused by one of the following problems:
 Status updates are not propagated and node-related actions, such as migrations, fail. However, running workloads on the affected node are not impacted.
 
 ## Diagnosis
-
-Check whether `virt-handler` can connect to the API server.
 
 1. Set the `NAMESPACE` environment variable:
 ```bash
