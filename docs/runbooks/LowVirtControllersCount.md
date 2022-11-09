@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 # LowVirtControllersCount
 
@@ -25,12 +25,14 @@ $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.nam
 $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
 ```
 
-3. Check whether any `virt-controller` pods have terminated unexpectedly or are in a `NotReady` state:
+3. Check the virt-launcher logs for error messages:
 ```bash
-$ kubectl -n $NAMESPACE logs virt-launcher-<unique-id>
+$ kubectl -n $NAMESPACE logs <virt-launcher>
 ```
+
+4. Obtain the details of the `virt-launcher` pod to check for status conditions such as unexpected termination or a NotReady state.
 ```bash
-$ kubectl -n $NAMESPACE describe pod/virt-launcher-<unique-id>
+$ kubectl -n $NAMESPACE describe pod/<virt-launcher>
 ```
 
 ## Mitigation
@@ -39,7 +41,7 @@ This alert can have a variety of causes, including:
 
 - Not enough memory on the cluster
 - Nodes are down
-- The API server is overloaded. For example, the scheduler might be under heavy load and therefore not completely available.
+- The API server is overloaded. For example, the scheduler might be under a heavy load and therefore not completely available.
 - Networking issues
 
 Identify the root cause and fix it, if possible.
