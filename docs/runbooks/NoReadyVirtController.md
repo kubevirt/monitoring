@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 # NoReadyVirtController
 
@@ -26,10 +26,11 @@ $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.nam
 $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
 ```
 
-3. Check the status of the `virt-controller` deployment to find out more information. The following commands provide the associated events and show if any problems occurred, such as crashing pods or failures to pull images:
+3. Check the status of the `virt-controller` deployment:
 ```bash
 $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
 ```
+4. Obtain the details of the `virt-controller` deployment to check for status conditions such as crashing pods or failure to pull images:
 ```bash
 $ kubectl -n $NAMESPACE describe deploy virt-controller
 ```
