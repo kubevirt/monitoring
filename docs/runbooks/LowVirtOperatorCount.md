@@ -20,7 +20,7 @@ This alert indicates that `virt-operator` cannot provide high availability (HA) 
 
 For HA to work reliably, two or more `virt-operator` pods in a `Ready` state must be available. The `virt-operator` deployment has a default replica of two `virt-operator` pods.
 
-Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its decreased availability does not significantly affect custom workloads.
+Note, however, that `virt-operator` is not directly responsible for virtual machines (VMs) in the cluster. Therefore, its decreased availability does not significantly affect VM workloads.
 
 
 ## Diagnosis

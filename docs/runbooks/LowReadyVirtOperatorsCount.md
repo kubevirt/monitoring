@@ -21,7 +21,7 @@ This alert indicates that a cluster-level failure might occur, and that critical
 
 The `virt-operator` deployment has a default replica of two `virt-operator` pods.
 
-Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
+Note, however, that `virt-operator` is not directly responsible for virtual machines (VMs) in the cluster. Therefore, its temporary unavailability does not significantly affect VM workloads.
 
 ## Diagnosis
 
