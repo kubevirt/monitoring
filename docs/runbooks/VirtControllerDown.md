@@ -1,40 +1,49 @@
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
+
 # VirtControllerDown
 
 ## Meaning
-No running virt-controller was detected for the last 5 min. Virt-controller deployment has a default replica of 2 pods.
+No running `virt-controller` pod has been detected for 5 minutes.
 
 ## Impact
-Complete failure in VM lifecycle management i.e. launching a new VM instance or shutting down an existing VM instance.
+Any actions related to virtual machine (VM) lifecycle management fail. This notably includes launching a new VM instance (VMI) or shutting down an existing VMI.
 
 ## Diagnosis
 
-- Set the environment variable NAMESPACE
+1. Set the `NAMESPACE` environment variable:
+```bash
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+```
 
-    ```
-    export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-    ```
+2. Check the status of the `virt-controller` deployment:
+```bash
+$ kubectl get deployment -n $NAMESPACE virt-controller -o yaml
+```
 
-- Observe the status of the virt-controller deployment
-    ```
-    kubectl get deployment -n $NAMESPACE virt-controller -o yaml
-    ```
-- Observe the logs of the kubecontroller manager pod, to see why it cannot create the virt-controller pods.
-    ```
-    kubectl get logs <virt-controller-pod>
-    ```
+3. Review the logs of the `kubecontroller` manager pod, to see why it cannot create the `virt-controller` pods.
+```bash
+$ kubectl get logs <virt-controller-pod>
+```
 
-    *Note:* virt-controller pod should have name similar to virt-controller-7888c64d66-dzc9p.\
-    There could be several pods that run virt-controller
+Note that the `virt-controller` pod must have a name similar to `virt-controller-7888c64d66-dzc9p.\`.
+In addition, several different pods might be running `virt-controller`.
 
 ## Mitigation
-There can be several reasons. Like:
+
+This alert can have a variety of causes, including:
 
 - Node resource exhaustion
 - Not enough memory on the cluster
 - Nodes are down
-- API server is overloaded (e.g. Scheduler has a lot of work and therefore is not 100% available)
+- The API server is overloaded. For example, the scheduler might be under heavy load and therefore not completely available.
 - Networking issues
 
-Try to identify the root cause and fix it.
+Identify the root cause and fix it, if possible.
 
-In other cases, please open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
