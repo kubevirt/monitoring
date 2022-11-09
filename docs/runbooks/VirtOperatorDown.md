@@ -20,7 +20,7 @@ The `virt-operator` deployment has a default replica of 2 pods.
 
 This alert indicates a failure at the level of the cluster. As a result, critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, are currently not available.
 
-Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
+Note, however, that `virt-operator` is not directly responsible for virtual machines (VMs) in the cluster. Therefore, its temporary unavailability does not significantly affect VM workloads.
 
 ## Diagnosis
 
