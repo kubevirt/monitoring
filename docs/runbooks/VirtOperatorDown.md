@@ -6,7 +6,7 @@
 
 This alert fires when no `virt-operator` pod in the `Running` state has been detected for 10 minutes. 
 
-The `virt-operator` is the first operator to start in a cluster. Its primary responsibilities include the following: 
+The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
 
 - Installing, live updating, and live upgrading a cluster
 
@@ -33,22 +33,22 @@ $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.nam
 
 2. Obtain the name of the `virt-operator` deployment:
 ```bash
-$ `kubectl -n $NAMESPACE get deploy virt-operator -o yaml`
+$ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
 ```
 
 3. Generate the description of the `virt-operator` deployment:
 ```bash
-$ `kubectl -n $NAMESPACE describe deploy virt-operator`
+$ kubectl -n $NAMESPACE describe deploy virt-operator
 ```
 
 4. Check the status of the `virt-operator` pods:
 ```bash
-$ `kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-operator`
+$ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-operator
 ```
 
 5. Check for node issues, such as a `NotReady` state:
 ```bash
-$ `kubectl get nodes`
+$ kubectl get nodes
 ```
 
 ## Mitigation
