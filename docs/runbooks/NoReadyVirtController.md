@@ -6,7 +6,7 @@
 
 This alert fires when no available `virt-controller` devices have been detected for 5 minutes.
 
-The virt controller handles monitoring the custom resource definitions (CRDs) of a virtual machine instance (VMI) and managing the associated pods. The device creates pods for VMIs and manages the lifecycle of the pods.
+The `virt-controller` devices monitor the custom resource definitions of virtual machine instances (VMIs) and manage the associated pods. The devices create pods for VMIs and manage the lifecycle of the pods.
 
 Therefore, `virt-controller` devices are critical for all cluster-wide virtualization functionality.
 
