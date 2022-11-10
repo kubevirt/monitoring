@@ -1,27 +1,27 @@
+<!-- Edited by davozeni, 10 Nov 2022 -->
+
 # CDIStorageProfilesIncomplete
 
 ## Meaning
 
-An incomplete StorageProfile means that CDI will not be able to automatically infer PVC fields such as volumeMode, accessMode for the user's disk request.  
+This alert fires when any of the containerized data importer (CDI) storage profiles are incomplete.
 
-This alert fires when any of the StorageProfiles are incomplete, and thus not inferrable.
+When a storage profile is incomplete, CDI cannot automatically infer persistent volume claim (PVC) fields, such as `volumeMode` and  `accessModes`. These PVC fields are needed to successfuly complete a disk request from a user.
 
 ## Impact
 
-DataVolume's creation operation (build a VM disk on PVC) is not succeeding.
+The creation of a data volume fails.
 
 ## Diagnosis
 
-- Find the storage profile that couldn't be fully populated by CDI using the name of your desired storage class from the DataVolume:
-	```bash
-	kubectl get storageprofile <your_storage_class_name>
-	```
-
-- Follow the instructions in the 'Mitigation' section to populate the missing info.
+- Find the incomplete storage profile by using the name of the storage class from the associated data volume:
+```bash
+$ kubectl get storageprofile <storage_class_name>
+```
 
 ## Mitigation
 
-Please refer to the StorageProfile documentation, which states how one can provide the needed information in the StorageProfile spec section:  
+Refer to the StorageProfile documentation, which explains how you can add the required information to the StorageProfile `Spec` section:
 [Empty profiles](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/storageprofile.md#empty-storage-profile)  
 [User defined profiles](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/storageprofile.md#user-defined-storage-profile)
 
@@ -60,3 +60,11 @@ status:
   provisioner: kubernetes.io/no-provisioner
   storageClass: local
 ```
+
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
