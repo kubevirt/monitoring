@@ -1,31 +1,46 @@
+<!-- Edited by davozeni, 10 Nov 2022 -->
+
 # CDIOperatorDown
 
 ## Meaning
 
-The CDI Operator is responsible for deploying and managing the CDI infrastructure components, such as the DataVolume/PVC controllers which help users build Virtual Machine Disks on PVCs.  
-This alert fires when the CDI operator is down.
+This alert fires when the containerized data importer (CDI) Operator is down.
+The CDI Operator deploys and manages the CDI infrastructure components, such as data volume and persistent volume claim (PVC) controllers. These controllers help users build virtual machine disks on PVCs.
 
 ## Impact
 
-With CDI Operator down, the dependant infrastructure components may not deploy at all or fail to stay in a required, opinionated state.  
-As a result, the CDI installation is not 100% operational in the cluster.
+With the CDI Operator down, the dependant infrastructure components might fail to deploy or fail to stay in the required state.
+As a result, the CDI installation might not work correctly in the cluster.
 
 ## Diagnosis
 
-- Check cdi-operator's pod namespace:
-	```bash
-	export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
-	```
+1. Set the `CDI_NAMESPACE` environment variable:
+```bash
+$ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
+```
 
-- Check to see if cdi-operator's pod is currently down.
-	```bash
-	kubectl -n $CDI_NAMESPACE get pods -l name=cdi-operator
-	```
+2. Check whether the `cdi-operator` pod is currently running:
+```bash
+$ kubectl -n $CDI_NAMESPACE get pods -l name=cdi-operator
+```
  
-- Check cdi-operator's pod logs and describe.
-    - `kubectl -n $CDI_NAMESPACE describe pods -l name=cdi-operator`
-    - `kubectl -n $CDI_NAMESPACE logs -l name=cdi-operator`
+3. Obtain the details of the `cdi-operator` pod:
+```bash
+$ kubectl -n $CDI_NAMESPACE describe pods -l name=cdi-operator
+```
+
+4. Check the log of the `cdi-operator` pod for errors:
+```bash
+$ kubectl -n $CDI_NAMESPACE logs -l name=cdi-operator
+```
 
 ## Mitigation
 
-Please open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
