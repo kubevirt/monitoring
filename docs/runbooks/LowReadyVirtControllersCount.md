@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 1% Nov 2022 -->
 
 # LowReadyVirtControllersCount
 
@@ -28,7 +28,7 @@ $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.rea
 $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
 ```
 
-4. Obtain the details of the virt-controller deployment to check for status conditions, such as crashing pods or failures to pull images:
+4. Obtain the details of the `virt-controller` deployment to check for status conditions, such as crashing pods or failures to pull images:
 ```bash
 $ kubectl -n $NAMESPACE describe deploy virt-controller
 ```
