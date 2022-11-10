@@ -10,7 +10,7 @@ A `virt-controller` device monitors the custom resource definitions (CRDs) of a 
 
 ## Impact
 
-This alert indicates that a cluster-level failure might occur, which would cause actions related to VM life-cycle management to fail. This notably includes launching a new VMI or shutting down an existing VMI.
+This alert indicates that a cluster-level failure might occur, which would cause actions related to VM lifecycle management to fail. This notably includes launching a new VMI or shutting down an existing VMI.
 
 ## Diagnosis
 
