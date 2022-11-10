@@ -20,8 +20,6 @@ Node-related actions, such as starting and migrating, and scheduling virtual mac
 
 ## Diagnosis
 
-Check whether `virt-controller` can connect to the API server.
-
 1. Set the `NAMESPACE` environment variable:
 ```bash
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
