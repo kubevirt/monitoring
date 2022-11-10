@@ -1,40 +1,37 @@
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 10 Nov 2022 -->
 
 # HPPSharingPoolPathWithOS
 
 ## Meaning
 
-This alert fires when the hostpath provisioner (HPP) is sharing a file system with other critical components, such as `kubelet` or the operating system (OS).
+This alert fires when the hostpath provisioner (HPP) shares a file system with other critical components, such as `kubelet` or the operating system (OS).
 
-HPP dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs). In the described scenario, HPP persistent volumes might cause node disk pressure.
+HPP dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs).
 
 
 ## Impact
 
-The affected node might have degraded performance and stability.
+A shared hostpath pool puts pressure on the node's disks. The node might have degraded performance and stability.
 
 ## Diagnosis
-
-Check which HPP pool is being shared with the OS by reviewing the DaemonSet logs.
 
 1. Configure the `HPP_NAMESPACE` environment variable:
 ```bash
 $ export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
 ```
 
-2. Find the Container Storage Interface (CSI) DaemonSet pods:
+2. Obtain the status of the `hostpath-provisioner-csi` daemon set pods:
 ```bash
 $ kubectl -n $HPP_NAMESPACE get pods | grep hostpath-provisioner-csi
 ```
  
-3. Check the CSI pod logs to learn which pool and path are being shared with the OS:
+3. Check the `hostpath-provisioner-csi` logs to identify the shared pool and path:
 ```bash
-$ kubectl -n $HPP_NAMESPACE logs <csi_daemonset_pod> -c hostpath-provisioner
+$ kubectl -n $HPP_NAMESPACE logs <csi_daemonset> -c hostpath-provisioner
 ```
-
-The relevant log lines look similar to the following:
+Example output:
 ```  
-I0208 15:21:03.769731       1 utils.go:221] pool (legacy, csi-data-dir/csi), shares path with OS which can lead to node disk pressure
+I0208 15:21:03.769731       1 utils.go:221] pool (<legacy, csi-data-dir>/csi), shares path with OS which can lead to node disk pressure
 ```
 
 
