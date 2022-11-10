@@ -4,11 +4,9 @@
 
 ## Meaning
 
-This alert fires when the `nmstate` API is deployed, but the Kubernetes NMState Operator is not installed.
+This alert fires when a `kubernetes-nmstate` deployment is detected and the Kubernetes NMState Operator is not installed. This alert only affects OpenShift Virtualization 4.10.
 
 The Cluster Network Addons Operator (CNAO) does not support `kubernetes-nmstate` deployments in OpenShift Virtualization 4.11 and later.
-
-This alert only affects OpenShift Virtualization 4.10.
 
 ## Impact
 
