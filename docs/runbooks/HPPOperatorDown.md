@@ -1,12 +1,10 @@
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
-
 # HPPOperatorDown
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 ## Meaning
 
 This alert fires when the hostpath provisioner (HPP) Operator is down. 
 The HPP Operator deploys and manages the HPP infrastructure components, such as the daemon set that provisions hostpath volumes.  
-
 
 ## Impact
 

@@ -1,5 +1,5 @@
 # SSPHighRateRejectedVms
-<!--apinnick Nov 2022-->
+<!-- Edited by apinnick, Nov 2022-->
 
 ## Meaning
 
@@ -29,4 +29,11 @@ value 1073741824 is lower than minimum [2147483648]\n\nsucceeded=false",
 
 ## Mitigation
 
-Identify and resolve the cause of the invalid VM configuration.
+Try to identify the root cause and resolve the issue.
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

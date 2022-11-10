@@ -1,6 +1,5 @@
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
-
 # VirtControllerRESTErrorsHigh
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 ## Meaning
 
@@ -34,7 +33,6 @@ $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-controller
 ```bash
 $ kubectl logs -n  $NAMESPACE <virt-controller>
 ```
-
 
 ## Mitigation
 

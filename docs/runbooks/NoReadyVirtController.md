@@ -1,6 +1,5 @@
-<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
-
 # NoReadyVirtController
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 ## Meaning
 
@@ -12,7 +11,6 @@ Therefore, `virt-controller` devices are critical for all cluster-wide virtualiz
 
 ## Impact
 Any actions related to VM lifecycle management fail. This notably includes launching a new VMI or shutting down an existing VMI.
-
 
 ## Diagnosis
 

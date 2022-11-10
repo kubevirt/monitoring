@@ -1,6 +1,5 @@
-<!-- Edited by Jiří Herrmann, 10 Nov 2022 -->
-
 # NoLeadingVirtOperator 
+<!-- Edited by Jiří Herrmann, 10 Nov 2022 -->
 
 ## Meaning
 
@@ -21,7 +20,6 @@ The `virt-operator` deployment has a default replica of 2 pods, with one pod hol
 This alert indicates a failure at the level of the cluster. As a result, critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, might not be available.
 
 ## Diagnosis
-
 
 1. Set the `NAMESPACE` environment variable:
 ```bash

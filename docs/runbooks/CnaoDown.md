@@ -1,6 +1,5 @@
-<!-- Edited by Jiří Herrmann, 3 Nov 2022 -->
-
 # CnaoDown
+<!-- Edited by Jiří Herrmann, 3 Nov 2022 -->
 
 ## Meaning
 
@@ -35,10 +34,10 @@ $ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
 
 ## Mitigation
 
-<!--US: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
-<!--DSstart-->
+<!--DS: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
-<!--DSend-->
+<!--USend-->

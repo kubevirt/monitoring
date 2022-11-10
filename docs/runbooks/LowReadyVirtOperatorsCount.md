@@ -1,27 +1,23 @@
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
-
 # LowReadyVirtOperatorsCount 
+<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 ## Meaning
 
-This alert fires when one or more `virt-operator` pods are running, but none of these pods have been in a `Ready` state for the last 10 minutes. 
+This alert fires when one or more `virt-operator` pods are running, but none of these pods has been in a `Ready` state for the last 10 minutes.
 
-The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
+The `virt-operator` is the first Operator to start in a cluster. The `virt-operator` deployment has a default replica of two `virt-operator` pods.
 
-- Installing, live updating, and live upgrading a cluster
+Its primary responsibilities include the following: 
 
+- Installing, live-updating, and live-upgrading a cluster
 - Monitoring the lifecycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
-
 - Certain cluster-wide tasks, such as certificate rotation and infrastructure management
-
 
 ## Impact
 
-This alert indicates that a cluster-level failure might occur, and that critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, might become unavailable. Such a state would also trigger the `NoReadyVirtOperator` alert.
+A cluster-level failure might occur. Critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, might become unavailable. Such a state also triggers the `NoReadyVirtOperator` alert.
 
-The `virt-operator` deployment has a default replica of two `virt-operator` pods.
-
-Note, however, that `virt-operator` is not directly responsible for virtual machines (VMs) in the cluster. Therefore, its temporary unavailability does not significantly affect VM workloads.
+The `virt-operator` is not directly responsible for virtual machines (VMs) in the cluster. Therefore, its temporary unavailability does not significantly affect VM workloads.
 
 ## Diagnosis
 
@@ -44,7 +40,7 @@ $ kubectl -n $NAMESPACE describe deploy virt-operator
 ```bash
 $ kubectl get nodes
 ```
-    
+
 ## Mitigation
 
 Based on the information obtained during Diagnosis, try to find the cause of the issue and resolve it.

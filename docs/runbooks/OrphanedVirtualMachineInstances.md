@@ -1,5 +1,5 @@
 # OrphanedVirtualMachineInstances
-<!--apinnick Nov 2022-->
+<!-- Edited by apinnick, Nov 2022-->
 
 ## Meaning
 
@@ -15,10 +15,12 @@ Orphaned VMIs cannot be managed.
 ```bash
 $ kubectl get pods --all-namespaces -o wide -l kubevirt.io=virt-handler
 ```
+
 2. Check the status of the VMIs to identify VMIs running on nodes that do not have a running `virt-handler` pod:
 ```bash
 $ kubectl get vmis --all-namespaces
 ```
+
 3. Check the status of the `virt-handler` daemon:
 ```bash
 $ kubectl get daemonset virt-handler --all-namespaces
@@ -30,28 +32,28 @@ virt-handler          2         2         2       2            2           kuber
 ```
 The daemon set is considered healthy if the `Desired`, `Ready`, and `Available` columns contain the same value.
 
-## Mitigation
-
-If the `virt-handler` daemon set is not healthy:
-
-1. Check the `virt-handler` daemon set for pod deployment issues:
+4. If the `virt-handler` daemon set is not healthy, check the `virt-handler` daemon set for pod deployment issues:
 ```bash
 $ kubectl get daemonset virt-handler --all-namespaces -o yaml | jq .status
 ```
-2. Check the status of the nodes:
+
+5. Check the nodes for issues such as a `NotReady` status:
 ```bash
 $ kubectl get nodes
 ```
 
-If the `virt-handler` daemon set is healthy:
-
-1. Check the `spec.workloads` stanza of the `kubevirt` resource for a workloads placement policy:
+6. Check the `spec.workloads` stanza of the `KubeVirt` custom resource (CR) for a workloads placement policy:
 ```bash
 $ kubectl get kubevirt kubevirt --all-namespaces -o yaml
 ```
-2. If a workloads placement policy exists, add the node with the VMI to the policy.
 
-There are other possible causes for a `virt-handler` pod being removed from a node, such as changes to the node's taints and tolerations or to a pod's scheduling rules.
+## Mitigation
+
+If a workloads placement policy is configured, add the node with the VMI to the policy.
+
+Possible causes for the removal of a `virt-handler` pod from a node include changes to the node's taints and tolerations or to a pod's scheduling rules.
+
+Try to identify the root cause and resolve the issue.
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->

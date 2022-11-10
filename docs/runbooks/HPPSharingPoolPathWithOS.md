@@ -1,13 +1,11 @@
-<!-- Edited by Jiří Herrmann, 10 Nov 2022 -->
-
 # HPPSharingPoolPathWithOS
+<!-- Edited by Jiří Herrmann, 10 Nov 2022 -->
 
 ## Meaning
 
 This alert fires when the hostpath provisioner (HPP) shares a file system with other critical components, such as `kubelet` or the operating system (OS).
 
 HPP dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs).
-
 
 ## Impact
 
@@ -33,7 +31,6 @@ Example output:
 ```  
 I0208 15:21:03.769731       1 utils.go:221] pool (<legacy, csi-data-dir>/csi), shares path with OS which can lead to node disk pressure
 ```
-
 
 ## Mitigation
 
