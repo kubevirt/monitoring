@@ -1,6 +1,5 @@
-<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
-
 # VirtHandlerRESTErrorsHigh
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 ## Meaning
 
@@ -33,8 +32,8 @@ $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
 $ kubectl logs -n  $NAMESPACE <virt-handler>
 ```
 
-
 ## Mitigation
+
 If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
 ```bash
 $ kubectl delete -n <install-namespace> <virt-handler>

@@ -1,5 +1,5 @@
 # VirtHandlerDaemonSetRolloutFailing
-<!--apinnick, Nov 2022-->
+<!-- Edited by apinnick, Nov 2022-->
 
 ## Meaning
 
@@ -23,7 +23,7 @@ $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
 ```
 3. Obtain the name of the worker node of the `virt-handler` pod:
 ```bash
-$ kubectl -n $NAMESPACE get pod <virt-handler_pod> -o jsonpath='{.spec.nodeName}'
+$ kubectl -n $NAMESPACE get pod <virt-handler> -o jsonpath='{.spec.nodeName}'
 ```
 
 ## Mitigation

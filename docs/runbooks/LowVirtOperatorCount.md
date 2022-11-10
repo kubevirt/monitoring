@@ -1,6 +1,5 @@
+# LowVirtOperatorCount
 <!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
-
-# LowVirtOperatorCount 
 
 ## Meaning
 
@@ -8,20 +7,15 @@ This alert fires when only one `virt-operator` pod in a `Ready` state has been r
 
 The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
 
-- Installing, live updating, and live upgrading a cluster
-
+- Installing, live-updating, and live-upgrading a cluster
 - Monitoring the lifecycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
-
 - Certain cluster-wide tasks, such as certificate rotation and infrastructure management
 
 ## Impact
 
-This alert indicates that `virt-operator` cannot provide high availability (HA) for the deployment.
+The `virt-operator` cannot provide high availability (HA) for the deployment. HA requires two or more `virt-operator` pods in a `Ready` state. The default deployment is two pods.
 
-For HA to work reliably, two or more `virt-operator` pods in a `Ready` state must be available. The `virt-operator` deployment has a default replica of two `virt-operator` pods.
-
-Note, however, that `virt-operator` is not directly responsible for virtual machines (VMs) in the cluster. Therefore, its decreased availability does not significantly affect VM workloads.
-
+The `virt-operator` is not directly responsible for virtual machines (VMs) in the cluster. Therefore, its decreased availability does not significantly affect VM workloads.
 
 ## Diagnosis
 

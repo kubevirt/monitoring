@@ -3,10 +3,9 @@
 
 ## Meaning
 
-This alert fires when a containerized data importer (CDI) installation is in a degraded state:
+This alert fires when the containerized data importer (CDI) is in a degraded state:
 
 - Not progressing
-
 - Not available to use
 
 ## Impact
@@ -21,12 +20,12 @@ CDI components are not ready and they stopped progressing towards a ready state.
 $ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
 ```
 
-2. Check for CDI components that are currently not ready:
+2. Check the CDI deployment for components that are not ready:
 ```bash
 $ kubectl -n $CDI_NAMESPACE get deploy -l cdi.kubevirt.io
 ```
 
-3. Check the description of the failing pod:
+3. Check the details of the failing pod:
 ```bash
 $ kubectl -n $CDI_NAMESPACE describe pods <pod>
 ```
@@ -38,8 +37,9 @@ $ kubectl -n $CDI_NAMESPACE logs <pod>
 
 ## Mitigation
 
-<!--DS: If you cannot resolve the issue, log in to the [Customer Portal](https://access.redhat.com) and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+Try to identify the root cause and resolve the issue.
 
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

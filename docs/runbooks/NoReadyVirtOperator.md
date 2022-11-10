@@ -1,31 +1,25 @@
-<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
-
 # NoReadyVirtOperator 
+<!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
 
 ## Meaning
 
 This alert fires when no `virt-operator` pod in a `Ready` state has been detected for 10 minutes.
 
-The `virt-operator` is the first operator to start in a cluster. Its primary responsibilities include the following: 
+The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
 
-- Installing, live updating, and live upgrading a cluster
-
+- Installing, live-updating, and live-upgrading a cluster
 - Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
-
 - Certain cluster-wide tasks, such as certificate rotation and infrastructure management
+
+The default deployment is two `virt-operator` pods.
 
 ## Impact 
 
-This alert indicates a failure at the level of the cluster. 
+This alert indicates a cluster-level failure. Critical cluster management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, might not be not available.
 
-As a result, critical cluster-wide management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, are currently not available.
-
-The virt-operator deployment has a default replica of two `virt-operator` pods.
-
-Note, however, that `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
+The `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
 
 ## Diagnosis
-
 
 1. Set the `NAMESPACE` environment variable:
 ```bash

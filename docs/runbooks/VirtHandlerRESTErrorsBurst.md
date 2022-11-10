@@ -1,6 +1,5 @@
-<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
-
 # VirtHandlerRESTErrorsBurst
+<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 ## Meaning
 
@@ -32,7 +31,6 @@ $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
 ```bash
 $ kubectl logs -n  $NAMESPACE <virt-handler>
 ```
-
 
 ## Mitigation
 

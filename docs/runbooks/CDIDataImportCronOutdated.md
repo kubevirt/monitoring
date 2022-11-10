@@ -1,5 +1,5 @@
 # CDIDataImportCronOutdated
-<!--edited by apinnick, Oct. 2022-->
+<!-- Edited by apinnick, Oct. 2022-->
 
 ## Meaning
 
@@ -18,20 +18,20 @@ VMs might fail to start because no source PVC is available for cloning.
 ## Diagnosis
 
 1. Check the cluster for a default storage class:
-  ```bash
-  $ kubectl get sc
-  ```
+```bash
+$ kubectl get sc
+```
 The output displays the storage classes with `(default)` beside the name of the default storage class. You must set a default storage class, either on the cluster or in the `DataImportCron` specification, in order for the `DataImportCron` to poll and import golden images. If no storage class is defined, the DataVolume controller fails to create PVCs and the following event is displayed: `DataVolume.storage spec is missing accessMode and no storageClass to choose profile`.
 
 2. Obtain the `DataImportCron` namespace and name:
-  ```bash
-  $ kubectl get dataimportcron -A -o json | jq -r '.items[] | select(.status.conditions[] \
-    | select(.type == "UpToDate" and .status == "False")) | .metadata.namespace + "/" + .metadata.name'
-  ```
+```bash
+$ kubectl get dataimportcron -A -o json | jq -r '.items[] | select(.status.conditions[] | select(.type == "UpToDate" and .status == "False")) | .metadata.namespace + "/" + .metadata.name'
+```
+
 3. If a default storage class is not defined on the cluster, check the `DataImportCron` specification for a default storage class:
-  ```bash
-  $ kubectl get dataimportcron <dataimportcron> -o yaml | grep -B 5 storageClassName
-  ```
+```bash
+$ kubectl get dataimportcron <dataimportcron> -o yaml | grep -B 5 storageClassName
+```
 Example output:
 ```yaml
           url: docker://.../cdi-func-test-tinycore
@@ -41,22 +41,26 @@ Example output:
             storage: 5Gi
         storageClassName: rook-ceph-block
 ```
+
 4. Obtain the name of the `DataVolume` associated with the `DataImportCron` object:
-  ```bash
-  $ kubectl -n <namespace> get dataimportcron <dataimportcron> -o json | jq .status.lastImportedPVC.name
-  ```
+```bash
+$ kubectl -n <namespace> get dataimportcron <dataimportcron> -o json | jq .status.lastImportedPVC.name
+```
+
 5. Check the `DataVolume` log for error messages:
-  ```bash
-  $ kubectl -n <namespace> get dv <datavolume> -o yaml
-  ```
+```bash
+$ kubectl -n <namespace> get dv <datavolume> -o yaml
+```
+
 6. Set the `CDI_NAMESPACE` environment variable:
-  ```bash
-  $ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
-  ```
+```bash
+$ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
+```
+
 7. Check the `cdi-deployment` log for error messages:
-  ```bash
-  $ kubectl logs -n $CDI_NAMESPACE deployment/cdi-deployment
-  ```
+```bash
+$ kubectl logs -n $CDI_NAMESPACE deployment/cdi-deployment
+```
 
 ## Mitigation
 
@@ -65,9 +69,9 @@ Example output:
 2. If the issue does not resolve itself, delete the data volumes associated with the affected `DataImportCron` objects. The CDI will recreate the data volumes with the default storage class.
 
 3. If your cluster is installed in a restricted network environment, disable the `enableCommonBootImageImport` feature gate in order to opt out of automatic updates:
-  ```bash
-  $ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type json -p '[{"op": "replace", "path": "/spec/featureGates/enableCommonBootImageImport", "value": false}]'
-  ```
+```bash
+$ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type json -p '[{"op": "replace", "path": "/spec/featureGates/enableCommonBootImageImport", "value": false}]'
+```
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->

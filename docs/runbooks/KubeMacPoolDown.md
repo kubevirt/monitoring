@@ -1,5 +1,5 @@
 # KubeMacPoolDown
-<!--apinnick, Oct. 2022-->
+<!-- Edited by apinnick, Oct. 2022-->
 
 ## Meaning
 
@@ -39,5 +39,4 @@ If you cannot resolve the issue, see the following resources:
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
-
 
