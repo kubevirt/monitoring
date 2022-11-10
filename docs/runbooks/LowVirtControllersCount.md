@@ -1,4 +1,4 @@
-<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
+<!-- Edited by Jiří Herrmann, 10 Nov 2022 -->
 
 # LowVirtControllersCount
 
@@ -15,7 +15,7 @@ The responsiveness of KubeVirt might become negatively affected. For example, ce
 In addition, if another `virt-launcher` instance terminates unexpectedly, KubeVirt might become completely unresponsive.
 
 ## Diagnosis
-1. Set the NAMESPACE environment variable:
+1. Set the `NAMESPACE` environment variable:
 ```bash
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
@@ -25,12 +25,12 @@ $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.nam
 $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
 ```
 
-3. Check the virt-launcher logs for error messages:
+3. Check the `virt-launcher` logs for error messages:
 ```bash
 $ kubectl -n $NAMESPACE logs <virt-launcher>
 ```
 
-4. Obtain the details of the `virt-launcher` pod to check for status conditions such as unexpected termination or a NotReady state.
+4. Obtain the details of the `virt-launcher` pod to check for status conditions such as unexpected termination or a `NotReady` state.
 ```bash
 $ kubectl -n $NAMESPACE describe pod/<virt-launcher>
 ```
