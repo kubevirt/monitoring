@@ -1,16 +1,14 @@
-<!-- Edited by davozeni, 10 Nov 2022 -->
-
 # CDIOperatorDown
+<!-- Edited by davozeni, 10 Nov 2022 -->
 
 ## Meaning
 
-This alert fires when the containerized data importer (CDI) Operator is down.
+This alert fires when the Containerized Data Importer (CDI) Operator is down.
 The CDI Operator deploys and manages the CDI infrastructure components, such as data volume and persistent volume claim (PVC) controllers. These controllers help users build virtual machine disks on PVCs.
 
 ## Impact
 
-With the CDI Operator down, the dependant infrastructure components might fail to deploy or fail to stay in the required state.
-As a result, the CDI installation might not work correctly in the cluster.
+The CDI components might fail to deploy or to stay in a required state. The CDI installation might not function correctly.
 
 ## Diagnosis
 
