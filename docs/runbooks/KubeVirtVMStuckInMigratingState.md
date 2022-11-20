@@ -1,25 +1,24 @@
 # KubeVirtVMStuckInMigratingState
+<!-- Edited by apinnick, Nov 2022 -->
 
 ## Meaning
 
-The `KubeVirtVMStuckInMigratingState` alert means that a VirtualMachine has been
-in a migrating state for more than 5 minutes. This alert can suggest a problem
-in the cluster's underlying infrastructure, e.g. network disruptions, node
-resource shortage, etc.
+This alert fires when a virtual machine (VM) is in a migrating state for more than 5 minutes.
+
+This alert might indicate a problem in the cluster infrastructure, such as network disruptions or insufficient node resources.
 
 ## Impact
 
-There is no immediate impact. However, if there are multiple machines in a
-migrating state, it might indicate there might be a problem in the cluster's
-underlying infrastructure.
+There is no immediate impact. However, if this alert persists, you should try to resolve the issue.
 
 ## Diagnosis
 
-Check the nodes statuses and conditions for potential issues.
-
+1. Check the node resources:
 ```bash
 $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[].status.allocatable'
-
+```
+Example output:
+```
 {
   "cpu": "5",
   "devices.kubevirt.io/kvm": "1k",
@@ -34,9 +33,12 @@ $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[
 }
 ```
 
+2. Check the node status conditions:
 ```bash
 $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[].status.conditions'
-
+```
+Example output:
+```
 [
   {
     "lastHeartbeatTime": "2022-10-03T11:13:34Z",
@@ -75,15 +77,21 @@ $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[
 
 ## Mitigation
 
-Ensure you applied the appropriate migration configuration to the VirtualMachine
-according to the nature of the workload.
+Check the migration configuration of the virtual machine to ensure that it is appropriate for the workload. 
 
-Migration configurations can either be set globally via Kubevirt CR's
-`MigrationConfiguration` struct or to a specific scope with
-[Migration Policies](https://kubevirt.io/user-guide/operations/migration_policies/#migration-policies).
-To check whether a VirtualMachine is bound to a migration policy, please refer
-to its `vm.Status.MigrationState.MigrationPolicyName`.
+You set a cluster-wide migration configuration by editing the `MigrationConfiguration` stanza of the `KubeVirt` custom resource.
 
-This problem can be caused by several reasons. Therefore, we advise you to try
-to identify and fix the root cause. If you cannot resolve this issue, please
-open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--DS: You set a migration configuration for a specific scope by creating a migration policy.-->
+<!--USstart-->
+You set a migration configuration for a specific scope by creating a [migration policy](https://kubevirt.io/user-guide/operations/migration_policies/#migration-policies).
+<!--USend-->
+
+You can determine whether a VM is bound to a migration policy by viewing its `vm.Status.MigrationState.MigrationPolicyName` parameter.
+
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

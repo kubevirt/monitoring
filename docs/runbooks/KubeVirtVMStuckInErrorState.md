@@ -1,39 +1,34 @@
 # KubeVirtVMStuckInErrorState
+<!-- Edited by apinnick, Nov 2022 -->
 
 ## Meaning
 
-The `KubeVirtVMStuckInErrorState` alert means that a VirtualMachine has been in
-an error state for more than 5 minutes. VirtualMachines are in error state when
-they are in one of the following status:
+This alert fires when a virtual machine (VM) is in an error state for more than 5 minutes.
 
-1. CrashLoopBackOff
-2. Unknown
-3. Unschedulable
-4. ErrImagePull
-5. ImagePullBackOff
-6. PvcNotFound
-7. DataVolumeError
+Error states:
 
-This alert can suggest an issue in the VirtualMachine configuration, e.g. a
-missing PVC, or a problem in the cluster's underlying infrastructure, e.g.
-network disruptions, node resource shortage, etc.
+- CrashLoopBackOff
+- Unknown
+- Unschedulable
+- ErrImagePull
+- ImagePullBackOff
+- PvcNotFound
+- DataVolumeError
+
+This alert might indicate an issue with the VM configuration, such as a missing persistent volume claim, or a problem in the cluster infrastructure, such as network disruptions or insufficient node resources.
 
 ## Impact
 
-There is no immediate impact. However, if there are multiple machines in an
-error state, it might indicate that something is not working as planned, for
-example, a script may be consistently creating incorrect VirtualMachines
-configurations, or there might be a problem in the cluster's underlying
-infrastructure.
+There is no immediate impact. However, if this alert persists, you should try to resolve the issue.
 
 ## Diagnosis
 
-Check the VirtualMachine's status and conditions, and VM logs and configuration
-to find out what is causing the error state.
-
+1. Check the virtual machine instance (VMI) details:
 ```bash
-$ kubectl describe vmi testvmi-hxghp -n kubevirt-test-default1
-
+$ kubectl describe vmi <vmi> -n <namespace>
+```
+Example output:
+```yaml
 Name:         testvmi-hxghp
 Namespace:    kubevirt-test-default1
 Labels:       name=testvmi-hxghp
@@ -81,15 +76,14 @@ Events:
   Type    Reason            Age   From                       Message
   ----    ------            ----  ----                       -------
   Normal  SuccessfulCreate  27s   virtualmachine-controller  Created virtual machine pod virt-launcher-testvmi-hxghp-xh9qn
-
-
 ```
 
-Also, check the nodes statuses and conditions.
-
+2. Check the node resources:
 ```bash
 $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[].status.allocatable'
-
+```
+Example output:
+```
 {
   "cpu": "5",
   "devices.kubevirt.io/kvm": "1k",
@@ -104,9 +98,12 @@ $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[
 }
 ```
 
+3. Check the node for error conditions:
 ```bash
 $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[].status.conditions'
-
+```
+Example output:
+```
 [
   {
     "lastHeartbeatTime": "2022-10-03T11:13:34Z",
@@ -145,11 +142,12 @@ $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[
 
 ## Mitigation
 
-First, ensure that the VirtualMachine configuration is correct and all necessary 
-resources exist. For example, if a PVC is missing, it should be created. Also,
-verify that the cluster's infrastructure is healthy and there are enough
-resources to run the VirtualMachine.
+Try to identify and resolve the issue.
 
-This problem can be caused by several reasons. Therefore, we advise you to try
-to identify and fix the root cause. If you cannot resolve this issue, please
-open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
