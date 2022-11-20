@@ -1,27 +1,24 @@
 # KubeVirtVMStuckInStartingState
+<!-- Edited by apinnick, Nov 2022 -->
 
 ## Meaning
 
-The `KubeVirtVMStuckInStartingState` alert means that a VirtualMachine has been
-in a starting state for more than 5 minutes. This alert can suggest an issue in
-the VirtualMachine configuration, e.g., a misconfigured priority class or a
-missing network device.
+This alert fires when a virtual machine (VM) is in a starting state for more than 5 minutes.
+
+This alert might indicate an issue in the VM configuration, such as a misconfigured priority class or a missing network device.
 
 ## Impact
 
-There is no immediate impact. However, if there are multiple machines in a
-starting state, it might indicate that something is not working as planned, for
-example, a script may be consistently creating incorrect Virtual Machines
-configurations.
+There is no immediate impact. However, if this alert persists, you should try to resolve the issue.
 
 ## Diagnosis
 
-Check the VirtualMachine's status and conditions, and VM logs and configuration
-to find out what is causing the starting state.
-
+Check the virtual machine instance (VMI) details for error conditions:
 ```bash
-$ kubectl describe vmi testvmi-ldgrw -n kubevirt-test-default1
-
+$ kubectl describe vmi <vmi> -n <namespace>
+```
+Example output:
+```yaml
 Name:         testvmi-ldgrw
 Namespace:    kubevirt-test-default1
 Labels:       name=testvmi-ldgrw
@@ -29,8 +26,7 @@ Annotations:  kubevirt.io/latest-observed-api-version: v1
               kubevirt.io/storage-observed-api-version: v1alpha3
 API Version:  kubevirt.io/v1
 Kind:         VirtualMachineInstance
-Metadata:
-  ...
+...
 Spec:
   ...
   Networks:
@@ -67,18 +63,19 @@ Events:
 
 ## Mitigation
 
-First, ensure that the VirtualMachine configuration is correct and all necessary
-resources exist. For example, if a network device is missing, it should be
-created.
+Ensure that the VM is configured correctly and has the required resources.
 
-If the state of the VirtualMachine is "Pending", it means that it wasn't
-scheduled yet, which in turn rules out scheduling issues as the root cause. If
-this is the case, possible causes include:
+A `Pending` state indicates that the VM has not yet been scheduled. Check the following possible causes:
 
-1. virt-launcher pod isn't scheduled
-2. Topology hints for VMI aren't updated
-3. DV is not provisioned/ready
+- The `virt-launcher` pod is not scheduled.
+- Topology hints for the VMI are not up to date.
+- Data volume is not provisioned or ready.
 
-This problem can be caused by several reasons. Therefore, we advise you to try
-to identify and fix the root cause. If you cannot resolve this issue, please
-open an issue and attach the artifacts gathered in the Diagnosis section.
+<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
+
