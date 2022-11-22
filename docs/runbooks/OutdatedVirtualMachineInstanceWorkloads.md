@@ -45,7 +45,7 @@ kind: VirtualMachineInstance
 
 ### Configuring automated workload updates
 
-<!--DS: Update the `HyperConverged` CR to enable automatic workload updates.>
+<!--DS: Update the `HyperConverged` CR to enable automatic workload updates.-->
 <!--USstart-->
 Update the `KubeVirt` CR to enable automatic workload updates.
 
