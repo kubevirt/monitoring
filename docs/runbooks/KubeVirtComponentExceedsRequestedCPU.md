@@ -23,6 +23,7 @@ $ kubectl -n $NAMESPACE get deployment <component> -o yaml | grep requests: -A 2
 ```  
 node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace="$NAMESPACE",container="<component>"}
 ```
+
 See the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/) for more information.
 
 ## Mitigation

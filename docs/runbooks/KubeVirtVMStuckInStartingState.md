@@ -17,6 +17,7 @@ Check the virtual machine instance (VMI) details for error conditions:
 ```bash
 $ kubectl describe vmi <vmi> -n <namespace>
 ```
+
 Example output:
 ```yaml
 Name:         testvmi-ldgrw
@@ -28,7 +29,7 @@ API Version:  kubevirt.io/v1
 Kind:         VirtualMachineInstance
 ...
 Spec:
-  ...
+...
   Networks:
     Name:  default
     Pod:

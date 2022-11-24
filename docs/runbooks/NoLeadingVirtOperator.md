@@ -25,32 +25,26 @@ This alert indicates a failure at the level of the cluster. As a result, critica
 ```bash
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
-
 2. Obtain the status of the `virt-operator` pods:
 ```bash
 $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
 ```
-
 3. Check the `virt-operator` pod logs to determine the leader status:
 ```bash
 $ kubectl -n $NAMESPACE logs | grep lead
 ```
-
-Log messages that contain `Started leading` or `acquire leader` indicate the leader status of a given `virt-operator` pod.
-
-***Leader pod example:***
+Leader pod example:
 ```
 {"component":"virt-operator","level":"info","msg":"Attempting to acquire leader status","pos":"application.go:400","timestamp":"2021-11-30T12:15:18.635387Z"}
 I1130 12:15:18.635452       1 leaderelection.go:243] attempting to acquire leader lease <namespace>/virt-operator...
 I1130 12:15:19.216582       1 leaderelection.go:253] successfully acquired lease <namespace>/virt-operator
 {"component":"virt-operator","level":"info","msg":"Started leading","pos":"application.go:385","timestamp":"2021-11-30T12:15:19.216836Z"}
 ```
-***Non-leader pod example:***
+Non-leader pod example:
 ```
 {"component":"virt-operator","level":"info","msg":"Attempting to acquire leader status","pos":"application.go:400","timestamp":"2021-11-30T12:15:20.533696Z"}
 I1130 12:15:20.533792       1 leaderelection.go:243] attempting to acquire leader lease <namespace>/virt-operator...
 ```
-
 4. Obtain the details of the affected `virt-operator` pods:
 ```bash
 $ kubectl -n $NAMESPACE describe pod <virt-operator>

@@ -27,6 +27,7 @@ There is no immediate impact. However, if this alert persists, you should try to
 ```bash
 $ kubectl describe vmi <vmi> -n <namespace>
 ```
+
 Example output:
 ```yaml
 Name:         testvmi-hxghp
@@ -36,19 +37,17 @@ Annotations:  kubevirt.io/latest-observed-api-version: v1
               kubevirt.io/storage-observed-api-version: v1alpha3
 API Version:  kubevirt.io/v1
 Kind:         VirtualMachineInstance
-Metadata:
-  ...
+...
 Spec:
   Domain:
-    ...
+...
     Resources:
       Requests:
         Cpu:     5000000Gi
         Memory:  5130000240Mi
-  ...
+...
 Status:
-  Active Pods:
-    acbc8143-c1da-45e8-b498-3f0dafcd1383:  
+...
   Conditions:
     Last Probe Time:       2022-10-03T11:11:07Z
     Last Transition Time:  2022-10-03T11:11:07Z

@@ -46,12 +46,10 @@ Example output:
 ```bash
 $ kubectl -n <namespace> get dataimportcron <dataimportcron> -o json | jq .status.lastImportedPVC.name
 ```
-
 5. Check the `DataVolume` log for error messages:
 ```bash
 $ kubectl -n <namespace> get dv <datavolume> -o yaml
 ```
-
 6. Set the `CDI_NAMESPACE` environment variable:
 ```bash
 $ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
