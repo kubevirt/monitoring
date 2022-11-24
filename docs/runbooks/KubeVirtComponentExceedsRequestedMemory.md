@@ -23,6 +23,7 @@ $ kubectl -n $NAMESPACE get deployment <component> -o yaml | grep requests: -A 2
 ```  
 container_memory_usage_bytes{namespace="$NAMESPACE",container="<component>"}
 ```
+
 See the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/) for more information.
 
 ## Mitigation

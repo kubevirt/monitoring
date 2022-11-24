@@ -14,22 +14,18 @@ Any actions related to virtual machine (VM) lifecycle management fail. This nota
 ```bash
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
-
 2. Check the status of the `virt-controller` deployment:
 ```bash
 $ kubectl get deployment -n $NAMESPACE virt-controller -o yaml
 ```
-
 3. Review the logs of the `virt-controller` pod:
 ```bash
 $ kubectl get logs <virt-controller>
 ```
 
-In this command, use the actual name of the `virt-controller` pod, such as `virt-controller-7888c64d66-dzc9p`.
-
 ## Mitigation
 
-This alert can have a variety of causes, including:
+This alert can have a variety of causes, including the following:
 
 - Node resource exhaustion
 - Not enough memory on the cluster

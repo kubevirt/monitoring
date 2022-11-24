@@ -4,9 +4,9 @@
 
 ## Meaning
 
-The HPPNotReady alert fires when an HPP installation is in a degraded state. 
+This alert fires when a hostpath provisioner (HPP) installation is in a degraded state. 
 
-The hostpath provisioner (HPP) dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs).  
+The HPP dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs).  
 
 ## Impact
 
@@ -18,12 +18,10 @@ HPP is not usable. Its components are not ready and they are not progressing tow
 ```bash
  export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
 ```
-
 2. Check for HPP components that are currently not ready:
 ```bash
 $ kubectl -n $HPP_NAMESPACE get all -l k8s-app=hostpath-provisioner
 ```
- 
 3. Obtain the details of the failing pod:
 ```bash
 $ kubectl -n $HPP_NAMESPACE describe pods <pod>

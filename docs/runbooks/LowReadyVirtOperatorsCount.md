@@ -25,17 +25,14 @@ The `virt-operator` is not directly responsible for virtual machines (VMs) in th
 ```bash
 $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 ```
-
 2. Obtain the name of the `virt-operator` deployment:
 ```bash
 $ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
 ```
-
 3. Obtain the details of the `virt-operator` deployment:
 ```bash
 $ kubectl -n $NAMESPACE describe deploy virt-operator
 ```
-
 4. Check for node issues, such as a `NotReady` state:
 ```bash
 $ kubectl get nodes

@@ -25,6 +25,7 @@ $ kubectl get vmis -o wide
 ```bash
 $ kubectl get vmi <vmi> -o yaml
 ```
+
 Example output:
 ```yaml
   status:
