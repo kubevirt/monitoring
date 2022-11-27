@@ -23,9 +23,8 @@ $ kubectl exec -it <virt-launcher> -c compute -- top
 
 ## Mitigation
 
-Increase the memory limit in the `VirtualMachine` specification.
+Increase the memory limit in the `VirtualMachine` specification as in the following example:
 
-Example:
 ```yaml
 spec:
   running: false

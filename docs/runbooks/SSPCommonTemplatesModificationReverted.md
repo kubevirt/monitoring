@@ -22,7 +22,7 @@ $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{prin
 ```bash
 $ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator | grep 'common template' -C 3
 ```
- 
+
 ## Mitigation
 
 Try to identify and resolve the cause of the changes.
