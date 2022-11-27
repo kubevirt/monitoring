@@ -13,19 +13,19 @@ The CDI cannot create a VM disk on the PVC.
 
 ## Diagnosis
 
-Identify the incomplete storage profile:
+- Identify the incomplete storage profile:
 
-```bash
-$ kubectl get storageprofile <storage_class>
-```
+  ```bash
+  $ kubectl get storageprofile <storage_class>
+  ```
 
 ## Mitigation
 
-Add the missing storage profile information:
+- Add the missing storage profile information:
 
-```bash
-$ kubectl patch storageprofile local --type=merge -p '{"spec": {"claimPropertySets": [{"accessModes": ["ReadWriteOnce"], "volumeMode": "Filesystem"}]}}'
-```
+  ```bash
+  $ kubectl patch storageprofile local --type=merge -p '{"spec": {"claimPropertySets": [{"accessModes": ["ReadWriteOnce"], "volumeMode": "Filesystem"}]}}'
+  ```
 
 <!--USstart-->
 See [Empty profiles](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/storageprofile.md#empty-storage-profile) and

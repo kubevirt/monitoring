@@ -25,20 +25,20 @@ The virtual machine running inside the container is terminated by the runtime if
 
 ## Mitigation
 
-Increase the memory limit in the `VirtualMachine` specification as in the following example:
+- Increase the memory limit in the `VirtualMachine` specification as in the following example:
 
-```yaml
-spec:
-  running: false
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: vm-name
-    spec:
-      domain:
-        resources:
-          limits:
-            memory: 200Mi
-          requests:
-            memory: 128Mi
-```
+  ```yaml
+  spec:
+    running: false
+    template:
+      metadata:
+        labels:
+          kubevirt.io/vm: vm-name
+      spec:
+        domain:
+          resources:
+            limits:
+              memory: 200Mi
+            requests:
+              memory: 128Mi
+  ```

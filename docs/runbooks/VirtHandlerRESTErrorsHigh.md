@@ -37,11 +37,11 @@ Node-related actions, such as starting and migrating workloads, are delayed on t
 
 ## Mitigation
 
-If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
+- If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
 
-```bash
-$ kubectl delete -n <install-namespace> <virt-handler>
-```
+  ```bash
+  $ kubectl delete -n <install-namespace> <virt-handler>
+  ```
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->

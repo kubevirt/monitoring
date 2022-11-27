@@ -35,16 +35,16 @@ See the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/
 
 <!--DS: Update the memory request limit in the `HCO` custom resource.-->
 <!--USstart-->
-Update the memory resource request in the `KubeVirt` custom resource as in the following example:
+- Update the memory resource request in the `KubeVirt` custom resource as in the following example:
 
-```yaml
-spec:
-  customizeComponents:
-    patches:
-    - type:
-      resourceName: < name-of-resource-firing-alert >
-      resourceType: < Deployment|DaemonSet >
-      type: strategic
-      patch: '{"spec":{"template":{"spec":{"containers":[{"name":"<component>","resources":{"requests":{"memory":" <memory_request> "}}}]}}}}'
-```
+  ```yaml
+  spec:
+    customizeComponents:
+      patches:
+      - type:
+        resourceName: < name-of-resource-firing-alert >
+        resourceType: < Deployment|DaemonSet >
+        type: strategic
+        patch: '{"spec":{"template":{"spec":{"containers":[{"name":"<component>","resources":{"requests":{"memory":" <memory_request> "}}}]}}}}'
+  ```
 <!--USend-->

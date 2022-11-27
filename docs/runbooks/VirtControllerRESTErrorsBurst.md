@@ -39,11 +39,11 @@ Status updates are not propagated and actions like migrations cannot take place.
 
 ## Mitigation
 
-If the `virt-controller` pod cannot connect to the API server, delete the pod to force a restart:
+- If the `virt-controller` pod cannot connect to the API server, delete the pod to force a restart:
 
-```bash
-$ kubectl delete -n $NAMESPACE <virt-controller>
-```
+  ```bash
+  $ kubectl delete -n $NAMESPACE <virt-controller>
+  ```
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->

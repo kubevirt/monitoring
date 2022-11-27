@@ -21,14 +21,14 @@ Upgrading a system with JSON Patch annotations is dangerous because the structur
 
 ## Diagnosis
 
-Check the `annotation_name` in the alert details to identify the JSON Patch annotation:
+- Check the `annotation_name` in the alert details to identify the JSON Patch annotation:
 
-```
-Labels
-   alertname=KubevirtHyperconvergedClusterOperatorUSModification
-   annotation_name=kubevirt.kubevirt.io/jsonpatch
-   severity=info
-```
+  ```
+  Labels
+    alertname=KubevirtHyperconvergedClusterOperatorUSModification
+    annotation_name=kubevirt.kubevirt.io/jsonpatch
+    severity=info
+  ```
 
 ## Mitigation
 

@@ -13,11 +13,11 @@ Virtual machines cannot be scheduled or run if no nodes have KVM resources.
 
 ## Diagnosis
 
-Identify the nodes with KVM resources:
+- Identify the nodes with KVM resources:
 
-```bash
-$ kubectl get nodes -o jsonpath='{.items[*].status.allocatable}' | grep devices.kubevirt.io/kvm
-```
+  ```bash
+  $ kubectl get nodes -o jsonpath='{.items[*].status.allocatable}' | grep devices.kubevirt.io/kvm
+  ```
 
 ## Mitigation
 

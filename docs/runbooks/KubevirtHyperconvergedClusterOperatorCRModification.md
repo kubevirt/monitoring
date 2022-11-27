@@ -13,16 +13,14 @@ Changing the operands manually causes the cluster configuration to fluctuate and
 
 ## Diagnosis
 
-Check the `component_name` in the alert details to determine the operand that is being changed.
+- Check the `component_name` value in the alert details to determine the operand kind (`kubevirt`) and the operand name (`kubevirt-kubevirt-hyperconverged`) that are being changed:
 
-In the following example, the operand kind is `kubevirt` and the operand name is `kubevirt-kubevirt-hyperconverged`:
-
-```
-Labels
-   alertname=KubevirtHyperconvergedClusterOperatorCRModification
-   component_name=kubevirt/kubevirt-kubevirt-hyperconverged
-   severity=warning
-```
+  ```
+  Labels
+    alertname=KubevirtHyperconvergedClusterOperatorCRModification
+    component_name=kubevirt/kubevirt-kubevirt-hyperconverged
+    severity=warning
+  ```
 
 ## Mitigation
 

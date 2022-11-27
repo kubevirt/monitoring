@@ -35,16 +35,16 @@ See the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/
 
 <!--DS: Update the CPU request limit in the `HCO` custom resource.-->
 <!--USstart-->
-Update the CPU resource request in the `KubeVirt` custom resource as in the following example:
+- Update the CPU resource request in the `KubeVirt` custom resource as in the following example:
 
-```yaml
-spec:
-  customizeComponents:
-    patches:
-    - type:
-      resourceName: <component>
-      resourceType: < Deployment|DaemonSet >
-      type: strategic
-      patch: '{"spec":{"template":{"spec":{"containers":[{"name":"<component>","resources":{"requests":{"cpu":" <cpu_request> "}}}]}}}}'
-```
+  ```yaml
+  spec:
+    customizeComponents:
+      patches:
+      - type:
+        resourceName: <component>
+        resourceType: < Deployment|DaemonSet >
+        type: strategic
+        patch: '{"spec":{"template":{"spec":{"containers":[{"name":"<component>","resources":{"requests":{"cpu":" <cpu_request> "}}}]}}}}'
+  ```
 <!--USend-->
