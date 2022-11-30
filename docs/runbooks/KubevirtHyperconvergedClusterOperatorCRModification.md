@@ -19,9 +19,9 @@ In the following example, the operand kind is `kubevirt` and the operand name is
 
 ```
 Labels
-    alertname=KubevirtHyperconvergedClusterOperatorCRModification
-    component_name=kubevirt/kubevirt-kubevirt-hyperconverged
-    severity=warning
+   alertname=KubevirtHyperconvergedClusterOperatorCRModification
+   component_name=kubevirt/kubevirt-kubevirt-hyperconverged
+   severity=warning
 ```
 
 ## Mitigation

@@ -13,24 +13,28 @@ The CDI components might fail to deploy or to stay in a required state. The CDI 
 ## Diagnosis
 
 1. Set the `CDI_NAMESPACE` environment variable:
-```bash
-$ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
-```
+
+   ```bash
+   $ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
+   ```
 
 2. Check whether the `cdi-operator` pod is currently running:
-```bash
-$ kubectl -n $CDI_NAMESPACE get pods -l name=cdi-operator
-```
+
+   ```bash
+   $ kubectl -n $CDI_NAMESPACE get pods -l name=cdi-operator
+   ```
  
 3. Obtain the details of the `cdi-operator` pod:
-```bash
-$ kubectl -n $CDI_NAMESPACE describe pods -l name=cdi-operator
-```
+
+   ```bash
+   $ kubectl -n $CDI_NAMESPACE describe pods -l name=cdi-operator
+   ```
 
 4. Check the log of the `cdi-operator` pod for errors:
-```bash
-$ kubectl -n $CDI_NAMESPACE logs -l name=cdi-operator
-```
+
+   ```bash
+   $ kubectl -n $CDI_NAMESPACE logs -l name=cdi-operator
+   ```
 
 ## Mitigation
 

@@ -17,21 +17,28 @@ In addition, if another `virt-launcher` instance terminates unexpectedly, KubeVi
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
+
 2. Verify that running `virt-controller` pods are available:
-```bash
-$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
+   ```
+
 3. Check the `virt-launcher` logs for error messages:
-```bash
-$ kubectl -n $NAMESPACE logs <virt-launcher>
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE logs <virt-launcher>
+   ```
+
 4. Obtain the details of the `virt-launcher` pod to check for status conditions such as unexpected termination or a `NotReady` state.
-```bash
-$ kubectl -n $NAMESPACE describe pod/<virt-launcher>
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE describe pod/<virt-launcher>
+   ```
 
 ## Mitigation
 

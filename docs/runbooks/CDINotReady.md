@@ -16,24 +16,28 @@ CDI components are not ready and they stopped progressing towards a ready state.
 ## Diagnosis
 
 1. Set the `CDI_NAMESPACE` environment variable:
-```bash
-$ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
-```
+
+   ```bash
+   $ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
+   ```
 
 2. Check the CDI deployment for components that are not ready:
-```bash
-$ kubectl -n $CDI_NAMESPACE get deploy -l cdi.kubevirt.io
-```
+
+   ```bash
+   $ kubectl -n $CDI_NAMESPACE get deploy -l cdi.kubevirt.io
+   ```
 
 3. Check the details of the failing pod:
-```bash
-$ kubectl -n $CDI_NAMESPACE describe pods <pod>
-```
+
+   ```bash
+   $ kubectl -n $CDI_NAMESPACE describe pods <pod>
+   ```
 
 4. Check the logs of the failing pod:
-```bash
-$ kubectl -n $CDI_NAMESPACE logs <pod>
-```
+
+   ```bash
+   $ kubectl -n $CDI_NAMESPACE logs <pod>
+   ```
 
 ## Mitigation
 

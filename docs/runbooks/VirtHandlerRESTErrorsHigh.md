@@ -18,23 +18,27 @@ Node-related actions, such as starting and migrating workloads, are delayed on t
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
 
 2. Check the status of the `virt-handler` pod:
-```bash
-$ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
-```
+
+   ```bash
+   $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
+   ```
 
 3. Check the `virt-handler` logs for error messages when connecting to the API server:
-```bash
-$ kubectl logs -n  $NAMESPACE <virt-handler>
-```
+
+   ```bash
+   $ kubectl logs -n  $NAMESPACE <virt-handler>
+   ```
 
 ## Mitigation
 
 If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
+
 ```bash
 $ kubectl delete -n <install-namespace> <virt-handler>
 ```

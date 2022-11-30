@@ -20,28 +20,33 @@ However, customer workloads, such as virtual machines (VMs) and VM instances (VM
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
 
 2. Check the status of the `virt-operator` pods:
-```bash
-$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
+   ```
 
 3. Check the `virt-operator` logs for error messages when connecting to the API server:
-```bash
-$ kubectl -n $NAMESPACE logs <virt-operator>
-```
 
-4. Obtain the details of the `virt-operator` pod:    
-```bash
-$ kubectl -n $NAMESPACE describe pod <virt-operator>
-```
+   ```bash
+   $ kubectl -n $NAMESPACE logs <virt-operator>
+   ```
+
+4. Obtain the details of the `virt-operator` pod:
+
+   ```bash
+   $ kubectl -n $NAMESPACE describe pod <virt-operator>
+   ```
 
 ## Mitigation
 
 If the `virt-operator` pod cannot connect to the API server, delete the pod to force a restart:
+
 ```bash
 $ kubectl delete -n <install-namespace> <virt-operator>
 ```

@@ -12,31 +12,35 @@ Non-migratable VMs prevent node eviction. This condition affects operations such
 ## Diagnosis
 
 1. Check the VMI configuration to determine whether the value of `evictionStrategy` is `LiveMigrate` of the VMI:
-```bash
-$ kubectl get vmis -o yaml
-```
+
+   ```bash
+   $ kubectl get vmis -o yaml
+   ```
 
 2. Check for a `False` status in the `LIVE-MIGRATABLE` column to identify VMIs that are not migratable:
-```bash
-$ kubectl get vmis -o wide
-```
+
+   ```bash
+   $ kubectl get vmis -o wide
+   ```
 
 3. Obtain the details of the VMI and check `spec.conditions` to identify the issue:
-```bash
-$ kubectl get vmi <vmi> -o yaml
-```
 
-Example output:
-```yaml
-  status:
-    conditions:
-    - lastProbeTime: null
-      lastTransitionTime: null
-      message: cannot migrate VMI which does not use masquerade to connect to the pod network
-      reason: InterfaceNotLiveMigratable
-      status: "False"
-      type: LiveMigratable
-```
+   ```bash
+   $ kubectl get vmi <vmi> -o yaml
+   ```
+
+   Example output:
+
+   ```yaml
+   status:
+     conditions:
+     - lastProbeTime: null
+       lastTransitionTime: null
+       message: cannot migrate VMI which does not use masquerade to connect to the pod network
+       reason: InterfaceNotLiveMigratable
+       status: "False"
+       type: LiveMigratable
+   ```
 
 ## Mitigation
 

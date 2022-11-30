@@ -11,17 +11,17 @@ This alert has the following causes:
 
 ## Mitigation
 
-- Complete the installation by creating a `HyperConverged` CR with its default values:
+Installation: Complete the installation by creating a `HyperConverged` CR with its default values:
 
 ```bash
 $ cat <<EOF | kubectl apply -f -
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: hco-operatorgroup
-  namespace: kubevirt-hyperconverged
+   name: hco-operatorgroup
+   namespace: kubevirt-hyperconverged
 spec: {}
 EOF
 ```
 
-- Uninstall the HCO. If the uninstall process continues to run, you must resolve that issue in order to cancel the alert.
+Uninstall: Uninstall the HCO. If the uninstall process continues to run, you must resolve that issue in order to cancel the alert.

@@ -11,17 +11,22 @@ Any actions related to virtual machine (VM) lifecycle management fail. This nota
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
+
 2. Check the status of the `virt-controller` deployment:
-```bash
-$ kubectl get deployment -n $NAMESPACE virt-controller -o yaml
-```
+
+   ```bash
+   $ kubectl get deployment -n $NAMESPACE virt-controller -o yaml
+   ```
+
 3. Review the logs of the `virt-controller` pod:
-```bash
-$ kubectl get logs <virt-controller>
-```
+
+   ```bash
+   $ kubectl get logs <virt-controller>
+   ```
 
 ## Mitigation
 

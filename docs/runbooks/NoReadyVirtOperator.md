@@ -22,24 +22,28 @@ The `virt-operator` is not directly responsible for virtual machines in the clus
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
 
 2. Obtain the name of the `virt-operator` deployment:
-```bash
-$ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get deploy virt-operator -o yaml
+   ```
 
 3. Generate the description of the `virt-operator` deployment:
-```bash
-$ kubectl -n $NAMESPACE describe deploy virt-operator
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE describe deploy virt-operator
+   ```
 
 4. Check for node issues, such as a `NotReady` state:
-```bash
-$ kubectl get nodes
-```
+
+   ```bash
+   $ kubectl get nodes
+   ```
 
 ## Mitigation
 

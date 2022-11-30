@@ -12,24 +12,28 @@ An API call outage might occur during node eviction because the `virt-api` pod b
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
 
 2. Check the number of available `virt-api` pods:
-```bash
-$ kubectl get deployment -n $NAMESPACE virt-api -o jsonpath='{.status.readyReplicas}'
-```
+
+   ```bash
+   $ kubectl get deployment -n $NAMESPACE virt-api -o jsonpath='{.status.readyReplicas}'
+   ```
 
 3. Check the status of the `virt-api` deployment for error conditions:
-```bash
-$ kubectl -n $NAMESPACE get deploy virt-api -o yaml
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get deploy virt-api -o yaml
+   ```
 
 4. Check the nodes for issues such as nodes in a `NotReady` state:
-```bash
-$ kubectl get nodes
-```
+
+   ```bash
+   $ kubectl get nodes
+   ```
 
 ## Mitigation
 

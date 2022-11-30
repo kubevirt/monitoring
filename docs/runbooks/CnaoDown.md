@@ -13,24 +13,28 @@ If the CNAO is not running, the cluster cannot reconcile changes to virtual mach
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get deployment -A | grep cluster-network-addons-operator | awk '{print $1}')"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get deployment -A | grep cluster-network-addons-operator | awk '{print $1}')"
+   ```
 
 2. Check the status of the `cluster-network-addons-operator` pod:
-```bash
-$ kubectl -n $NAMESPACE get pods -l name=cluster-network-addons-operator
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get pods -l name=cluster-network-addons-operator
+   ```
  
 3. Check the `cluster-network-addons-operator` logs for error messages:
-```bash
-$ kubectl -n $NAMESPACE logs -l name=cluster-network-addons-operator
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE logs -l name=cluster-network-addons-operator
+   ```
 
 4. Obtain the details of the `cluster-network-addons-operator` pods:
-```bash
-$ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE describe pods -l name=cluster-network-addons-operator
+   ```
 
 ## Mitigation
 

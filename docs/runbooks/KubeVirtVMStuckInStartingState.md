@@ -14,19 +14,21 @@ There is no immediate impact. However, if this alert persists, you should try to
 ## Diagnosis
 
 Check the virtual machine instance (VMI) details for error conditions:
+
 ```bash
 $ kubectl describe vmi <vmi> -n <namespace>
 ```
 
 Example output:
+
 ```yaml
-Name:         testvmi-ldgrw
-Namespace:    kubevirt-test-default1
-Labels:       name=testvmi-ldgrw
-Annotations:  kubevirt.io/latest-observed-api-version: v1
-              kubevirt.io/storage-observed-api-version: v1alpha3
-API Version:  kubevirt.io/v1
-Kind:         VirtualMachineInstance
+Name:          testvmi-ldgrw
+Namespace:     kubevirt-test-default1
+Labels:        name=testvmi-ldgrw
+Annotations:   kubevirt.io/latest-observed-api-version: v1
+               kubevirt.io/storage-observed-api-version: v1alpha3
+API Version:   kubevirt.io/v1
+Kind:          VirtualMachineInstance
 ...
 Spec:
 ...
@@ -54,8 +56,8 @@ Status:
   Phase Transition Timestamps:
     Phase:                        Pending
     Phase Transition Timestamp:   2022-10-03T11:08:30Z
-  Runtime User:                   0
-  Virtual Machine Revision Name:  revision-start-vm-6f01a94b-3260-4c5a-bbe5-dc98d13e6bea-1
+  Runtime User:                    0
+  Virtual Machine Revision Name:   revision-start-vm-6f01a94b-3260-4c5a-bbe5-dc98d13e6bea-1
 Events:
   Type     Reason        Age                From                       Message
   ----     ------        ----               ----                       -------

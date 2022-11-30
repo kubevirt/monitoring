@@ -14,14 +14,16 @@ Changes to common templates are overwritten.
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+   ```
 
 2. Check the `ssp-operator` logs for templates with reverted changes:
-```bash
-$ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator | grep 'common template' -C 3
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE logs --tail=-1 -l control-plane=ssp-operator | grep 'common template' -C 3
+   ```
 
 ## Mitigation
 
