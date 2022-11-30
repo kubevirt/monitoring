@@ -15,25 +15,34 @@ This alert indicates that a cluster-level failure might occur, which would cause
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
+
 2. Verify a `virt-controller` device is available:
-```bash
-$ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
-```
+
+   ```bash
+   $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
+   ```
+
 3. Check the status of the `virt-controller` deployment:
-```bash
-$ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get deploy virt-controller -o yaml
+   ```
+
 4. Obtain the details of the `virt-controller` deployment to check for status conditions, such as crashing pods or failures to pull images:
-```bash
-$ kubectl -n $NAMESPACE describe deploy virt-controller
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE describe deploy virt-controller
+   ```
+
 5. Check if any problems occurred with the nodes. For example, they might be in a `NotReady` state:
-```bash
-$ kubectl get nodes
-```
+
+   ```bash
+   $ kubectl get nodes
+   ```
 
 ## Mitigation
 

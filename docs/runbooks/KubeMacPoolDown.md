@@ -12,23 +12,30 @@ If `KubeMacPool` is down, `VirtualMachine` objects cannot be created.
 ## Diagnosis
 
 1. Set the `KMP_NAMESPACE` environment variable:
-```bash
-$ export KMP_NAMESPACE="$(kubectl get pod -A --no-headers -l \
-  control-plane=mac-controller-manager | awk '{print $1}')"
-```
+
+   ```bash
+   $ export KMP_NAMESPACE="$(kubectl get pod -A --no-headers -l \
+      control-plane=mac-controller-manager | awk '{print $1}')"
+   ```
+   
 2. Set the `KMP_NAME` environment variable:
-```bash
-$ export KMP_NAME="$(kubectl get pod -A --no-headers -l \
-  control-plane=mac-controller-manager | awk '{print $2}')"
-```
+
+   ```bash
+   $ export KMP_NAME="$(kubectl get pod -A --no-headers -l \
+      control-plane=mac-controller-manager | awk '{print $2}')"
+   ```
+
 3. Obtain the `KubeMacPool-manager` pod details:
-```bash
-$ kubectl describe pod -n $KMP_NAMESPACE $KMP_NAME
-```
+
+   ```bash
+   $ kubectl describe pod -n $KMP_NAMESPACE $KMP_NAME
+   ```
+
 4. Check the `KubeMacPool-manager` logs for error messages:
-```bash
-$ kubectl logs -n $KMP_NAMESPACE $KMP_NAME
-```
+
+   ```bash
+   $ kubectl logs -n $KMP_NAMESPACE $KMP_NAME
+   ```
 
 ## Mitigation
 

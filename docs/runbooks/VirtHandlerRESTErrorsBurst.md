@@ -18,26 +18,31 @@ Status updates are not propagated and node-related actions, such as migrations, 
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
 
 2. Check the status of the `virt-handler` pod:
-```bash
-$ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
-```
+
+   ```bash
+   $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
+   ```
 
 3. Check the `virt-handler` logs for error messages when connecting to the API server:
-```bash
-$ kubectl logs -n  $NAMESPACE <virt-handler>
-```
+
+   ```bash
+   $ kubectl logs -n  $NAMESPACE <virt-handler>
+   ```
 
 ## Mitigation
 
 If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
+
 ```bash
 $ kubectl delete -n $NAMESPACE <virt-handler>
 ```
+
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:

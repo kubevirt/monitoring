@@ -20,24 +20,28 @@ The `virt-operator` is not directly responsible for virtual machines (VMs) in th
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-```bash
-$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
-```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   ```
 
 2. Check the states of the `virt-operator` pods:
-```bash
-$ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-operator
+   ```
 
 3. Review the logs of the affected `virt-operator` pods:
-```bash
-$ kubectl -n $NAMESPACE logs <virt-operator>
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE logs <virt-operator>
+   ```
 
 4. Obtain the details of the affected `virt-operator` pods:
-```bash
-$ kubectl -n $NAMESPACE describe pod <virt-operator>
-```
+
+   ```bash
+   $ kubectl -n $NAMESPACE describe pod <virt-operator>
+   ```
 
 ## Mitigation
 

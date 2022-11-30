@@ -14,28 +14,34 @@ Network functionality is affected.
 ## Diagnosis
 
 1. Check the status conditions of the `NetworkAddonsConfig` CR to identify the deployment or daemon set that is not ready:
-```bash
-$ kubectl get networkaddonsconfig -o custom-columns="":.status.conditions[*].message
-```
-Example output:
-```
-DaemonSet "cluster-network-addons/macvtap-cni" update is being processed...
-```
+
+   ```bash
+   $ kubectl get networkaddonsconfig -o custom-columns="":.status.conditions[*].message
+   ```
+
+   Example output:
+
+   ```
+   DaemonSet "cluster-network-addons/macvtap-cni" update is being processed...
+   ```
 
 2. Check the component's pod for errors:
-```bash
-$ kubectl -n cluster-network-addons get daemonset <pod> -o yaml
-```
+
+   ```bash
+   $ kubectl -n cluster-network-addons get daemonset <pod> -o yaml
+   ```
 
 3. Check the component's logs:
-```bash
-$ kubectl -n cluster-network-addons logs <pod>
-```
+
+   ```bash
+   $ kubectl -n cluster-network-addons logs <pod>
+   ```
 
 4. Check the component's details for error conditions:
-```bash
-$ kubectl -n cluster-network-addons describe <pod>
-```
+
+   ```bash
+   $ kubectl -n cluster-network-addons describe <pod>
+   ```
 
 ## Mitigation
 

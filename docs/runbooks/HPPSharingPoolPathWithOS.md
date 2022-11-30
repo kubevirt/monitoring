@@ -14,23 +14,28 @@ A shared hostpath pool puts pressure on the node's disks. The node might have de
 ## Diagnosis
 
 1. Configure the `HPP_NAMESPACE` environment variable:
-```bash
-$ export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
-```
+
+   ```bash
+   $ export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
+   ```
 
 2. Obtain the status of the `hostpath-provisioner-csi` daemon set pods:
-```bash
-$ kubectl -n $HPP_NAMESPACE get pods | grep hostpath-provisioner-csi
-```
+
+   ```bash
+   $ kubectl -n $HPP_NAMESPACE get pods | grep hostpath-provisioner-csi
+   ```
  
 3. Check the `hostpath-provisioner-csi` logs to identify the shared pool and path:
-```bash
-$ kubectl -n $HPP_NAMESPACE logs <csi_daemonset> -c hostpath-provisioner
-```
-Example output:
-```  
-I0208 15:21:03.769731       1 utils.go:221] pool (<legacy, csi-data-dir>/csi), shares path with OS which can lead to node disk pressure
-```
+
+   ```bash
+   $ kubectl -n $HPP_NAMESPACE logs <csi_daemonset> -c hostpath-provisioner
+   ```
+
+   Example output:
+
+   ```  
+   I0208 15:21:03.769731       1 utils.go:221] pool (<legacy, csi-data-dir>/csi), shares path with OS which can lead to node disk pressure
+   ```
 
 ## Mitigation
 

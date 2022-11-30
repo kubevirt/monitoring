@@ -25,38 +25,45 @@ You cannot upgrade to OKD 1.7.
 ## Diagnosis
 
 1. Check the `kubevirt-hyperconverged` resource to see whether it is upgradeable:
-```bash
-$ kubectl get hco kubevirt-hyperconverged -o json | jq -r '.status.conditions[] | select(.type == "Upgradeable")'
-```
-Example output:
-```json
-{
-  "lastTransitionTime": "2022-05-26T09:23:21Z",
-  "message": "NMO custom resources have been found",
-  "reason": "UpgradeBlocked",
-  "status": "False",
-  "type": "Upgradeable"
-}
-```
+
+   ```bash
+   $ kubectl get hco kubevirt-hyperconverged -o json | jq -r '.status.conditions[] | select(.type == "Upgradeable")'
+   ```
+
+   Example output:
+
+   ```
+   {
+     "lastTransitionTime": "2022-05-26T09:23:21Z",
+     "message": "NMO custom resources have been found",
+     "reason": "UpgradeBlocked",
+     "status": "False",
+     "type": "Upgradeable"
+   }
+   ```
 
 2. Check for a ClusterServiceVersion (CSV) warning event such as the following:
-```
-Warning  NotUpgradeable      2m12s (x5 over 2m50s)   kubevirt-hyperconvergedNode
-Maintenance Operator custom resources nodemaintenances.nodemaintenance.kubevirt.io 
-have been found.
-Please remove them to allow upgrade. You can use NMO standalone operator if
-keeping the node(s) under maintenance is still required.
-```
+
+   ```
+   Warning  NotUpgradeable      2m12s (x5 over 2m50s)   kubevirt-hyperconvergedNode
+   Maintenance Operator custom resources nodemaintenances.nodemaintenance.kubevirt.io 
+   have been found.
+   Please remove them to allow upgrade. You can use NMO standalone operator if
+   keeping the node(s) under maintenance is still required.
+   ```
 
 3. Check for NMO CRs belonging to the `nodemaintenance.kubevirt.io` API group:
-```bash
-$ kubectl get nodemaintenances.nodemaintenance.kubevirt.io
-```
-Example output:
-```
-NAME                   AGE
-nodemaintenance-test   5m33s
-```
+
+   ```bash
+   $ kubectl get nodemaintenances.nodemaintenance.kubevirt.io
+   ```
+
+   Example output:
+
+   ```
+   NAME                   AGE
+   nodemaintenance-test   5m33s
+   ```
 
 ## Mitigation
 

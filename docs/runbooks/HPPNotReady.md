@@ -15,21 +15,28 @@ HPP is not usable. Its components are not ready and they are not progressing tow
 ## Diagnosis
 
 1. Set the `HPP_NAMESPACE` environment variable:
-```bash
+
+   ```bash
  export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
-```
+   ```
+
 2. Check for HPP components that are currently not ready:
-```bash
-$ kubectl -n $HPP_NAMESPACE get all -l k8s-app=hostpath-provisioner
-```
+
+   ```bash
+   $ kubectl -n $HPP_NAMESPACE get all -l k8s-app=hostpath-provisioner
+   ```
+
 3. Obtain the details of the failing pod:
-```bash
-$ kubectl -n $HPP_NAMESPACE describe pods <pod>
-```
+
+   ```bash
+   $ kubectl -n $HPP_NAMESPACE describe pods <pod>
+   ```
+
 4. Check the logs of the failing pod:
-```bash
-$ kubectl -n $HPP_NAMESPACE logs <pod>
-```
+
+   ```bash
+   $ kubectl -n $HPP_NAMESPACE logs <pod>
+   ```
 
 ## Mitigation
 

@@ -14,21 +14,28 @@ VMs are not validated against their templates. As a result, VMs might be created
 ## Diagnosis
 
 1. Set the `NAMESPACE` environment variable:
-  ```bash
-$ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
-  ```
+
+   ```bash
+   $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
+   ```
+
 2. Obtain the status of the `virt-template-validator` pods:
-  ```bash
-$ kubectl -n $NAMESPACE get pods -l name=virt-template-validator
-  ```
+
+   ```bash
+   $ kubectl -n $NAMESPACE get pods -l name=virt-template-validator
+   ```
+
 3. Obtain the details of the `virt-template-validator` pods:
-  ```bash
-$ kubectl -n $NAMESPACE describe pods -l name=virt-template-validator
-  ```
+
+   ```bash
+   $ kubectl -n $NAMESPACE describe pods -l name=virt-template-validator
+   ```
+
 4. Check the  `virt-template-validator` logs for error messages:
-  ```bash
-$ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
-  ```
+
+   ```bash
+   $ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
+   ```
 
 ## Mitigation
 
