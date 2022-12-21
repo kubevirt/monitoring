@@ -55,13 +55,22 @@ When creating a KubeVirt alert rule, please follow the [OpenShift Alerting Consi
 In addition to the [OpeShift Style Guide](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/alerting-consistency.md#style-guide) the KubeVirt alerts MUST include:
 1. `kubernetes_operator_part_of` label indicating the operator name. Value should be set to `kubevirt`.
 2. `kubernetes_operator_component` label indicating the value of the sub operator name.
-
+3. `operator_health_impact` label indicating how the alert impacts the operator's functionality.
+   This label differs from `severity`, as `severity` indicates the ability to deliver a service for the cluster as a whole, where `operator_health_impact` indicates the impact of the issue on the operator's functionality.
+   The loss of operator's functionality doesn't necessarily mean that the ability to deliver services for the cluster as a whole is affected.
+   For example, an alert may have a `warning` severity, when talking about the impact on the cluster health, but have a `critical` impact on the operator's health. 
+   Also, when an alert is tied to a specific workload it can have a `warning` severity, but no impact on the operator's health.
+   
+    Valid values for this labels are:
+   - `critical` - For alerts that indicate that there is a loss of operator's functionality and part of the operator might not work as expected.
+   - `warning` - For alerts that indicate that there is a risk for the operator's functionality and soon parts of the operator might not work as expected.
+   - `none` - For alerts that **don't** indicate that there is a loss of operator's functionality and it is working as expected.
+    
 Optional labels:
 1. `priority` label indicating the alert's level of importance and the order in which it should be fixed.
   * Valid priorities are: `high`, `medium`, or `low`.
     The higher the priority, the sooner the alert should be resolved.
   * If the alert doesn't include a `priority` label, we can assume it is a `medium` priority alert.
-2. `infra_alert` label indicating alerts that are related to the infrastructure of the operator. Boolean.
 
 **Note:**
 KubeVirt alert runbooks are saved in [kubevirt/monitoring repository](https://github.com/kubevirt/monitoring/tree/main/docs/runbooks).
