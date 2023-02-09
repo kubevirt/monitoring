@@ -74,6 +74,15 @@ Virtual Machine last transition timestamp to starting status. Type: Counter.
 ### kubevirt_vmi_cpu_affinity
 Details the cpu pinning map via boolean labels in the form of vcpu_X_cpu_Y. Type: Counter.
 
+### kubevirt_vmi_cpu_system_usage_seconds
+Total CPU time spent in system mode. Type: Gauge.
+
+### kubevirt_vmi_cpu_usage_seconds
+Total CPU time spent in all modes (sum of both vcpu and hypervisor usage). Type: Gauge.
+
+### kubevirt_vmi_cpu_user_usage_seconds
+Total CPU time spent in user mode. Type: Gauge.
+
 ### kubevirt_vmi_filesystem_capacity_bytes_total
 Total VM filesystem capacity in bytes. Type: Gauge.
 
@@ -176,7 +185,7 @@ Total time (ms) spent on write operations. Type: Counter.
 Total number of written bytes. Type: Counter.
 
 ### kubevirt_vmi_vcpu_seconds
-Total amount of time spent in each state by each vcpu. Where `id` is the vcpu identifier and `state` can be one of the following: [`OFFLINE`, `RUNNING`, `BLOCKED`]. Type: Counter.
+Total amount of time spent in each state by each vcpu (cpu_time excluding hypervisor time). Where `id` is the vcpu identifier and `state` can be one of the following: [`OFFLINE`, `RUNNING`, `BLOCKED`]. Type: Counter.
 
 ### kubevirt_vmi_vcpu_wait_seconds
 Amount of time spent by each vcpu while waiting on I/O. Type: Counter.
@@ -253,5 +262,7 @@ The total number of running hostpath-provisioner-operator pods. Type: Gauge.
 Indicates whether the HyperConverged custom resource exists (1) or not (0). Type: Gauge.
 ### kubevirt_hco_out_of_band_modifications_count
 Count of out-of-band modifications overwritten by HCO. Type: Counter.
+### kubevirt_hco_system_health_status
+Indicates whether the system health status is healthy (0), warning (1), or error (2), by aggregating the conditions of HCO and its secondary resources. Type: Gauge.
 ### kubevirt_hco_unsafe_modification_count
 Count of unsafe modifications in the HyperConverged annotations. Type: Gauge.
