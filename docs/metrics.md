@@ -20,6 +20,9 @@ They reflect and describe exactly what is being exposed.
 ### kubevirt_info
 Version information.
 
+### kubevirt_configuration_emulation_enabled
+Indicates whether the Software Emulation is enabled in the configuration. Type: Gauge.
+
 ### kubevirt_migrate_vmi_data_processed_bytes
 The total Guest OS data processed and migrated to the new VM. Type: Gauge.
 
@@ -260,9 +263,15 @@ The total number of running hostpath-provisioner-operator pods. Type: Gauge.
 
 ### kubevirt_hco_hyperconverged_cr_exists
 Indicates whether the HyperConverged custom resource exists (1) or not (0). Type: Gauge.
+### kubevirt_hco_node_number_of_images
+The number of images that are stored on a node. Type: Gauge.
+### kubevirt_hco_node_status_max_images
+The maximum number of images that can be reported by the node status. Type: Gauge.
 ### kubevirt_hco_out_of_band_modifications_count
 Count of out-of-band modifications overwritten by HCO. Type: Counter.
 ### kubevirt_hco_system_health_status
 Indicates whether the system health status is healthy (0), warning (1), or error (2), by aggregating the conditions of HCO and its secondary resources. Type: Gauge.
 ### kubevirt_hco_unsafe_modification_count
 Count of unsafe modifications in the HyperConverged annotations. Type: Gauge.
+### kubevirt_hyperconverged_operator_health_status
+Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric. Type: Gauge.
