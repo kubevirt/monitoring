@@ -1,5 +1,4 @@
-# SSPOperatorDown
-<!-- Edited by apinnick, Nov. 2022-->
+# SSPDown
 
 ## Meaning
 
@@ -47,6 +46,4 @@ If you cannot resolve the issue, see the following resources:
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
-
-**Note:** Starting from 4.14, this runbook will no longer be supported. For a supported runbook, please see [SSPDown Runbook](http://kubevirt.io/monitoring/runbooks/SSPDown.html).
 
