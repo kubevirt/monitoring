@@ -8,3 +8,6 @@ metricsdocs: build-metricsdocs
 
 build-metricsdocs:
 	cd ./tools/metricsdocs && go build -ldflags="-s -w" -o _out/metricsdocs .
+
+runbooks-index:
+	python automation/generate_pages_index.py
