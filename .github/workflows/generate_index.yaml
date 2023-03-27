@@ -42,7 +42,7 @@ jobs:
 
     - name: generate the index file
       run: |
-        python automation/generate_pages_index.py
+        make runbooks-index
 
     - name: validate
       run: |
