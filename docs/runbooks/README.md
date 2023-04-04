@@ -46,7 +46,6 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [NoLeadingVirtOperator](NoLeadingVirtOperator.md)
 * [NoReadyVirtController](NoReadyVirtController.md)
 * [NoReadyVirtOperator](NoReadyVirtOperator.md)
-* [NodeStatusMaxImagesExceeded](NodeStatusMaxImagesExceeded.md)
 * [OrphanedVirtualMachineInstances](OrphanedVirtualMachineInstances.md)
 * [OutdatedVirtualMachineInstanceWorkloads](OutdatedVirtualMachineInstanceWorkloads.md)
 * [SSPCommonTemplatesModificationReverted](SSPCommonTemplatesModificationReverted.md)
