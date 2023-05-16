@@ -1,0 +1,19 @@
+name: prom-metrics-linter
+on:
+  push:
+    branches:
+      - "add-linter"
+
+jobs:
+  build:
+    name: Upload prom-metrics-linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Publish operator image and generate prom-metrics-linter
+        run: |
+          docker login -u="${{ secrets.QUAY_USER }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
+          CONTAINER_RUNTIME=docker IMG=quay.io/kubevirt/prom-metrics-linter:v0.0.1 make promlinter-build
+          CONTAINER_RUNTIME=docker IMG=quay.io/kubevirt/prom-metrics-linter:v0.0.1 make promlinter-push
