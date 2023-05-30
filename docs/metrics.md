@@ -23,6 +23,9 @@ Version information.
 ### kubevirt_allocatable_nodes_count
 The number of nodes in the cluster that have the devices.kubevirt.io/kvm resource available. Type: Gauge.
 
+### kubevirt_api_request_deprecated_total
+The total number of requests to deprecated KubeVirt APIs. Type: Counter.
+
 ### kubevirt_configuration_emulation_enabled
 Indicates whether the Software Emulation is enabled in the configuration. Type: Gauge.
 
@@ -133,6 +136,9 @@ Current balloon size in bytes. Type: Gauge.
 
 ### kubevirt_vmi_memory_available_bytes
 Amount of usable memory as seen by the domain. This value may not be accurate if a balloon driver is in use or if the guest OS does not initialize all assigned pages Type: Gauge.
+
+### kubevirt_vmi_memory_cached_bytes
+The amount of memory that is being used to cache I/O and is available to be reclaimed, corresponds to the sum of `Buffers` + `Cached` + `SwapCached` in `/proc/meminfo`. Type: Gauge.
 
 ### kubevirt_vmi_memory_domain_bytes_total
 The amount of memory in bytes allocated to the domain. The `memory` value in domain xml file. Type: Gauge.
