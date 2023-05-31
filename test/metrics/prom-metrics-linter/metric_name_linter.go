@@ -58,7 +58,7 @@ func main() {
 
 	problems, err := linter.Lint()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintf(os.Stderr, "failed to run promlint; %v\n", err)
 		os.Exit(1)
 	}
 
@@ -75,7 +75,7 @@ func parseMetricFamilies(jsonStr string) []*dto.MetricFamily {
 	var families []*dto.MetricFamily
 	err := json.Unmarshal([]byte(jsonStr), &families)
 	if err != nil {
-		fmt.Printf("Error parsing metric families: %s\n", err)
+		fmt.Fprintf(os.Stderr, "error parsing metric families: %v\n", err)
 		os.Exit(1)
 	}
 	return families

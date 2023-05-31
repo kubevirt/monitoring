@@ -1,8 +1,8 @@
 name: prom-metrics-linter
 on:
   push:
-    branches:
-      - "add-linter"
+    paths:
+      - 'test/metrics/prom-metrics-linter'
 
 jobs:
   build:
