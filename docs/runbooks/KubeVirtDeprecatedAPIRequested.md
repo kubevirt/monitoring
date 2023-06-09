@@ -1,4 +1,4 @@
-# KubeVirtDeprecatedAPIsRequested
+# KubeVirtDeprecatedAPIRequested
 <!-- Edited by fmatouschek, May 2023-->
 
 ## Meaning
