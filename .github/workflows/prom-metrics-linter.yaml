@@ -1,8 +1,8 @@
 name: prom-metrics-linter
 on:
-  push:
-    paths:
-      - 'test/metrics/prom-metrics-linter'
+  release:
+    types:
+      - published
 
 jobs:
   build:
@@ -10,10 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Publish operator image and generate prom-metrics-linter
+      - name: Login to quay.io
+        run: docker login -u="${{ secrets.QUAY_USER }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
+
+      - name: Build the Docker image
         run: |
-          docker login -u="${{ secrets.QUAY_USER }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
-          CONTAINER_RUNTIME=docker IMG=quay.io/kubevirt/prom-metrics-linter:v0.0.1 make promlinter-build
-          CONTAINER_RUNTIME=docker IMG=quay.io/kubevirt/prom-metrics-linter:v0.0.1 make promlinter-push
+          IMAGE_NAME="quay.io/kubevirt/prom-metrics-linter:${GITHUB_REF##*/}"
+          CONTAINER_RUNTIME=docker IMG="${IMAGE_NAME}" make promlinter-build
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
+
+      - name: Push the Docker image
+        run: CONTAINER_RUNTIME=docker IMG="${{ env.IMAGE_NAME }}" make promlinter-push
