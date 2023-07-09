@@ -29,6 +29,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [KubeVirtDeprecatedAPIRequested](KubeVirtDeprecatedAPIRequested.md)
 * [KubeVirtNoAvailableNodesToRunVMs](KubeVirtNoAvailableNodesToRunVMs.md)
 * [KubeVirtVMIExcessiveMigrations](KubeVirtVMIExcessiveMigrations.md)
+* [KubemacpoolDown](KubemacpoolDown.md)
 * [KubevirtHyperconvergedClusterOperatorCRModification](KubevirtHyperconvergedClusterOperatorCRModification.md)
 * [KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert](KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert.md)
 * [KubevirtHyperconvergedClusterOperatorNMOInUseAlert](KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md)

@@ -1,7 +1,5 @@
-# KubeMacPoolDown
+# KubemacpoolDown
 <!-- Edited by apinnick, Oct. 2022-->
-
-**Note:** Starting from 4.14, this runbook was replaced by [KubemacpoolDown runbook](http://kubevirt.io/monitoring/runbooks/KubemacpoolDown.html).
 
 ## Meaning
 
