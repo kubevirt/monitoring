@@ -33,6 +33,7 @@ Examples of runbooks can be found in this repository and in the [prometheus-oper
 * [KubevirtHyperconvergedClusterOperatorCRModification](KubevirtHyperconvergedClusterOperatorCRModification.md)
 * [KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert](KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert.md)
 * [KubevirtHyperconvergedClusterOperatorNMOInUseAlert](KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md)
+* [KubevirtHyperconvergedClusterOperatorSingleStackIPv6](KubevirtHyperconvergedClusterOperatorSingleStackIPv6.md)
 * [KubevirtHyperconvergedClusterOperatorUSModification](KubevirtHyperconvergedClusterOperatorUSModification.md)
 * [KubevirtVmHighMemoryUsage](KubevirtVmHighMemoryUsage.md)
 * [LowKVMNodesCount](LowKVMNodesCount.md)
