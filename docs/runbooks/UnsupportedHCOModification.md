@@ -1,4 +1,4 @@
-# KubevirtHyperconvergedClusterOperatorUSModification
+# UnsupportedHCOModification
 <!-- Edited by apinnick, Nov 2022-->
 
 ## Meaning
@@ -10,7 +10,7 @@ HCO configures KubeVirt and its supporting operators in an opinionated way and o
 However, if a change is required and it is not supported by the HCO API, you can force HCO to set a change in an operator by using JSON Patch annotations. These changes are not reverted by HCO during its reconciliation process.
 
 <!--USstart-->
-See the [Kubevirt documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#jsonpatch-annotations) for details.
+See the [KubeVirt documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#jsonpatch-annotations) for details.
 <!--USend-->
 
 ## Impact
@@ -25,7 +25,7 @@ Check the `annotation_name` in the alert details to identify the JSON Patch anno
 
 ```
 Labels
-   alertname=KubevirtHyperconvergedClusterOperatorUSModification
+   alertname=UnsupportedHCOModification
    annotation_name=kubevirt.kubevirt.io/jsonpatch
    severity=info
 ```
