@@ -1,4 +1,4 @@
-# KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert
+# HCOInstallationIncomplete
 <!-- Edited: apinnick@redhat.com, Aug 2022 --> 
 
 ## Meaning

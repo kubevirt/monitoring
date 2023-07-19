@@ -1,4 +1,4 @@
-# KubevirtHyperconvergedClusterOperatorCRModification
+# KubeVirtCRModified
 <!-- Edited by apinnick, Nov. 2022-->
 
 ## Meaning
@@ -19,7 +19,7 @@ In the following example, the operand kind is `kubevirt` and the operand name is
 
 ```
 Labels
-   alertname=KubevirtHyperconvergedClusterOperatorCRModification
+   alertname=KubeVirtCRModified
    component_name=kubevirt/kubevirt-kubevirt-hyperconverged
    severity=warning
 ```
