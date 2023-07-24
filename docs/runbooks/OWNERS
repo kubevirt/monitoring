@@ -1,0 +1,6 @@
+approvers:
+    - approvers
+reviewers:
+    - runbooks-reviewers
+labels:
+    - runbooks
