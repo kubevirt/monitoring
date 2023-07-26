@@ -12,10 +12,6 @@ metricsdocs: build-metricsdocs
 build-metricsdocs:
 	cd ./tools/metricsdocs && go build -ldflags="-s -w" -o _out/metricsdocs .
 
-.PHONY: runbooks-index
-runbooks-index:
-	python automation/generate_pages_index.py
-
 .PHONY: promlinter-build
 promlinter-build:
 	${CONTAINER_RUNTIME} build -t ${IMG} test/metrics/prom-metrics-linter
