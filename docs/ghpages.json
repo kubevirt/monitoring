@@ -1,0 +1,19 @@
+{
+  "metrics": "docs/metrics.md",
+  "runbooks": "docs/runbooks",
+  "deprecated_runbooks": "docs/deprecated_runbooks",
+  "redirects": [
+    {
+      "source": "KubevirtHyperconvergedClusterOperatorInstallationNotCompletedAlert.md",
+      "target": "HCOInstallationIncomplete.md"
+    },
+    {
+      "source": "KubevirtHyperconvergedClusterOperatorCRModification.md",
+      "target": "KubeVirtCRModified.md"
+    },
+    {
+      "source": "KubevirtHyperconvergedClusterOperatorUSModification.md",
+      "target": "UnsupportedHCOModification.md"
+    }
+  ]
+}
