@@ -1,0 +1,42 @@
+name: Generate a build and push to 'ghpages' branch
+
+on:
+  push:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Push
+    steps:
+      - name: git-checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Run Python commands
+        working-directory: ./tools/ghpages
+        run: |
+          pip install --upgrade pip
+          python3.8 -m venv venv
+          source venv/bin/activate
+          echo "VIRTUAL ENV:" $VIRTUAL_ENV
+
+      - name: Build
+        run: tools/ghpages/venv/bin/python tools/ghpages/main.py --config_file docs/ghpages.json --output_dir dist/
+
+      - name: Push
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: ghpages
+          FOLDER: dist/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Build: ({sha}) {msg}"
