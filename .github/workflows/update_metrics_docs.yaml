@@ -38,4 +38,3 @@ jobs:
         delete-branch: true
         assignees: sradco
         reviewers: sradco
-        team-reviewers: approvers
