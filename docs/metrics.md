@@ -113,17 +113,14 @@ Virtual Machine last transition timestamp to running status. Type: Counter.
 ### kubevirt_vm_starting_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to starting status. Type: Counter.
 
-### kubevirt_vmi_cpu_affinity
-Details the cpu pinning map via boolean labels in the form of vcpu_X_cpu_Y. Type: Counter.
+### kubevirt_vmi_cpu_system_usage_seconds_total
+Total CPU time spent in system mode. Type: Counter.
 
-### kubevirt_vmi_cpu_system_usage_seconds
-Total CPU time spent in system mode. Type: Gauge.
+### kubevirt_vmi_cpu_usage_seconds_total
+Total CPU time spent in all modes (sum of both vcpu and hypervisor usage). Type: Counter.
 
-### kubevirt_vmi_cpu_usage_seconds
-Total CPU time spent in all modes (sum of both vcpu and hypervisor usage). Type: Gauge.
-
-### kubevirt_vmi_cpu_user_usage_seconds
-Total CPU time spent in user mode. Type: Gauge.
+### kubevirt_vmi_cpu_user_usage_seconds_total
+Total CPU time spent in user mode. Type: Counter.
 
 ### kubevirt_vmi_filesystem_capacity_bytes_total
 Total VM filesystem capacity in bytes. Type: Gauge.
@@ -167,6 +164,9 @@ The amount of memory which can be reclaimed by balloon without pushing the guest
 ### kubevirt_vmi_memory_used_bytes
 Amount of `used` memory as seen by the domain. Type: Gauge.
 
+### kubevirt_vmi_migration_phase_transition_time_from_creation_seconds
+Histogram of VM migration phase transitions duration from creation time in seconds. Type: Histogram.
+
 ### kubevirt_vmi_network_receive_bytes_total
 Total network traffic received in bytes. Type: Counter.
 
@@ -194,6 +194,9 @@ The total number of tx packets dropped on vNIC interfaces. Type: Counter.
 ### kubevirt_vmi_network_transmit_packets_total
 Total network traffic transmitted packets. Type: Counter.
 
+### kubevirt_vmi_node_cpu_affinity
+Number of VMI CPU affinities to node physical cores. Type: Gauge.
+
 ### kubevirt_vmi_non_evictable
 Indication for a VirtualMachine that its eviction strategy is set to Live Migration but is not migratable. Type: Gauge.
 
@@ -202,6 +205,15 @@ Indication for the total number of VirtualMachineInstance workloads that are not
 
 ### kubevirt_vmi_phase_count
 Sum of VMIs per phase and node. `phase` can be one of the following: [`Pending`, `Scheduling`, `Scheduled`, `Running`, `Succeeded`, `Failed`, `Unknown`]. Type: Gauge.
+
+### kubevirt_vmi_phase_transition_time_from_creation_seconds
+Histogram of VM phase transitions duration from creation time in seconds. Type: Histogram.
+
+### kubevirt_vmi_phase_transition_time_from_deletion_seconds
+Histogram of VM phase transitions duration from deletion time in seconds. Type: Histogram.
+
+### kubevirt_vmi_phase_transition_time_seconds
+Histogram of VM phase transitions duration between different phases in seconds. Type: Histogram.
 
 ### kubevirt_vmi_storage_flush_requests_total
 Total storage flush requests. Type: Counter.
@@ -226,6 +238,9 @@ Total time (ms) spent on write operations. Type: Counter.
 
 ### kubevirt_vmi_storage_write_traffic_bytes_total
 Total number of written bytes. Type: Counter.
+
+### kubevirt_vmi_vcpu_delay_seconds_total
+Amount of time spent by each vcpu waiting in the queue instead of running. Type: Counter.
 
 ### kubevirt_vmi_vcpu_seconds
 Total amount of time spent in each state by each vcpu (cpu_time excluding hypervisor time). Where `id` is the vcpu identifier and `state` can be one of the following: [`OFFLINE`, `RUNNING`, `BLOCKED`]. Type: Counter.
@@ -268,18 +283,18 @@ Total restart count in CDI Data Volume upload server pod. Type: Counter.
 
 ## [cluster-network-addons-operator](https://github.com/kubevirt/cluster-network-addons-operator/tree/main)
 
+### kubevirt_cnao_cr_kubemacpool_aggregated
+Total count of KubeMacPool manager pods deployed by CNAO CR. Type: Gauge.
 ### kubevirt_cnao_cr_kubemacpool_deployed
 KubeMacpool is deployed by CNAO CR. Type: Gauge.
-### kubevirt_cnao_cr_kubemacpool_deployed_total
-Total count of KubeMacPool manager pods deployed by CNAO CR. Type: Gauge.
 ### kubevirt_cnao_cr_ready
 CNAO CR Ready. Type: Gauge.
-### kubevirt_cnao_kubemacpool_manager_num_up_pods_total
-Total count of running KubeMacPool manager pods. Type: Gauge.
-### kubevirt_cnao_num_up_operators
-Total count of running CNAO operators. Type: Gauge.
-### kubevirt_kubemacpool_duplicate_macs_total
+### kubevirt_cnao_kubemacpool_duplicate_macs
 Total count of duplicate KubeMacPool MAC addresses. Type: Gauge.
+### kubevirt_cnao_kubemacpool_manager_up
+Total count of running KubeMacPool manager pods. Type: Gauge.
+### kubevirt_cnao_operator_up
+Total count of running CNAO operators. Type: Gauge.
 <div id='ssp-operator'></div>
 
 ## [ssp-operator](https://github.com/kubevirt/ssp-operator/tree/master)
@@ -306,11 +321,11 @@ The total number of running hostpath-provisioner-operator pods. Type: Gauge.
 
 ### kubevirt_hco_hyperconverged_cr_exists
 Indicates whether the HyperConverged custom resource exists (1) or not (0). Type: Gauge.
-### kubevirt_hco_out_of_band_modifications_count
+### kubevirt_hco_out_of_band_modifications_total
 Count of out-of-band modifications overwritten by HCO. Type: Counter.
 ### kubevirt_hco_system_health_status
 Indicates whether the system health status is healthy (0), warning (1), or error (2), by aggregating the conditions of HCO and its secondary resources. Type: Gauge.
-### kubevirt_hco_unsafe_modification_count
+### kubevirt_hco_unsafe_modifications
 Count of unsafe modifications in the HyperConverged annotations. Type: Gauge.
 ### kubevirt_hyperconverged_operator_health_status
 Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric. Type: Gauge.
