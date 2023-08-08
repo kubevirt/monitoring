@@ -313,8 +313,8 @@ The total number of running virt-template-validator pods. Type: Gauge.
 
 ## [hostpath-provisioner-operator](https://github.com/kubevirt/hostpath-provisioner-operator/tree/main)
 
-### kubevirt_hpp_operator_up_total
-The total number of running hostpath-provisioner-operator pods. Type: Gauge.
+### kubevirt_hpp_operator_up
+The number of running hostpath-provisioner-operator pods. Type: Gauge.
 <div id='hyperconverged-cluster-operator'></div>
 
 ## [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator/tree/main)
