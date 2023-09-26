@@ -1,5 +1,5 @@
 # VirtualMachineCRCErrors
-<!-- Edited by machadovilaca, july 2023-->
+<!-- Edited by machadovilaca, october 2023-->
 
 ## Meaning 
 
@@ -14,32 +14,34 @@ major service outages.
 
 ## Diagnosis
 
-1) Get the volume name from the VM:
+Obtain a list of VirtualMachines with an incorrectly configured storage class by
+running the following PromQL query:
 
-```bash
-$ kubectl get vm <vm-name> -o jsonpath='{.spec.template.spec.volumes}'
+<!--DS: You can use the Openshift metrics explorer available at 'https://{OPENSHIFT_BASE_URL}/monitoring/query-browser'.-->
+
+```promql
+kubevirt_ssp_vm_rbd_volume{rxbounce_enabled="false", volume_mode="Block"} == 1
 ```
 
-2) Get the storage class name from the volume:
+|                            | name               | namespace | pv_name            | rxbounce_enabled | volume_mode | value |
+|----------------------------|--------------------|-----------|--------------------|------------------|-------------|-------|
+| kubevirt_ssp_vm_rbd_volume | testvmi-gwgdqp22k7 | test-ns   | testvmi-gwgdqp22k7 | false            | Block       | 1     |
+
+The output displays a list of VirtualMachines that use a storage class without
+`rxbounce_enabled`.
+
+Obtain the storage class name by running the following command:
 
 ```bash
-$ kubectl get pvc <volume-name> -o jsonpath='{.spec.storageClassName}'
+$ kubectl get pv ${PV_NAME} -o=jsonpath='{.spec.storageClassName}'
 ```
-
-3) Get the storage class configuration:
-
-```bash
-$ kubectl get sc <storage-class-name> -o yaml
-```
-
-4) Check if the storage class has the "krbd:rxbounce" map option:
 
 ## Mitigation
 
 Add the "krbd:rxbounce" map option to your storage class configuration, to use
 a bounce buffer when receiving data. The default behavior is to read directly
-into the destination buffer. A bounce buffer is needed if the destination buffer
-isn't guaranteed to be stable.
+into the destination buffer. A bounce buffer is required if the stability of the
+destination buffer cannot be guaranteed.
 
 ```bash
 apiVersion: storage.k8s.io/v1
@@ -47,11 +49,11 @@ kind: StorageClass
 metadata:
   name: vm-sc
 parameters:
-  ...
+  # ...
   mounter: rbd
   mapOptions: "krbd:rxbounce"
 provisioner: openshift-storage.rbd.csi.ceph.com
-...
+# ...
 ```
 
 If you cannot resolve the issue, see the following resources:
