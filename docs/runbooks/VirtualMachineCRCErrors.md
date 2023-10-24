@@ -20,12 +20,10 @@ running the following PromQL query:
 <!--DS: You can use the Openshift metrics explorer available at 'https://{OPENSHIFT_BASE_URL}/monitoring/query-browser'.-->
 
 ```promql
-kubevirt_ssp_vm_rbd_volume{rxbounce_enabled="false", volume_mode="Block"} == 1
-```
+$ kubevirt_ssp_vm_rbd_volume{rxbounce_enabled="false", volume_mode="Block"} == 1
 
-|                            | name               | namespace | pv_name            | rxbounce_enabled | volume_mode | value |
-|----------------------------|--------------------|-----------|--------------------|------------------|-------------|-------|
-| kubevirt_ssp_vm_rbd_volume | testvmi-gwgdqp22k7 | test-ns   | testvmi-gwgdqp22k7 | false            | Block       | 1     |
+kubevirt_ssp_vm_rbd_volume{name="testvmi-gwgdqp22k7", namespace="test_ns", pv_name="testvmi-gwgdqp22k7", rxbounce_enabled="false", volume_mode="Block"} 1
+```
 
 The output displays a list of VirtualMachines that use a storage class without
 `rxbounce_enabled`.
