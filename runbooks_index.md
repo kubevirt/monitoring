@@ -34,6 +34,7 @@
 - [LowVirtAPICount.md](runbooks/LowVirtAPICount.md)
 - [LowVirtOperatorCount.md](runbooks/LowVirtOperatorCount.md)
 - [CDIOperatorDown.md](runbooks/CDIOperatorDown.md)
+- [CDIMultipleDefaultVirtStorageClasses.md](runbooks/CDIMultipleDefaultVirtStorageClasses.md)
 - [LowReadyVirtControllersCount.md](runbooks/LowReadyVirtControllersCount.md)
 - [SingleStackIPv6Unsupported.md](runbooks/SingleStackIPv6Unsupported.md)
 - [SSPDown.md](runbooks/SSPDown.md)
