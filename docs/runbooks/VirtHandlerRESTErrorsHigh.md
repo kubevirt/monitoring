@@ -23,16 +23,22 @@ Node-related actions, such as starting and migrating workloads, are delayed on t
    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
    ```
 
-2. Check the status of the `virt-handler` pod:
+2. List the available `virt-handler` pods to identify the failing `virt-handler` pod:
 
    ```bash
    $ kubectl get pods -n $NAMESPACE -l=kubevirt.io=virt-handler
    ```
 
-3. Check the `virt-handler` logs for error messages when connecting to the API server:
+3. Check the failing `virt-handler` pod log for error messages when connecting to the API server:
 
    ```bash
    $ kubectl logs -n  $NAMESPACE <virt-handler>
+   ```
+
+   Example error message:
+   
+   ```
+   {"component":"virt-handler","level":"error","msg":"Can't patch node my-node","pos":"heartbeat.go:96","reason":"the server has received too many API requests and has asked us to try again later","timestamp":"2023-11-06T11:11:41.099883Z","uid":"132c50c2-8d82-4e49-8857-dc737adcd6cc"}
    ```
 
 ## Mitigation
@@ -40,7 +46,7 @@ Node-related actions, such as starting and migrating workloads, are delayed on t
 If the `virt-handler` cannot connect to the API server, delete the pod to force a restart:
 
 ```bash
-$ kubectl delete -n <install-namespace> <virt-handler>
+$ kubectl delete -n $NAMESPACE <virt-handler>
 ```
 
 <!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
