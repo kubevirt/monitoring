@@ -189,6 +189,7 @@ func (p *project) parseMetricsDoc(content []string) string {
 	for _, s := range content {
 		if !running && isBeginning(s) {
 			running = true
+			fmt.Fprintln(&b, s)
 		} else if running {
 			if isEnd(s) {
 				break
@@ -201,7 +202,7 @@ func (p *project) parseMetricsDoc(content []string) string {
 }
 
 func isBeginning(s string) bool {
-	return strings.HasPrefix(s, "## ") && strings.Contains(s, "Metrics List")
+	return strings.HasPrefix(s, "### ")
 }
 
 func isEnd(s string) bool {
