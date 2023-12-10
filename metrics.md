@@ -74,6 +74,9 @@ The current available memory of the VM containers based on the rss. Type: Gauge.
 ### kubevirt_vm_container_free_memory_bytes_based_on_working_set_bytes
 The current available memory of the VM containers based on the working set. Type: Gauge.
 
+### kubevirt_vm_created_total
+Amount of VMs created, broken down by namespace, since install. Type: Counter.
+
 ### kubevirt_vm_error_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to error status. Type: Counter.
 
@@ -154,9 +157,6 @@ The rate at which the memory is being transferred. Type: Gauge.
 
 ### kubevirt_vmi_migration_failed
 Indicates if the VMI migration failed. Type: Gauge.
-
-### kubevirt_vmi_migration_memory_transfer_rate_bytes
-The rate at which the disk is being transferred. Type: Gauge.
 
 ### kubevirt_vmi_migration_phase_transition_time_from_creation_seconds
 Histogram of VM migration phase transitions duration from creation time in seconds. Type: Histogram.
@@ -261,7 +261,7 @@ Returns the total number of virtual machine disks restored from the source virtu
 Returns the amount of space in bytes restored from the source virtual machine. Type: Gauge.
 
 ### kubevirt_vmsnapshot_persistentvolumeclaim_labels
-Returns the labels of the persistent volume claims that are used for restoring virtual machines. Type: Info.
+Returns the labels of the persistent volume claims that are used for restoring virtual machines. Type: Gauge.
 
 <div id='containerized-data-importer'></div>
 
@@ -275,6 +275,8 @@ CDI install ready. Type: Gauge.
 DataImportCron has an outdated import. Type: Gauge.
 ### kubevirt_cdi_dataimportcron_outdated_aggregated
 Total count of outdated DataImportCron imports. Type: Gauge.
+### kubevirt_cdi_default_virt_storageclasses
+Number of default virt storage classes currently configured. Type: Gauge.
 ### kubevirt_cdi_import_pods_high_restart
 The number of CDI import pods with high restart count. Type: Gauge.
 ### kubevirt_cdi_incomplete_storageprofiles
@@ -289,16 +291,22 @@ The number of CDI upload server pods with high restart count. Type: Gauge.
 
 ### kubevirt_cnao_cr_kubemacpool_aggregated
 Total count of KubeMacPool manager pods deployed by CNAO CR. Type: Gauge.
+
 ### kubevirt_cnao_cr_kubemacpool_deployed
 KubeMacpool is deployed by CNAO CR. Type: Gauge.
+
 ### kubevirt_cnao_cr_ready
 CNAO CR Ready. Type: Gauge.
+
 ### kubevirt_cnao_kubemacpool_duplicate_macs
 Total count of duplicate KubeMacPool MAC addresses. Type: Gauge.
+
 ### kubevirt_cnao_kubemacpool_manager_up
 Total count of running KubeMacPool manager pods. Type: Gauge.
+
 ### kubevirt_cnao_operator_up
 Total count of running CNAO operators. Type: Gauge.
+
 <div id='ssp-operator'></div>
 
 ## [ssp-operator](https://github.com/kubevirt/ssp-operator/tree/main)
@@ -333,13 +341,19 @@ The number of running hostpath-provisioner-operator pods. Type: Gauge.
 
 ### kubevirt_hco_hyperconverged_cr_exists
 Indicates whether the HyperConverged custom resource exists (1) or not (0). Type: Gauge.
+
 ### kubevirt_hco_out_of_band_modifications_total
 Count of out-of-band modifications overwritten by HCO. Type: Counter.
+
 ### kubevirt_hco_single_stack_ipv6
 Indicates whether the underlying cluster is single stack IPv6 (1) or not (0). Type: Gauge.
+
 ### kubevirt_hco_system_health_status
 Indicates whether the system health status is healthy (0), warning (1), or error (2), by aggregating the conditions of HCO and its secondary resources. Type: Gauge.
+
 ### kubevirt_hco_unsafe_modifications
 Count of unsafe modifications in the HyperConverged annotations. Type: Gauge.
+
 ### kubevirt_hyperconverged_operator_health_status
 Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric. Type: Gauge.
+
