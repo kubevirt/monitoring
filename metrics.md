@@ -11,6 +11,7 @@ They reflect and describe exactly what is being exposed.
 - [cluster-network-addons-operator](#cluster-network-addons-operator)
 - [ssp-operator](#ssp-operator)
 - [hostpath-provisioner-operator](#hostpath-provisioner-operator)
+- [hostpath-provisioner](#hostpath-provisioner)
 - [hyperconverged-cluster-operator](#hyperconverged-cluster-operator)
 
 <div id='kubevirt'></div>
@@ -335,6 +336,13 @@ VM with RBD mounted volume. Type: Gauge.
 
 ### kubevirt_hpp_operator_up
 The number of running hostpath-provisioner-operator pods. Type: Gauge.
+<div id='hostpath-provisioner'></div>
+
+## [hostpath-provisioner](https://github.com/kubevirt/hostpath-provisioner/tree/main)
+
+### kubevirt_hpp_pool_path_shared_with_os
+HPP pool path sharing a filesystem with OS, fix to prevent HPP PVs from causing disk pressure and affecting node operation. Type: Gauge.
+
 <div id='hyperconverged-cluster-operator'></div>
 
 ## [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator/tree/main)
