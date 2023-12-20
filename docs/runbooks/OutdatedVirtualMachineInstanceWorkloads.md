@@ -22,7 +22,7 @@ Outdated VMIs will not receive the security fixes associated with the `virt-laun
 2. Check the `KubeVirt` custom resource (CR) to determine whether `workloadUpdateMethods` is configured in the `workloadUpdateStrategy` stanza:
 
    ```bash
-   $ kubectl get kubevirt kubevirt --all-namespaces -o yaml
+   $ kubectl get kubevirt --all-namespaces -o yaml
    ```
 
 3. Check each outdated VMI to determine whether it is live-migratable:
