@@ -40,10 +40,11 @@ $ kubectl get pv ${PV_NAME} -o=jsonpath='{.spec.storageClassName}'
 
 ## Mitigation
 
-Add the "krbd:rxbounce" map option to your storage class configuration, to use
-a bounce buffer when receiving data. The default behavior is to read directly
-into the destination buffer. A bounce buffer is required if the stability of the
-destination buffer cannot be guaranteed.
+It is recommended to create a dedicated StorageClass with "krbd:rxbounce" map
+option for the disks of virtual machines, to use a bounce buffer when receiving
+data. The default behavior is to read directly into the destination buffer. A
+bounce buffer is required if the stability of the destination buffer cannot be
+guaranteed.
 
 Note that changing the used storage class will not have any impact on existing
 PVCs/VMs, meaning that new VMs will be provisioned with the optimized settings
