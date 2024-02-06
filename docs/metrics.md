@@ -369,6 +369,9 @@ HPP pool path sharing a filesystem with OS, fix to prevent HPP PVs from causing 
 
 ## [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator/tree/main)
 
+### cluster:vmi_request_cpu_cores:sum
+Sum of CPU core requests for all running virt-launcher VMIs across the entire Kubevirt cluster. Type: Gauge.
+
 ### kubevirt_hco_hyperconverged_cr_exists
 Indicates whether the HyperConverged custom resource exists (1) or not (0). Type: Gauge.
 
