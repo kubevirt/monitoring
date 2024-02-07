@@ -14,7 +14,6 @@
 - [SSPDown.md](runbooks/SSPDown.md)
 - [OutdatedVirtualMachineInstanceWorkloads.md](runbooks/OutdatedVirtualMachineInstanceWorkloads.md)
 - [CDIOperatorDown.md](runbooks/CDIOperatorDown.md)
-- [VirtualMachineCRCErrors.md](runbooks/VirtualMachineCRCErrors.md)
 - [VirtOperatorDown.md](runbooks/VirtOperatorDown.md)
 - [KubemacpoolDown.md](runbooks/KubemacpoolDown.md)
 - [LowReadyVirtOperatorsCount.md](runbooks/LowReadyVirtOperatorsCount.md)
@@ -47,6 +46,7 @@
 - [VirtApiRESTErrorsHigh.md](runbooks/VirtApiRESTErrorsHigh.md)
 - [HPPSharingPoolPathWithOS.md](runbooks/HPPSharingPoolPathWithOS.md)
 - [HPPNotReady.md](runbooks/HPPNotReady.md)
+- [VMStorageClassWarning.md](runbooks/VMStorageClassWarning.md)
 - [NoReadyVirtOperator.md](runbooks/NoReadyVirtOperator.md)
 - [CnaoNmstateMigration.md](runbooks/CnaoNmstateMigration.md)
 - [CDINoDefaultStorageClass.md](runbooks/CDINoDefaultStorageClass.md)
@@ -62,6 +62,7 @@
 ## Deprecated Runbooks
 
 - [KubeVirtVMStuckInMigratingState.md](runbooks/KubeVirtVMStuckInMigratingState.md)
+- [VirtualMachineCRCErrors.md](runbooks/VirtualMachineCRCErrors.md)
 - [KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md](runbooks/KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md)
 - [KubeVirtVMStuckInStartingState.md](runbooks/KubeVirtVMStuckInStartingState.md)
 - [KubeVirtVMStuckInErrorState.md](runbooks/KubeVirtVMStuckInErrorState.md)

@@ -1,7 +1,7 @@
-# VirtualMachineCRCErrors
+# VMStorageClassWarning
 <!-- Edited by machadovilaca, february 2024 -->
 
-## Meaning
+## Meaning 
 
 When running VMs using ODF storage with 'rbd' mounter or 'rbd.csi.ceph.com'
 provisioner, Windows VMs may cause reports of bad crc/signature errors due to
