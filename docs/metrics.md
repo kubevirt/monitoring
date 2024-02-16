@@ -332,22 +332,31 @@ Total count of running CNAO operators. Type: Gauge.
 
 ### kubevirt_ssp_common_templates_restored_increase
 The increase in the number of common templates restored by the operator back to their original state, over the last hour. Type: Gauge.
+
 ### kubevirt_ssp_common_templates_restored_total
 The total number of common templates restored by the operator back to their original state. Type: Counter.
+
 ### kubevirt_ssp_operator_reconcile_succeeded
 Set to 1 if the reconcile process of all operands completes with no errors, and to 0 otherwise. Type: Gauge.
+
 ### kubevirt_ssp_operator_reconcile_succeeded_aggregated
 The total number of ssp-operator pods reconciling with no errors. Type: Gauge.
+
 ### kubevirt_ssp_operator_up
 The total number of running ssp-operator pods. Type: Gauge.
+
 ### kubevirt_ssp_template_validator_rejected_increase
 The increase in the number of rejected template validators, over the last hour. Type: Gauge.
+
 ### kubevirt_ssp_template_validator_rejected_total
 The total number of rejected template validators. Type: Counter.
+
 ### kubevirt_ssp_template_validator_up
 The total number of running virt-template-validator pods. Type: Gauge.
+
 ### kubevirt_ssp_vm_rbd_block_volume_without_rxbounce
-VM with RBD mounted Block volume (without rxbounce option set). Type: Gauge.
+[ALPHA] VM with RBD mounted Block volume (without rxbounce option set). Type: Gauge.
+
 <div id='hostpath-provisioner-operator'></div>
 
 ## [hostpath-provisioner-operator](https://github.com/kubevirt/hostpath-provisioner-operator/tree/main)
