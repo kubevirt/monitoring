@@ -19,3 +19,12 @@ promlinter-build:
 .PHONY: promlinter-push
 promlinter-push:
 	${CONTAINER_RUNTIME} push ${IMG}
+
+monitoringlocationlinter-unit-test:
+	cd test/monitoringlocationlinter && go test ./...
+
+monitoringlocationlinter-build:
+	cd test/monitoringlocationlinter && go build ./cmd/monitoringlocationlinter
+
+monitoringlocationlinter-test: monitoringlocationlinter-build
+	cd test/monitoringlocationlinter && ./tests/e2e.sh
