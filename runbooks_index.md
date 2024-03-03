@@ -34,7 +34,6 @@
 - [LowReadyVirtControllersCount.md](runbooks/LowReadyVirtControllersCount.md)
 - [VirtOperatorRESTErrorsHigh.md](runbooks/VirtOperatorRESTErrorsHigh.md)
 - [CDINotReady.md](runbooks/CDINotReady.md)
-- [KubeVirtComponentExceedsRequestedMemory.md](runbooks/KubeVirtComponentExceedsRequestedMemory.md)
 - [OutdatedVirtualMachineInstanceWorkloads.md](runbooks/OutdatedVirtualMachineInstanceWorkloads.md)
 - [HPPNotReady.md](runbooks/HPPNotReady.md)
 - [KubeMacPoolDown.md](runbooks/KubeMacPoolDown.md)
@@ -44,7 +43,6 @@
 - [VirtApiRESTErrorsBurst.md](runbooks/VirtApiRESTErrorsBurst.md)
 - [UnsupportedHCOModification.md](runbooks/UnsupportedHCOModification.md)
 - [SSPDown.md](runbooks/SSPDown.md)
-- [KubeVirtComponentExceedsRequestedCPU.md](runbooks/KubeVirtComponentExceedsRequestedCPU.md)
 - [KubemacpoolDown.md](runbooks/KubemacpoolDown.md)
 - [KubeVirtVMIExcessiveMigrations.md](runbooks/KubeVirtVMIExcessiveMigrations.md)
 - [CDIDefaultStorageClassDegraded.md](runbooks/CDIDefaultStorageClassDegraded.md)
@@ -64,7 +62,9 @@
 - [KubeVirtVMStuckInMigratingState.md](runbooks/KubeVirtVMStuckInMigratingState.md)
 - [KubeVirtVMStuckInErrorState.md](runbooks/KubeVirtVMStuckInErrorState.md)
 - [KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md](runbooks/KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md)
+- [KubeVirtComponentExceedsRequestedMemory.md](runbooks/KubeVirtComponentExceedsRequestedMemory.md)
 - [KubeVirtVMStuckInStartingState.md](runbooks/KubeVirtVMStuckInStartingState.md)
+- [KubeVirtComponentExceedsRequestedCPU.md](runbooks/KubeVirtComponentExceedsRequestedCPU.md)
 - [VirtualMachineCRCErrors.md](runbooks/VirtualMachineCRCErrors.md)
 
 ## Renamed Runbooks
