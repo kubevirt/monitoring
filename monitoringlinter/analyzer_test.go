@@ -5,7 +5,7 @@ import (
 
 	"golang.org/x/tools/go/analysis/analysistest"
 
-	"github.com/monitoring/monitoringlinter"
+	"github.com/kubevirt/monitoring/monitoringlinter"
 )
 
 func TestAllUseCases(t *testing.T) {
