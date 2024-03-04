@@ -3,7 +3,7 @@ package main
 import (
 	"golang.org/x/tools/go/analysis/singlechecker"
 
-	"github.com/monitoring/monitoringlinter"
+	"github.com/kubevirt/monitoring/monitoringlinter"
 )
 
 func main() {
