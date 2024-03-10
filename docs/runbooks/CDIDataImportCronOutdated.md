@@ -5,7 +5,7 @@
 
 This alert fires when `DataImportCron` cannot poll or import the latest disk image versions.
 
-`DataImportCron` polls disk images, checking for the latest versions, and imports the images as persistent volume claims (PVCs). This process ensures that PVCs are updated to the latest version so that they can be used as reliable clone sources or golden images for virtual machines (VMs).
+`DataImportCron` polls disk images, checking for the latest versions, and imports the images into persistent volume claims (PVCs) or VolumeSnapshots. This process ensures that these sources are updated to the latest version so that they can be used as reliable clone sources or golden images for virtual machines (VMs).
 
 For golden images, _latest_ refers to the latest operating system of the distribution. For other disk images, _latest_ refers to the latest hash of the image that is available.
 
@@ -13,7 +13,7 @@ For golden images, _latest_ refers to the latest operating system of the distrib
 
 VMs might be created from outdated disk images.
 
-VMs might fail to start because no source PVC is available for cloning.
+VMs might fail to start because no boot source is available for cloning.
 
 ## Diagnosis
 
@@ -76,7 +76,8 @@ VMs might fail to start because no source PVC is available for cloning.
 
 1. Set a default storage class, either on the cluster or in the `DataImportCron` specification, to poll and import golden images. The updated Containerized Data Importer (CDI) should resolve the issue within a few seconds.
 
-2. If the issue does not resolve itself, delete the data volumes associated with the affected `DataImportCron` objects. The CDI will recreate the data volumes with the default storage class.
+2. If the issue does not resolve itself, or, if you have changed the default storage class in the cluster,  
+you must delete the existing boot sources (datavolumes or volumesnapshots) in the cluster namespace that are configured with the previous default storage class. The CDI will recreate the data volumes with the newly configured default storage class.
 
 3. If your cluster is installed in a restricted network environment, disable the `enableCommonBootImageImport` feature gate in order to opt out of automatic updates:
 
