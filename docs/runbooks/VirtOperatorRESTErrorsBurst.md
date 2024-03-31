@@ -1,9 +1,10 @@
 # VirtOperatorRESTErrorsBurst
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 ## Meaning
 
-This alert fires when more than 80% of the REST calls in the `virt-operator` pods failed in the last 5 minutes. This usually indicates that the `virt-operator` pods cannot connect to the API server. 
+For the last 10 minutes or longer, over 80% of the REST calls made to `virt-operator` pods have failed.
+
+This usually indicates that the `virt-operator` pods cannot connect to the API server.
 
 This error is frequently caused by one of the following problems:
 

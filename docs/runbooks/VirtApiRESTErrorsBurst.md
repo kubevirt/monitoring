@@ -1,9 +1,8 @@
 # VirtApiRESTErrorsBurst
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 ## Meaning
 
-More than 80% of REST calls have failed in the `virt-api` pods in the last 5 minutes.
+For the last 10 minutes or longer, over 80% of the REST calls made to `virt-api` pods have failed.
 
 ## Impact
 
