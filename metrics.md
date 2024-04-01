@@ -308,14 +308,14 @@ The number of CDI upload server pods with high restart count. Type: Gauge.
 
 ## [cluster-network-addons-operator](https://github.com/kubevirt/cluster-network-addons-operator/tree/main)
 
+### kubevirt_cnao_cr_kubemacpool_aggregated
+Total count of KubeMacPool manager pods deployed by CNAO CR. Type: Gauge.
+
 ### kubevirt_cnao_cr_kubemacpool_deployed
 KubeMacpool is deployed by CNAO CR. Type: Gauge.
 
 ### kubevirt_cnao_cr_ready
 CNAO CR Ready. Type: Gauge.
-
-### kubevirt_cnao_cr_kubemacpool_aggregated
-Total count of KubeMacPool manager pods deployed by CNAO CR. Type: Gauge.
 
 ### kubevirt_cnao_kubemacpool_duplicate_macs
 Total count of duplicate KubeMacPool MAC addresses. Type: Gauge.
