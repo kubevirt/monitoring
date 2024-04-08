@@ -1,9 +1,10 @@
 # VirtHandlerRESTErrorsBurst
-<!-- Edited by Jiří Herrmann, 9 Nov 2022 -->
 
 ## Meaning
 
-More than 80% of REST calls failed in `virt-handler` in the last 5 minutes. This alert usually indicates that the `virt-handler` pods cannot connect to the API server.
+For the last 10 minutes or longer, over 80% of the REST calls made to `virt-handler` pods have failed.
+
+This alert usually indicates that the `virt-handler` pods cannot connect to the API server.
 
 This error is frequently caused by one of the following problems:
 
