@@ -33,6 +33,9 @@ Indicates whether the Software Emulation is enabled in the configuration. Type: 
 ### kubevirt_console_active_connections
 Amount of active Console connections, broken down by namespace and vmi name. Type: Gauge.
 
+### kubevirt_memory_delta_from_requested_bytes
+The delta between the pod with highest memory working set or rss and its requested memory for each container, virt-controller, virt-handler, virt-api and virt-operator. Type: Gauge.
+
 ### kubevirt_nodes_with_kvm
 The number of nodes in the cluster that have the devices.kubevirt.io/kvm resource available. Type: Gauge.
 
@@ -41,6 +44,15 @@ The number of VMs in the cluster by namespace. Type: Gauge.
 
 ### kubevirt_portforward_active_tunnels
 Amount of active portforward tunnels, broken down by namespace and vmi name. Type: Gauge.
+
+### kubevirt_rest_client_rate_limiter_duration_seconds
+Client side rate limiter latency in seconds. Broken down by verb and URL. Type: Histogram.
+
+### kubevirt_rest_client_request_latency_seconds
+Request latency in seconds. Broken down by verb and URL. Type: Histogram.
+
+### kubevirt_rest_client_requests_total
+Number of HTTP requests, partitioned by status code, method, and host. Type: Counter.
 
 ### kubevirt_usbredir_active_connections
 Amount of active USB redirection connections, broken down by namespace and vmi name. Type: Gauge.
@@ -84,8 +96,11 @@ The current available memory of the VM containers based on the rss. Type: Gauge.
 ### kubevirt_vm_container_free_memory_bytes_based_on_working_set_bytes
 The current available memory of the VM containers based on the working set. Type: Gauge.
 
+### kubevirt_vm_created_by_pod_total
+The total number of VMs created by namespace and virt-api pod, since install. Type: Counter.
+
 ### kubevirt_vm_created_total
-Amount of VMs created, broken down by namespace, since install. Type: Counter.
+The total number of VMs created by namespace, since install. Type: Counter.
 
 ### kubevirt_vm_error_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to error status. Type: Counter.
