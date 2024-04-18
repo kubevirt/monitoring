@@ -13,7 +13,7 @@ This error is frequently caused by one of the following problems:
 
 ## Impact
 
-Cluster-level actions, such as upgrading and controller reconciliation, might be delayed. 
+Cluster-level actions, such as upgrading and controller reconciliation, might be delayed.
 
 However, customer workloads, such as virtual machines (VMs) and VM instances (VMIs), are not likely to be affected.
 

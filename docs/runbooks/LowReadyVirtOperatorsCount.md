@@ -1,4 +1,4 @@
-# LowReadyVirtOperatorsCount 
+# LowReadyVirtOperatorsCount
 <!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 ## Meaning
@@ -7,7 +7,7 @@ This alert fires when one or more `virt-operator` pods are running, but none of 
 
 The `virt-operator` is the first Operator to start in a cluster. The `virt-operator` deployment has a default replica of two `virt-operator` pods.
 
-Its primary responsibilities include the following: 
+Its primary responsibilities include the following:
 
 - Installing, live-updating, and live-upgrading a cluster
 - Monitoring the lifecycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation

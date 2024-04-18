@@ -24,7 +24,7 @@ The HPP components might fail to deploy or to remain in the required state. As a
    ```bash
    $ kubectl -n $HPP_NAMESPACE get pods -l name=hostpath-provisioner-operator
    ```
- 
+
 3. Obtain the details of the `hostpath-provisioner-operator` pod:
 
    ```bash

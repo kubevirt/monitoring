@@ -23,7 +23,7 @@ The CDI components might fail to deploy or to stay in a required state. The CDI 
    ```bash
    $ kubectl -n $CDI_NAMESPACE get pods -l name=cdi-operator
    ```
- 
+
 3. Obtain the details of the `cdi-operator` pod:
 
    ```bash

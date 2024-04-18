@@ -17,7 +17,7 @@ Check the `component_name` in the alert details to determine the operand that is
 
 In the following example, the operand kind is `kubevirt` and the operand name is `kubevirt-kubevirt-hyperconverged`:
 
-```
+```text
 Labels
    alertname=KubeVirtCRModified
    component_name=kubevirt/kubevirt-kubevirt-hyperconverged
@@ -26,6 +26,6 @@ Labels
 
 ## Mitigation
 
-Do not change the HCO operands directly. Use `HyperConverged` objects to configure the cluster. 
+Do not change the HCO operands directly. Use `HyperConverged` objects to configure the cluster.
 
 The alert resolves itself after 10 minutes if the operands are not changed manually.

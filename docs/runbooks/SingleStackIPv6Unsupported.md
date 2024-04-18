@@ -5,12 +5,12 @@
 
 This alert fires when user tries to install KubeVirt Hyperconverged on a single stack IPv6 cluster.
 
-KubeVirt Hyperconverged is not yet supported on an OpenShift cluster configured with single stack IPv6. It's 
+KubeVirt Hyperconverged is not yet supported on an OpenShift cluster configured with single stack IPv6. It's
 progress is being tracked on [this issue](https://issues.redhat.com/browse/CNV-28924).
 
 ## Impact
 
-KubeVirt Hyperconverged Operator can't be installed on a single stack IPv6 cluster, and hence creation virtual 
+KubeVirt Hyperconverged Operator can't be installed on a single stack IPv6 cluster, and hence creation virtual
 machines on top of such a cluster is not possible.
 
 ## Diagnosis
@@ -24,5 +24,5 @@ machines on top of such a cluster is not possible.
 
 ## Mitigation
 
-It is recommended to use single stack IPv4 or a dual stack IPv4/IPv6 networking to use KubeVirt Hyperconverged. 
+It is recommended to use single stack IPv4 or a dual stack IPv4/IPv6 networking to use KubeVirt Hyperconverged.
 Refer the [documentation](https://docs.openshift.com/container-platform/latest/networking/ovn_kubernetes_network_provider/converting-to-dual-stack.html).

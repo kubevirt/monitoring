@@ -32,7 +32,7 @@ You cannot upgrade to OKD 1.7.
 
    Example output:
 
-   ```
+   ```json
    {
      "lastTransitionTime": "2022-05-26T09:23:21Z",
      "message": "NMO custom resources have been found",
@@ -44,7 +44,7 @@ You cannot upgrade to OKD 1.7.
 
 2. Check for a ClusterServiceVersion (CSV) warning event such as the following:
 
-   ```
+   ```text
    Warning  NotUpgradeable      2m12s (x5 over 2m50s)   kubevirt-hyperconvergedNode
    Maintenance Operator custom resources nodemaintenances.nodemaintenance.kubevirt.io
    have been found.
@@ -60,7 +60,7 @@ You cannot upgrade to OKD 1.7.
 
    Example output:
 
-   ```
+   ```text
    NAME                   AGE
    nodemaintenance-test   5m33s
    ```

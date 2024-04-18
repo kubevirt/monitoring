@@ -40,4 +40,3 @@ If you cannot resolve the issue, see the following resources:
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
-

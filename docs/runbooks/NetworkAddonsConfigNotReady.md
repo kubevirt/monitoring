@@ -21,7 +21,7 @@ Network functionality is affected.
 
    Example output:
 
-   ```
+   ```text
    DaemonSet "cluster-network-addons/macvtap-cni" update is being processed...
    ```
 

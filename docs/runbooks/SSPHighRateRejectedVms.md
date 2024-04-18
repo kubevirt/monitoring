@@ -25,7 +25,7 @@ The VMs are not created or modified. As a result, the environment might not beha
 
    Example output:
 
-   ```
+   ```text
    {"component":"kubevirt-template-validator","level":"info","msg":"evalution 
    summary for ubuntu-3166wmdbbfkroku0:\nminimal-required-memory applied: FAIL, 
    value 1073741824 is lower than minimum [2147483648]\n\nsucceeded=false",

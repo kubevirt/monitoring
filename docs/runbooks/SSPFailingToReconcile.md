@@ -48,7 +48,7 @@ Dependent components might not be deployed. Changes in the components might not 
    ```bash
    $ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
    ```
- 
+
 ## Mitigation
 
 Try to identify the root cause and resolve the issue.

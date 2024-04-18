@@ -9,7 +9,7 @@ More than 5% of REST calls have failed in the `virt-api` pods in the last 60 min
 
 A high rate of failed REST calls to `virt-api` might lead to slow response and execution of API calls.
 
-However, currently running virtual machine workloads are not likely to be affected. 
+However, currently running virtual machine workloads are not likely to be affected.
 
 ## Diagnosis
 

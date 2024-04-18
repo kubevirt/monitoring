@@ -27,7 +27,7 @@ Duplicate MAC addresses on the same LAN might cause network issues.
 
    Example output:
 
-   ```
+   ```text
    mac address 02:00:ff:ff:ff:ff already allocated to vm/kubemacpool-test/testvm, br1, 
    conflict with: vm/kubemacpool-test/testvm2, br1
    ```

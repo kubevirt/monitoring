@@ -13,6 +13,6 @@ You cannot upgrade your cluster to OpenShift Virtualization 4.11.
 
 ## Mitigation
 
-Install the Kubernetes NMState Operator from the OperatorHub. CNAO automatically transfers the `kubernetes-nmstate` deployment to the Operator. 
+Install the Kubernetes NMState Operator from the OperatorHub. CNAO automatically transfers the `kubernetes-nmstate` deployment to the Operator.
 
 Afterwards, you can upgrade to OpenShift Virtualization 4.11.

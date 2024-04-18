@@ -14,7 +14,7 @@ This error is frequently caused by one of the following problems:
 
 ## Impact
 
-Cluster-level actions, such as upgrading and controller reconciliation, might not be available. 
+Cluster-level actions, such as upgrading and controller reconciliation, might not be available.
 
 However, customer workloads, such as virtual machines (VMs) and VM instances (VMIs), are not likely to be affected.
 

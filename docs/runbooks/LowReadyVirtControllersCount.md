@@ -4,7 +4,7 @@
 
 ## Meaning
 
-This alert fires when one or more `virt-controller` pods are running, but none of these pods has been in the `Ready` state for the last 5 minutes. 
+This alert fires when one or more `virt-controller` pods are running, but none of these pods has been in the `Ready` state for the last 5 minutes.
 
 A `virt-controller` device monitors the custom resource definitions (CRDs) of a virtual machine instance (VMI) and manages the associated pods. The device create pods for VMIs and manages the lifecycle of the pods. The device is critical for cluster-wide virtualization functionality.
 

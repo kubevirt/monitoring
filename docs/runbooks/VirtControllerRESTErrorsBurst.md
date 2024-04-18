@@ -14,7 +14,7 @@ This error is frequently caused by one of the following problems:
 
 ## Impact
 
-Status updates are not propagated and actions like migrations cannot take place. However, running workloads are not impacted. 
+Status updates are not propagated and actions like migrations cannot take place. However, running workloads are not impacted.
 
 ## Diagnosis
 

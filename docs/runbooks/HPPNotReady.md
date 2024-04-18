@@ -4,7 +4,7 @@
 
 ## Meaning
 
-This alert fires when a hostpath provisioner (HPP) installation is in a degraded state. 
+This alert fires when a hostpath provisioner (HPP) installation is in a degraded state.
 
 The HPP dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs).  
 
@@ -17,7 +17,7 @@ HPP is not usable. Its components are not ready and they are not progressing tow
 1. Set the `HPP_NAMESPACE` environment variable:
 
    ```bash
- export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
+   $ export HPP_NAMESPACE="$(kubectl get deployment -A | grep hostpath-provisioner-operator | awk '{print $1}')"
    ```
 
 2. Check for HPP components that are currently not ready:

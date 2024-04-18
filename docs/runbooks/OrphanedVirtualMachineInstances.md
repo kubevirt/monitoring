@@ -31,7 +31,7 @@ Orphaned VMIs cannot be managed.
 
    Example output:
 
-   ```
+   ```text
    NAME                  DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
    virt-handler          2         2         2       2            2           kubernetes.io/os=linux   4h
    ```

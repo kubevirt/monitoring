@@ -9,7 +9,7 @@
 
 ## Impact
 
-If `KubeMacPool` is down, `VirtualMachine` objects cannot be created. 
+If `KubeMacPool` is down, `VirtualMachine` objects cannot be created.
 
 ## Diagnosis
 
@@ -19,7 +19,7 @@ If `KubeMacPool` is down, `VirtualMachine` objects cannot be created.
    $ export KMP_NAMESPACE="$(kubectl get pod -A --no-headers -l \
       control-plane=mac-controller-manager | awk '{print $1}')"
    ```
-   
+
 2. Set the `KMP_NAME` environment variable:
 
    ```bash
@@ -48,4 +48,3 @@ If you cannot resolve the issue, see the following resources:
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
-

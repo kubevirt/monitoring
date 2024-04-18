@@ -3,7 +3,7 @@
 
 ## Meaning
 
-More than 5% of REST calls failed in `virt-controller` in the last 60 minutes. 
+More than 5% of REST calls failed in `virt-controller` in the last 60 minutes.
 
 This is most likely because `virt-controller` has partially lost connection to the API server.
 

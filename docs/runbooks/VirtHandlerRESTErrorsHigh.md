@@ -36,8 +36,8 @@ Node-related actions, such as starting and migrating workloads, are delayed on t
    ```
 
    Example error message:
-   
-   ```
+
+   ```json
    {"component":"virt-handler","level":"error","msg":"Can't patch node my-node","pos":"heartbeat.go:96","reason":"the server has received too many API requests and has asked us to try again later","timestamp":"2023-11-06T11:11:41.099883Z","uid":"132c50c2-8d82-4e49-8857-dc737adcd6cc"}
    ```
 

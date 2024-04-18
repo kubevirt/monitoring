@@ -3,9 +3,9 @@
 
 ## Meaning
 
-This alert fires when no `virt-operator` pod in the `Running` state has been detected for 10 minutes. 
+This alert fires when no `virt-operator` pod in the `Running` state has been detected for 10 minutes.
 
-The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
+The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following:
 
 - Installing, live-updating, and live-upgrading a cluster
 - Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation

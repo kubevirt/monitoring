@@ -23,7 +23,7 @@ Upgrading a system with JSON Patch annotations is dangerous because the structur
 
 Check the `annotation_name` in the alert details to identify the JSON Patch annotation:
 
-```
+```text
 Labels
    alertname=UnsupportedHCOModification
    annotation_name=kubevirt.kubevirt.io/jsonpatch

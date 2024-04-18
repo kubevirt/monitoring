@@ -24,7 +24,7 @@ A shared hostpath pool puts pressure on the node's disks. The node might have de
    ```bash
    $ kubectl -n $HPP_NAMESPACE get pods | grep hostpath-provisioner-csi
    ```
- 
+
 3. Check the `hostpath-provisioner-csi` logs to identify the shared pool and path:
 
    ```bash
@@ -33,7 +33,7 @@ A shared hostpath pool puts pressure on the node's disks. The node might have de
 
    Example output:
 
-   ```  
+   ```text
    I0208 15:21:03.769731       1 utils.go:221] pool (<legacy, csi-data-dir>/csi), shares path with OS which can lead to node disk pressure
    ```
 

@@ -23,7 +23,7 @@ If the CNAO is not running, the cluster cannot reconcile changes to virtual mach
    ```bash
    $ kubectl -n $NAMESPACE get pods -l name=cluster-network-addons-operator
    ```
- 
+
 3. Check the `cluster-network-addons-operator` logs for error messages:
 
    ```bash

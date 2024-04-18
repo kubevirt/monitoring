@@ -71,7 +71,7 @@ A new VMI spins up immediately in an updated `virt-launcher` pod to replace the 
 Note: Manually stopping a _live-migratable_ VM is destructive and not recommended because it interrupts the workload.
 
 ### Migrating a live-migratable VMI
-   
+
 If a VMI is live-migratable, you can update it by creating a `VirtualMachineInstanceMigration` object that targets a specific running VMI. The VMI is migrated into an updated `virt-launcher` pod.
 
 1. Create a `VirtualMachineInstanceMigration` manifest and save it as `migration.yaml`:

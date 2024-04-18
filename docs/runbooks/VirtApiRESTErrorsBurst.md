@@ -8,7 +8,7 @@ For the last 10 minutes or longer, over 80% of the REST calls made to `virt-api`
 
 A very high rate of failed REST calls to `virt-api` might lead to slow response and execution of API calls, and potentially to API calls being completely dismissed.
 
-However, currently running virtual machine workloads are not likely to be affected. 
+However, currently running virtual machine workloads are not likely to be affected.
 
 ## Diagnosis
 

@@ -1,11 +1,11 @@
-# NoReadyVirtOperator 
+# NoReadyVirtOperator
 <!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
 
 ## Meaning
 
 This alert fires when no `virt-operator` pod in a `Ready` state has been detected for 10 minutes.
 
-The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
+The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following:
 
 - Installing, live-updating, and live-upgrading a cluster
 - Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
@@ -13,7 +13,7 @@ The `virt-operator` is the first Operator to start in a cluster. Its primary res
 
 The default deployment is two `virt-operator` pods.
 
-## Impact 
+## Impact
 
 This alert indicates a cluster-level failure. Critical cluster management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, might not be not available.
 

@@ -12,7 +12,7 @@ Usage of deprecated APIs is not recommended because they will be removed in a fu
 ## Diagnosis
 
 Check the `description` and `summary` alert annotations for more details on which API is being accessed, for example:
-```
+```text
               description: "Detected requests to the deprecated virtualmachines.kubevirt.io/v1alpha3 API."
               summary: "2 requests were detected in the last 10 minutes."
 ```
