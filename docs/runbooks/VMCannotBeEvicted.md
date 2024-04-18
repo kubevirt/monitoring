@@ -3,21 +3,25 @@
 
 ## Meaning
 
-This alert fires when the eviction strategy of a virtual machine (VM) is set to `LiveMigration` but the VM is not migratable.
+This alert fires when the eviction strategy of a virtual machine (VM) is set to
+`LiveMigration` but the VM is not migratable.
 
 ## Impact
 
-Non-migratable VMs prevent node eviction. This condition affects operations such as node drain and updates.
+Non-migratable VMs prevent node eviction. This condition affects operations such
+as node drain and updates.
 
 ## Diagnosis
 
-1. Check the VMI configuration to determine whether the value of `evictionStrategy` is `LiveMigrate` of the VMI:
+1. Check the VMI configuration to determine whether the value of
+`evictionStrategy` is `LiveMigrate` of the VMI:
 
    ```bash
    $ kubectl get vmis -o yaml
    ```
 
-2. Check for a `False` status in the `LIVE-MIGRATABLE` column to identify VMIs that are not migratable:
+2. Check for a `False` status in the `LIVE-MIGRATABLE` column to identify VMIs
+that are not migratable:
 
    ```bash
    $ kubectl get vmis -o wide
@@ -44,4 +48,5 @@ Non-migratable VMs prevent node eviction. This condition affects operations such
 
 ## Mitigation
 
-Set the `evictionStrategy` of the VMI to `shutdown` or resolve the issue that prevents the VMI from migrating.
+Set the `evictionStrategy` of the VMI to `shutdown` or resolve the issue that
+prevents the VMI from migrating.

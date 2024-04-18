@@ -3,11 +3,13 @@
 
 ## Meaning
 
-This alert fires when only one available `virt-api` pod is detected during a 60-minute period, although at least two nodes are available for scheduling.
+This alert fires when only one available `virt-api` pod is detected during a
+60-minute period, although at least two nodes are available for scheduling.
 
 ## Impact
 
-An API call outage might occur during node eviction because the `virt-api` pod becomes a single point of failure.
+An API call outage might occur during node eviction because the `virt-api` pod
+becomes a single point of failure.
 
 ## Diagnosis
 
@@ -39,7 +41,9 @@ An API call outage might occur during node eviction because the `virt-api` pod b
 
 Try to identify the root cause and to resolve the issue.
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

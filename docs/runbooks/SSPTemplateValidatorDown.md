@@ -5,11 +5,13 @@
 
 This alert fires when all the Template Validator pods are down.
 
-The Template Validator checks virtual machines (VMs) to ensure that they do not violate their templates.
+The Template Validator checks virtual machines (VMs) to ensure that they do not
+violate their templates.
 
 ## Impact
 
-VMs are not validated against their templates. As a result, VMs might be created with specifications that do not match their respective workloads.
+VMs are not validated against their templates. As a result, VMs might be created
+with specifications that do not match their respective workloads.
 
 ## Diagnosis
 
@@ -40,7 +42,9 @@ VMs are not validated against their templates. As a result, VMs might be created
 ## Mitigation
 
 Try to identify the root cause and resolve the issue.
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

@@ -3,13 +3,17 @@
 
 ## Meaning
 
-This alert fires when there is no default (Kubernetes or virtualization) storage class, and a data volume is pending for one.
+This alert fires when there is no default (Kubernetes or virtualization) storage
+class, and a data volume is pending for one.
 
-A default virtualization storage class has precedence over a default Kubernetes storage class for creating a VirtualMachine disk image.
+A default virtualization storage class has precedence over a default Kubernetes
+storage class for creating a VirtualMachine disk image.
 
 ## Impact
 
-If there is no default (k8s or virt) storage class, a data volume that requests a default storage class (storage class not explicitly specified) will be pending for one.
+If there is no default (k8s or virt) storage class, a data volume that requests
+a default storage class (storage class not explicitly specified) will be pending
+for one.
 
 ## Diagnosis
 
@@ -35,7 +39,8 @@ $ kubectl patch storageclass <storage-class-name> -p '{"metadata": {"annotations
 
 ## Mitigation
 
-Ensure that there is one storage class that has the default (k8s or virt) storage class annotation.
+Ensure that there is one storage class that has the default (k8s or virt)
+storage class annotation.
 
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:

@@ -3,13 +3,17 @@
 
 ## Meaning
 
-This alert fires when the reconcile cycle of the Scheduling, Scale and Performance (SSP) Operator fails repeatedly, although the SSP Operator is running.
+This alert fires when the reconcile cycle of the Scheduling, Scale and
+Performance (SSP) Operator fails repeatedly, although the SSP Operator is running.
 
-The SSP Operator is responsible for deploying and reconciling the common templates and the Template Validator.
+The SSP Operator is responsible for deploying and reconciling the common
+templates and the Template Validator.
 
 ## Impact
 
-Dependent components might not be deployed. Changes in the components might not be reconciled. As a result, the common templates and/or the Template Validator might not be updated or reset if they fail.
+Dependent components might not be deployed. Changes in the components might not
+be reconciled. As a result, the common templates and/or the Template Validator
+might not be updated or reset if they fail.
 
 ## Diagnosis
 
@@ -52,7 +56,9 @@ Dependent components might not be deployed. Changes in the components might not 
 ## Mitigation
 
 Try to identify the root cause and resolve the issue.
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

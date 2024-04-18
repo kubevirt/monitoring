@@ -29,7 +29,8 @@ KubeVirt objects cannot send API calls.
    $ kubectl -n $NAMESPACE get deploy virt-api -o yaml
    ```
 
-4. Check the `virt-api` deployment details for issues such as crashing pods or image pull failures:
+4. Check the `virt-api` deployment details for issues such as crashing pods or
+image pull failures:
 
    ```bash
    $ kubectl -n $NAMESPACE describe deploy virt-api
@@ -44,7 +45,9 @@ KubeVirt objects cannot send API calls.
 ## Mitigation
 
 Try to identify the root cause and resolve the issue.
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

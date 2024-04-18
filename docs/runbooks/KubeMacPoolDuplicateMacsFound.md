@@ -5,7 +5,9 @@
 
 This alert fires when `KubeMacPool` detects duplicate MAC addresses.
 
-`KubeMacPool` is responsible for allocating MAC addresses and preventing MAC address conflicts. When `KubeMacPool` starts, it scans the cluster for the MAC addresses of virtual machines (VMs) in managed namespaces.
+`KubeMacPool` is responsible for allocating MAC addresses and preventing MAC
+address conflicts. When `KubeMacPool` starts, it scans the cluster for the MAC
+addresses of virtual machines (VMs) in managed namespaces.
 
 ## Impact
 

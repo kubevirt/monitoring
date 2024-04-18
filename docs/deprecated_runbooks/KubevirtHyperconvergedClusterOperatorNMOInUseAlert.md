@@ -3,16 +3,27 @@
 
 ## Meaning
 
-<!--DS: This alert fires when _integrated_ Node Maintenance Operator (NMO) custom resources (CRs) are detected. This alert only affects {VirtProductName} 4.10.-->
+<!--DS: This alert fires when _integrated_ Node Maintenance Operator (NMO)
+custom resources (CRs) are detected. This alert only affects {VirtProductName}
+4.10.-->
 
-<!--DS: The Node Maintenance Operator is not included with {VirtProductName} 4.11.0 or later. Instead, the Operator is installed from OperatorHub.-->
+<!--DS: The Node Maintenance Operator is not included with {VirtProductName}
+4.11.0 or later. Instead, the Operator is installed from OperatorHub.-->
 
-<!--DS: The presence of `NodeMaintenance` CRs belonging to the `nodemaintenance.kubevirt.io` API group indicates that the node specified in `spec.nodeName` was put into maintenance mode. The target node has been cordoned off and drained.-->
+<!--DS: The presence of `NodeMaintenance` CRs belonging to the
+`nodemaintenance.kubevirt.io` API group indicates that the node specified in
+`spec.nodeName` was put into maintenance mode. The target node has been cordoned
+off and drained.-->
 
 <!--USstart-->
-This alert fires when _integrated_ Node Maintenance Operator (NMO) custom resources (CRs) are detected. This alert only affects OKD 1.6.
+This alert fires when _integrated_ Node Maintenance Operator (NMO) custom
+resources (CRs) are detected. This alert only affects OKD 1.6.
 
-The presence of `NodeMaintenance` CRs belonging to the `nodemaintenance.kubevirt.io` API group indicates that the node specified in `spec.nodeName` was put into maintenance mode. The target node has been [cordoned off](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#cordon) and [drained](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/#use-kubectl-drain-to-remove-a-node-from-service).
+The presence of `NodeMaintenance` CRs belonging to the
+`nodemaintenance.kubevirt.io` API group indicates that the node specified in
+`spec.nodeName` was put into maintenance mode. The target node has been
+[cordoned off](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#cordon)
+and [drained](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/#use-kubectl-drain-to-remove-a-node-from-service).
 <!--USend-->
 
 ## Impact
@@ -67,13 +78,21 @@ You cannot upgrade to OKD 1.7.
 
 ## Mitigation
 
-Remove all NMO CRs belonging to the `nodemaintenance.nodemaintenance.kubevirt.io/` API group. After the integrated NMO resources are removed, the alert is cleared and you can upgrade.
+Remove all NMO CRs belonging to the
+`nodemaintenance.nodemaintenance.kubevirt.io/` API group. After the integrated
+NMO resources are removed, the alert is cleared and you can upgrade.
 
-If a node must remain in maintenance mode during upgrade, install the Node Maintenance Operator from OperatorHub. Then, create an NMO CR belonging to the `nodemaintenance.nodemaintenance.medik8s.io/v1beta1` API group and version for the node.
+If a node must remain in maintenance mode during upgrade, install the Node
+Maintenance Operator from OperatorHub. Then, create an NMO CR belonging to the
+`nodemaintenance.nodemaintenance.medik8s.io/v1beta1` API group and version for
+the node.
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
-See the [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate) for more information.
+See the [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate)
+for more information.
 
 If you cannot resolve the issue, see the following resources:
 

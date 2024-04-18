@@ -3,15 +3,17 @@
 
 ## Meaning
 
-This alert fires when the containerized data importer (CDI) is in a degraded state:
+This alert fires when the containerized data importer (CDI) is in a degraded
+state:
 
 - Not progressing
 - Not available to use
 
 ## Impact
 
-CDI is not usable, so users cannot build virtual machine disks on persistent volume claims (PVCs) using CDI's data volumes.
-CDI components are not ready and they stopped progressing towards a ready state.
+CDI is not usable, so users cannot build virtual machine disks on persistent
+volume claims (PVCs) using CDI's data volumes. CDI components are not ready, and
+they stopped progressing towards a ready state.
 
 ## Diagnosis
 
@@ -43,7 +45,9 @@ CDI components are not ready and they stopped progressing towards a ready state.
 
 Try to identify the root cause and resolve the issue.
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

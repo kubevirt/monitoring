@@ -3,11 +3,13 @@
 
 ## Meaning
 
-This alert fires when a user or script attempts to create or modify a large number of virtual machines (VMs), using an invalid configuration.
+This alert fires when a user or script attempts to create or modify a large
+number of virtual machines (VMs), using an invalid configuration.
 
 ## Impact
 
-The VMs are not created or modified. As a result, the environment might not behave as expected.
+The VMs are not created or modified. As a result, the environment might not
+behave as expected.
 
 ## Diagnosis
 
@@ -17,7 +19,8 @@ The VMs are not created or modified. As a result, the environment might not beha
    $ export NAMESPACE="$(kubectl get deployment -A | grep ssp-operator | awk '{print $1}')"
    ```
 
-2. Check the `virt-template-validator` logs for errors that might indicate the cause:
+2. Check the `virt-template-validator` logs for errors that might indicate the
+cause:
 
    ```bash
    $ kubectl -n $NAMESPACE logs --tail=-1 -l name=virt-template-validator
@@ -35,7 +38,9 @@ The VMs are not created or modified. As a result, the environment might not beha
 ## Mitigation
 
 Try to identify the root cause and resolve the issue.
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

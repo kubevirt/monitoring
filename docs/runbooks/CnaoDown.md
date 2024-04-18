@@ -8,7 +8,8 @@ The CNAO deploys additional networking components on top of the cluster.
 
 ## Impact
 
-If the CNAO is not running, the cluster cannot reconcile changes to virtual machine components. As a result, the changes might fail to take effect.
+If the CNAO is not running, the cluster cannot reconcile changes to virtual
+machine components. As a result, the changes might fail to take effect.
 
 ## Diagnosis
 
@@ -38,7 +39,9 @@ If the CNAO is not running, the cluster cannot reconcile changes to virtual mach
 
 ## Mitigation
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

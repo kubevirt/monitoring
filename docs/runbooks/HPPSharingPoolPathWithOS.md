@@ -3,13 +3,16 @@
 
 ## Meaning
 
-This alert fires when the hostpath provisioner (HPP) shares a file system with other critical components, such as `kubelet` or the operating system (OS).
+This alert fires when the hostpath provisioner (HPP) shares a file system with
+other critical components, such as `kubelet` or the operating system (OS).
 
-HPP dynamically provisions hostpath volumes to provide storage for persistent volume claims (PVCs).
+HPP dynamically provisions hostpath volumes to provide storage for persistent
+volume claims (PVCs).
 
 ## Impact
 
-A shared hostpath pool puts pressure on the node's disks. The node might have degraded performance and stability.
+A shared hostpath pool puts pressure on the node's disks. The node might have
+degraded performance and stability.
 
 ## Diagnosis
 
@@ -39,9 +42,13 @@ A shared hostpath pool puts pressure on the node's disks. The node might have de
 
 ## Mitigation
 
-Using the data obtained in the Diagnosis section, try to prevent the pool path from being shared with the OS. The specific steps vary based on the node and other circumstances.
+Using the data obtained in the Diagnosis section, try to prevent the pool path
+from being shared with the OS. The specific steps vary based on the node and
+other circumstances.
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

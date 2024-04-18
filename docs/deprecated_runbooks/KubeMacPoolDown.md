@@ -5,7 +5,8 @@
 
 ## Meaning
 
-`KubeMacPool` is down. `KubeMacPool` is responsible for allocating MAC addresses and preventing MAC address conflicts.
+`KubeMacPool` is down. `KubeMacPool` is responsible for allocating MAC addresses
+and preventing MAC address conflicts.
 
 ## Impact
 
@@ -41,7 +42,9 @@ If `KubeMacPool` is down, `VirtualMachine` objects cannot be created.
 
 ## Mitigation
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
