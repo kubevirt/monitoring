@@ -31,3 +31,8 @@ monitoringlinter-build:
 .PHONY: monitoringlinter-test
 monitoringlinter-test: monitoringlinter-build
 	cd monitoringlinter && ./tests/e2e.sh
+
+.PHONY: lint-markdown
+lint-markdown:
+	echo "Linting markdown files"
+	podman run -v ${PWD}:/workdir:Z docker.io/davidanson/markdownlint-cli2:v0.13.0 "/workdir/docs/*runbooks/*.md"
