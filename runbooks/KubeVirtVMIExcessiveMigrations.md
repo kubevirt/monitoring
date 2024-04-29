@@ -3,13 +3,17 @@
 
 ## Meaning
 
-This alert fires when a virtual machine instance (VMI) live migrates more than 12 times over a period of 24 hours.
+This alert fires when a virtual machine instance (VMI) live migrates more than
+12 times over a period of 24 hours.
 
-This migration rate is abnormally high, even during an upgrade. This alert might indicate a problem in the cluster infrastructure, such as network disruptions or insufficient resources.
+This migration rate is abnormally high, even during an upgrade. This alert might
+indicate a problem in the cluster infrastructure, such as network disruptions or
+insufficient resources.
 
 ## Impact
 
-A virtual machine (VM) that migrates too frequently might experience degraded performance because memory page faults occur during the transition.
+A virtual machine (VM) that migrates too frequently might experience degraded
+performance because memory page faults occur during the transition.
 
 ## Diagnosis
 
@@ -21,7 +25,7 @@ A virtual machine (VM) that migrates too frequently might experience degraded pe
 
    Example output:
 
-   ```
+   ```json
    {
      "cpu": "3500m",
      "devices.kubevirt.io/kvm": "1k",
@@ -44,7 +48,7 @@ A virtual machine (VM) that migrates too frequently might experience degraded pe
 
    Example output:
 
-   ```
+   ```text
    {
      "lastHeartbeatTime": "2022-05-26T07:36:01Z",
      "lastTransitionTime": "2022-05-23T08:12:02Z",
@@ -93,11 +97,14 @@ A virtual machine (VM) that migrates too frequently might experience degraded pe
 
 ## Mitigation
 
-Ensure that the worker nodes have sufficient resources (CPU, memory, disk) to run VM workloads without interruption. 
- 
-If the problem persists, try to identify the root cause and resolve the issue. 
+Ensure that the worker nodes have sufficient resources (CPU, memory, disk) to
+run VM workloads without interruption.
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+If the problem persists, try to identify the root cause and resolve the issue.
+
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

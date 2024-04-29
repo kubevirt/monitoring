@@ -145,7 +145,7 @@ $ kubectl get nodes -l node-role.kubernetes.io/worker= -o json | jq '.items | .[
 
 ## Mitigation
 
-First, ensure that the VirtualMachine configuration is correct and all necessary 
+First, ensure that the VirtualMachine configuration is correct and all necessary
 resources exist. For example, if a PVC is missing, it should be created. Also,
 verify that the cluster's infrastructure is healthy and there are enough
 resources to run the VirtualMachine.

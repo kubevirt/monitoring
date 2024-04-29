@@ -1,23 +1,31 @@
-# NoReadyVirtOperator 
+# NoReadyVirtOperator
 <!-- Edited by Jiří Herrmann, 7 Nov 2022 -->
 
 ## Meaning
 
-This alert fires when no `virt-operator` pod in a `Ready` state has been detected for 10 minutes.
+This alert fires when no `virt-operator` pod in a `Ready` state has been
+detected for 10 minutes.
 
-The `virt-operator` is the first Operator to start in a cluster. Its primary responsibilities include the following: 
+The `virt-operator` is the first Operator to start in a cluster. Its primary
+responsibilities include the following:
 
 - Installing, live-updating, and live-upgrading a cluster
-- Monitoring the life cycle of top-level controllers, such as `virt-controller`, `virt-handler`, `virt-launcher`, and managing their reconciliation
-- Certain cluster-wide tasks, such as certificate rotation and infrastructure management
+- Monitoring the life cycle of top-level controllers, such as `virt-controller`,
+`virt-handler`, `virt-launcher`, and managing their reconciliation
+- Certain cluster-wide tasks, such as certificate rotation and infrastructure
+management
 
 The default deployment is two `virt-operator` pods.
 
-## Impact 
+## Impact
 
-This alert indicates a cluster-level failure. Critical cluster management functionalities, such as certification rotation, upgrade, and reconciliation of controllers, might not be not available.
+This alert indicates a cluster-level failure. Critical cluster management
+functionalities, such as certification rotation, upgrade, and reconciliation of
+controllers, might not be not available.
 
-The `virt-operator` is not directly responsible for virtual machines in the cluster. Therefore, its temporary unavailability does not significantly affect custom workloads.
+The `virt-operator` is not directly responsible for virtual machines in the
+cluster. Therefore, its temporary unavailability does not significantly affect
+custom workloads.
 
 ## Diagnosis
 
@@ -47,9 +55,12 @@ The `virt-operator` is not directly responsible for virtual machines in the clus
 
 ## Mitigation
 
-Based on the information obtained during Diagnosis, try to find and resolve the cause of the issue.
+Based on the information obtained during Diagnosis, try to find and resolve the
+cause of the issue.
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
