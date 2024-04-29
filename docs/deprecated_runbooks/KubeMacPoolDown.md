@@ -5,11 +5,12 @@
 
 ## Meaning
 
-`KubeMacPool` is down. `KubeMacPool` is responsible for allocating MAC addresses and preventing MAC address conflicts.
+`KubeMacPool` is down. `KubeMacPool` is responsible for allocating MAC addresses
+and preventing MAC address conflicts.
 
 ## Impact
 
-If `KubeMacPool` is down, `VirtualMachine` objects cannot be created. 
+If `KubeMacPool` is down, `VirtualMachine` objects cannot be created.
 
 ## Diagnosis
 
@@ -19,7 +20,7 @@ If `KubeMacPool` is down, `VirtualMachine` objects cannot be created.
    $ export KMP_NAMESPACE="$(kubectl get pod -A --no-headers -l \
       control-plane=mac-controller-manager | awk '{print $1}')"
    ```
-   
+
 2. Set the `KMP_NAME` environment variable:
 
    ```bash
@@ -41,11 +42,12 @@ If `KubeMacPool` is down, `VirtualMachine` objects cannot be created.
 
 ## Mitigation
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
-

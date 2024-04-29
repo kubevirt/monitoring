@@ -1,0 +1,20 @@
+name: Sanity Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Sanity Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: 'docs/*runbooks/*.md'

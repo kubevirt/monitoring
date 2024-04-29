@@ -3,9 +3,11 @@
 
 ## Meaning
 
-This alert fires when the `NetworkAddonsConfig` custom resource (CR) of the Cluster Network Addons Operator (CNAO) is not ready.
+This alert fires when the `NetworkAddonsConfig` custom resource (CR) of the
+Cluster Network Addons Operator (CNAO) is not ready.
 
-CNAO deploys additional networking components on the cluster. This alert indicates that one of the deployed components is not ready.
+CNAO deploys additional networking components on the cluster. This alert
+indicates that one of the deployed components is not ready.
 
 ## Impact
 
@@ -13,7 +15,8 @@ Network functionality is affected.
 
 ## Diagnosis
 
-1. Check the status conditions of the `NetworkAddonsConfig` CR to identify the deployment or daemon set that is not ready:
+1. Check the status conditions of the `NetworkAddonsConfig` CR to identify the
+deployment or daemon set that is not ready:
 
    ```bash
    $ kubectl get networkaddonsconfig -o custom-columns="":.status.conditions[*].message
@@ -21,7 +24,7 @@ Network functionality is affected.
 
    Example output:
 
-   ```
+   ```text
    DaemonSet "cluster-network-addons/macvtap-cni" update is being processed...
    ```
 
@@ -47,7 +50,9 @@ Network functionality is affected.
 
 Try to identify the root cause and resolve the issue.
 
-<!--DS: If you cannot resolve the issue, log in to the link:https://access.redhat.com[Customer Portal] and open a support case, attaching the artifacts gathered during the Diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Customer Portal] and open a support case,
+attaching the artifacts gathered during the Diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
