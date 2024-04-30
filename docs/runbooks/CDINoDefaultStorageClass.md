@@ -1,5 +1,4 @@
 # CDINoDefaultStorageClass
-<!-- Edited by agilboa, 6 Dec 2023 -->
 
 ## Meaning
 
