@@ -1,7 +1,5 @@
 # VirtControllerDown
 
-<!-- Edited by Jiří Herrmann, 22 Nov 2022 -->
-
 ## Meaning
 No running `virt-controller` pod has been detected for 5 minutes.
 

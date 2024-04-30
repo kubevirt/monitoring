@@ -1,5 +1,4 @@
 # KubeVirtNoAvailableNodesToRunVMs
-<!-- Edited by machadovilaca, 31 Mar 2023 -->
 
 ## Meaning
 

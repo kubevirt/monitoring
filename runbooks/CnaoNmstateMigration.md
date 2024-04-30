@@ -1,5 +1,4 @@
 # CnaoNmstateMigration
-<!-- Edited by Jiří Herrmann, 8 Nov 2022 -->
 
 ## Meaning
 

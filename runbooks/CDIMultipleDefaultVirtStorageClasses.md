@@ -1,5 +1,4 @@
 # CDIMultipleDefaultVirtStorageClasses
-<!-- Edited by akalenyu, 10 Oct 2023 -->
 
 ## Meaning
 
