@@ -1,5 +1,4 @@
 # VirtualMachineCRCErrors
-<!-- Edited by machadovilaca, february 2024 -->
 
 ## Meaning
 
