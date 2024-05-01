@@ -3,7 +3,7 @@
 ## Meaning
 
 This alert fires when a container hosting a virtual machine (VM) has less than
-20 MB free memory.
+50 MB free memory.
 
 ## Impact
 
