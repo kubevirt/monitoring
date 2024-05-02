@@ -52,12 +52,12 @@ VM workloads.
 
 ## Mitigation
 
-Based on the information obtained during Diagnosis, try to find the cause of the
-issue and resolve it.
+Based on the information obtained during the diagnosis procedure, try to
+identify the root cause and resolve the issue.
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
-attaching the artifacts gathered during the Diagnosis procedure.-->
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

@@ -2,44 +2,50 @@
 
 ## Meaning
 
-This alert fires when there is no default (Kubernetes or virtualization) storage
+This alert fires when there is no default (Kubernetes or KubeVirt) storage
 class, and a data volume is pending for one.
 
-A default virtualization storage class has precedence over a default Kubernetes
+A default KubeVirt storage class has precedence over a default Kubernetes
 storage class for creating a VirtualMachine disk image.
 
 ## Impact
 
-If there is no default (k8s or virt) storage class, a data volume that requests
-a default storage class (storage class not explicitly specified) will be pending
-for one.
+If there is no default Kubernetes or KubeVirt storage class, a data volume that
+does not have a specified storage class remains in a "pending" state.
 
 ## Diagnosis
 
-Get the default Kubernetes storage class:
+1. Check for a default Kubernetes storage class by running the following
+command:
+
 ```bash
 $ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name'
 ```
 
-Get the default virtualization storage class:
+2. Check for a default KubeVirt storage class by running the following command:
+
 ```bash
 $ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name'
 ```
 
-To set the default Kubernetes storage class if needed:
-```bash
-$ kubectl patch storageclass <storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-```
-
-To set the default virtualization storage class if needed:
-```bash
-$ kubectl patch storageclass <storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubevirt.io/is-default-virt-class":"true"}}}'
-```
-
 ## Mitigation
 
-Ensure that there is one storage class that has the default (k8s or virt)
-storage class annotation.
+Create a default storage class for either Kubernetes or KubeVirt or for both.
+
+A default KubeVirt storage class has precedence over a default Kubernetes
+storage class for creating a virtual machine disk image.
+
+* Create a default Kubernetes storage class by running the following command:
+
+  ```bash
+  $ kubectl patch storageclass <storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  ```
+
+* Create a default KubeVirt storage class by running the following command:
+
+  ```bash
+  $ kubectl patch storageclass <storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubevirt.io/is-default-virt-class":"true"}}}'
+  ```
 
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
@@ -47,3 +53,7 @@ If you cannot resolve the issue, see the following resources:
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->

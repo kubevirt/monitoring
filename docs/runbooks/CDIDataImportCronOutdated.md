@@ -93,11 +93,10 @@ specification, to poll and import golden images. The updated Containerized Data
 Importer (CDI) should resolve the issue within a few seconds.
 
 2. If the issue does not resolve itself, or, if you have changed the default
-storage class in the cluster,  
-you must delete the existing boot sources (datavolumes or volumesnapshots) in
-the cluster namespace that are configured with the previous default storage
-class. The CDI will recreate the data volumes with the newly configured default
-storage class.
+storage class in the cluster, you must delete the existing boot sources
+(datavolumes or volumesnapshots) in the cluster namespace that are configured
+with the previous default storage class. The CDI will recreate the data volumes
+with the newly configured default storage class.
 
 3. If your cluster is installed in a restricted network environment, disable the
 `enableCommonBootImageImport` feature gate in order to opt out of automatic
@@ -109,7 +108,7 @@ updates:
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
-attaching the artifacts gathered during the Diagnosis procedure.-->
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 See the [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate)
 for more information.

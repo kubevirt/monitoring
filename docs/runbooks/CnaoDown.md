@@ -2,7 +2,7 @@
 
 ## Meaning
 
-This alert fires when the `Cluster-network-addons-operator` (CNAO) is down.
+This alert fires when the Cluster Network Addons Operator (CNAO) is down.
 The CNAO deploys additional networking components on top of the cluster.
 
 ## Impact
@@ -40,7 +40,7 @@ machine components. As a result, the changes might fail to take effect.
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
-attaching the artifacts gathered during the Diagnosis procedure.-->
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
