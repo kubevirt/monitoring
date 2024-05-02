@@ -3,9 +3,12 @@
 aliases:
     approvers:
         - sradco
+        - machadovilaca
     code-reviewers:
         - sradco
+        - machadovilaca
+        - assafad
+        - avlitman
 
     runbooks-reviewers:
-        - apinnick
         - ousleyp
