@@ -74,7 +74,7 @@ Try to identify the root cause and resolve the issue.
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
-attaching the artifacts gathered during the Diagnosis procedure.-->
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 See [How Daemon Pods are scheduled](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#how-daemon-pods-are-scheduled)
 for more information.

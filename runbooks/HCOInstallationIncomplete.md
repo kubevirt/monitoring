@@ -13,19 +13,22 @@ uninstalling the HCO and the HCO is still running.
 
 ## Mitigation
 
-Installation: Complete the installation by creating a `HyperConverged` CR with
-its default values:
+The mitigation depends on whether you are installing or uninstalling
+the HCO:
 
-```bash
-$ cat <<EOF | kubectl apply -f -
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-   name: hco-operatorgroup
-   namespace: kubevirt-hyperconverged
-spec: {}
-EOF
-```
+- Complete the installation by creating a `HyperConverged` CR with its
+  default values:
 
-Uninstall: Uninstall the HCO. If the uninstall process continues to run, you
-must resolve that issue in order to cancel the alert.
+  ```bash
+  $ cat <<EOF | kubectl apply -f -
+  apiVersion: hco.kubevirt.io/v1beta1
+  kind: HyperConverged
+  metadata:
+    name: kubevirt-hyperconverged
+    namespace: kubevirt-hyperconverged
+  spec: {}
+  EOF
+  ```
+
+- Uninstall the HCO. If the uninstall process continues to run, you must
+  resolve that issue in order to cancel the alert.

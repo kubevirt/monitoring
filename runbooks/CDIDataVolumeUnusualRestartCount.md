@@ -13,7 +13,7 @@ issue.
 
 ## Diagnosis
 
-1. Find CDI pods with more than three restarts:
+1. Find Containerized Data Importer (CDI) pods with more than three restarts:
 
    ```bash
    $ kubectl get pods --all-namespaces -l app=containerized-data-importer -o=jsonpath='{range .items[?(@.status.containerStatuses[0].restartCount>3)]}{.metadata.name}{"/"}{.metadata.namespace}{"\n"}'
@@ -37,7 +37,7 @@ Delete the data volume, resolve the issue, and create a new data volume.
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
-attaching the artifacts gathered during the Diagnosis procedure.-->
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
