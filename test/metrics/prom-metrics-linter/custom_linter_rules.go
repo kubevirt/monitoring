@@ -43,14 +43,6 @@ func CustomLinterRules(problems []promlint.Problem, mf *dto.MetricFamily, operat
 		})
 	}
 
-	// Check "_timestamp_seconds" suffix for non-counter metrics
-	if *mf.Type != dto.MetricType_COUNTER && strings.HasSuffix(*mf.Name, "_timestamp_seconds") {
-		problems = append(problems, promlint.Problem{
-			Metric: *mf.Name,
-			Text:   "non-counter metric should not have \"_timestamp_seconds\" suffix",
-		})
-	}
-
 	// If promlint fails on a "total" suffix, check also for "_timestamp_seconds" suffix. If it exists, do not fail
 	var newProblems []promlint.Problem
 	for _, problem := range problems {
