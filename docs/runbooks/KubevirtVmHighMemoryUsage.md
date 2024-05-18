@@ -3,12 +3,12 @@
 ## Meaning
 
 This alert fires when a container hosting a virtual machine (VM) has less than
-20 MB free memory.
+50 Mi free memory before reaching its requested memory.
 
 ## Impact
 
-The virtual machine running inside the container is terminated by the runtime
-if the container's memory limit is exceeded.
+The virtual machine running inside the container is at risk of eviction by the
+runtime if the container's memory request is exceeded.
 
 ## Diagnosis
 
@@ -27,7 +27,7 @@ if the container's memory limit is exceeded.
 
 ## Mitigation
 
-Increase the memory limit in the `VirtualMachine` specification as in the
+Increase the memory request in the `VirtualMachine` specification as in the
 following example:
 
 ```yaml
