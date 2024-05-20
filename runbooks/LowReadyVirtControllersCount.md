@@ -54,11 +54,11 @@ a `NotReady` state:
 
 This alert can have multiple causes, including the following:
 
-- Not enough memory on the cluster
-- Nodes are down
-- The API server is overloaded. For example, the scheduler might be under a
-heavy load and therefore not completely available.
-- Networking issues
+- The cluster has insufficient memory.
+- The nodes are down.
+- The API server is overloaded. For example, the scheduler might be under
+  a heavy load and therefore not completely available.
+- There are network issues.
 
 Try to identify the root cause and resolve the issue.
 
