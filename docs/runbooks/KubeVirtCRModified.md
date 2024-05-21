@@ -17,18 +17,16 @@ might lead to instability.
 
 ## Diagnosis
 
-Check the `component_name` in the alert details to determine the operand that is
-being changed.
+- Check the `component_name` value in the alert details to determine the operand
+  kind (`kubevirt`) and the operand name (`kubevirt-kubevirt-hyperconverged`)
+  that are being changed:
 
-In the following example, the operand kind is `kubevirt` and the operand name is
-`kubevirt-kubevirt-hyperconverged`:
-
-```text
-Labels
-   alertname=KubeVirtCRModified
-   component_name=kubevirt/kubevirt-kubevirt-hyperconverged
-   severity=warning
-```
+  ```text
+  Labels
+    alertname=KubeVirtCRModified
+    component_name=kubevirt/kubevirt-kubevirt-hyperconverged
+    severity=warning
+  ```
 
 ## Mitigation
 

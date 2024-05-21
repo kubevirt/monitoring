@@ -68,9 +68,9 @@ If a VMI is not live-migratable and if `runStrategy: always` is set in the
 corresponding `VirtualMachine` object, you can update the VMI by manually
 stopping the virtual machine (VM):
 
-```bash
-$ virctl stop --namespace <namespace> <vm>
-```
+  ```bash
+  $ virctl stop --namespace <namespace> <vm>
+  ```
 
 A new VMI spins up immediately in an updated `virt-launcher` pod to replace the
 stopped VMI. This is the equivalent of a restart action.

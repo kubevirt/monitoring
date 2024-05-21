@@ -31,12 +31,12 @@ structure of the component custom resources might change.
 Check the `annotation_name` in the alert details to identify the JSON Patch
 annotation:
 
-```text
-Labels
-   alertname=UnsupportedHCOModification
-   annotation_name=kubevirt.kubevirt.io/jsonpatch
-   severity=info
-```
+  ```text
+  Labels
+    alertname=UnsupportedHCOModification
+    annotation_name=kubevirt.kubevirt.io/jsonpatch
+    severity=info
+  ```
 
 ## Mitigation
 

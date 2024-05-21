@@ -18,15 +18,15 @@ does not have a specified storage class remains in a "pending" state.
 1. Check for a default Kubernetes storage class by running the following
 command:
 
-```bash
-$ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name'
-```
+  ```bash
+  $ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name'
+  ```
 
 2. Check for a default KubeVirt storage class by running the following command:
 
-```bash
-$ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name'
-```
+  ```bash
+  $ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name'
+  ```
 
 ## Mitigation
 

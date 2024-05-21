@@ -31,7 +31,7 @@ affected.
 3. Check the `virt-api` logs for error messages:
 
    ```bash
-   $ kubectl logs -n  $NAMESPACE <virt-api>
+   $ kubectl logs -n $NAMESPACE <virt-api>
    ```
 
 4. Obtain the details of the `virt-api` pods:
