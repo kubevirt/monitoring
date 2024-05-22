@@ -69,7 +69,7 @@ corresponding `VirtualMachine` object, you can update the VMI by manually
 stopping the virtual machine (VM):
 
   ```bash
-  $ virctl stop --namespace <namespace> <vm>
+  $ virtctl stop --namespace <namespace> <vm>
   ```
 
 A new VMI spins up immediately in an updated `virt-launcher` pod to replace the
