@@ -51,12 +51,12 @@ However, customer workloads, such as virtual machines (VMs) and VM instances
 
 ## Mitigation
 
-If the `virt-operator` pod cannot connect to the API server, delete the pod to
+- If the `virt-operator` pod cannot connect to the API server, delete the pod to
 force a restart:
 
-```bash
-$ kubectl delete -n <install-namespace> <virt-operator>
-```
+  ```bash
+  $ kubectl delete -n <install-namespace> <virt-operator>
+  ```
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
