@@ -17,7 +17,7 @@ The mitigation depends on whether you are installing or uninstalling
 the HCO:
 
 - Complete the installation by creating a `HyperConverged` CR with its
-  default values:
+default values:
 
   ```bash
   $ cat <<EOF | kubectl apply -f -
@@ -31,4 +31,4 @@ the HCO:
   ```
 
 - Uninstall the HCO. If the uninstall process continues to run, you must
-  resolve that issue in order to cancel the alert.
+resolve that issue in order to cancel the alert.

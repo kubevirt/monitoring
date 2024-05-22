@@ -40,17 +40,17 @@ fail. However, running workloads on the affected node are not impacted.
 server:
 
    ```bash
-   $ kubectl logs -n  $NAMESPACE <virt-handler>
+   $ kubectl logs -n $NAMESPACE <virt-handler>
    ```
 
 ## Mitigation
 
-If the `virt-handler` cannot connect to the API server, delete the pod to force
-a restart:
+- If the `virt-handler` cannot connect to the API server, delete the pod to
+force a restart:
 
-```bash
-$ kubectl delete -n $NAMESPACE <virt-handler>
-```
+  ```bash
+  $ kubectl delete -n $NAMESPACE <virt-handler>
+  ```
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,

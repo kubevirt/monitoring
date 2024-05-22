@@ -40,7 +40,7 @@ pod:
 to the API server:
 
    ```bash
-   $ kubectl logs -n  $NAMESPACE <virt-handler>
+   $ kubectl logs -n $NAMESPACE <virt-handler>
    ```
 
    Example error message:

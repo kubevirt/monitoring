@@ -24,32 +24,32 @@ VM disk.-->
 
 1. Get the default KubeVirt storage class by running the following command:
 
-```bash
-$ export CDI_DEFAULT_VIRT_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name')"
-$ echo default_virt_sc=$CDI_DEFAULT_VIRT_SC
-```
+   ```bash
+   $ export CDI_DEFAULT_VIRT_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name')"
+   $ echo default_virt_sc=$CDI_DEFAULT_VIRT_SC
+   ```
 
 2. If a default KubeVirt storage class exists, check that it supports
 ReadWriteMany by running the following command:
 
-```bash
-$ kubectl get storageprofile $CDI_DEFAULT_VIRT_SC -o json | jq '.status.claimPropertySets'| grep ReadWriteMany
-```
+   ```bash
+   $ kubectl get storageprofile $CDI_DEFAULT_VIRT_SC -o json | jq '.status.claimPropertySets'| grep ReadWriteMany
+   ```
 
 3. If there is no default KubeVirt storage class, get the default Kubernetes
 storage class by running the following command:
 
-```bash
-$ export CDI_DEFAULT_K8S_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name')"
-$ echo default_k8s_sc=$CDI_DEFAULT_K8S_SC
-```
+   ```bash
+   $ export CDI_DEFAULT_K8S_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name')"
+   $ echo default_k8s_sc=$CDI_DEFAULT_K8S_SC
+   ```
 
 4. If a default Kubernetes storage class exists, check that it supports
 ReadWriteMany by running the following command:
 
-```bash
-$ kubectl get storageprofile $CDI_DEFAULT_K8S_SC -o json | jq '.status.claimPropertySets'| grep ReadWriteMany
-```
+   ```bash
+   $ kubectl get storageprofile $CDI_DEFAULT_K8S_SC -o json | jq '.status.claimPropertySets'| grep ReadWriteMany
+   ```
 
 <!--USstart-->
 See [doc](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/efficient-cloning.md)

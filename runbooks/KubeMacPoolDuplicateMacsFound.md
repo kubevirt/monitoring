@@ -18,7 +18,7 @@ Duplicate MAC addresses on the same LAN might cause network issues.
 
    ```bash
    $ kubectl get pod -A -l control-plane=mac-controller-manager --no-headers \
-      -o custom-columns=":metadata.namespace,:metadata.name"
+     -o custom-columns=":metadata.namespace,:metadata.name"
    ```
 2. Obtain the duplicate MAC addresses from the `kubemacpool-mac-controller` logs:
 

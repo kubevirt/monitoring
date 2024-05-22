@@ -47,7 +47,7 @@ performance because memory page faults occur during the transition.
 
    Example output:
 
-   ```text
+   ```json
    {
      "lastHeartbeatTime": "2022-05-26T07:36:01Z",
      "lastTransitionTime": "2022-05-23T08:12:02Z",

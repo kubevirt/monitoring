@@ -2,35 +2,34 @@
 
 ## Meaning
 
-This alert fires when a deprecated KubeVirt API is requested.
+This alert fires when a deprecated `KubeVirt` API is used.
 
 ## Impact
 
-Usage of deprecated APIs is not recommended because they will be removed in a
-future release.
+Using a deprecated API is not recommended because the request will
+fail when the API is removed in a future release.
 
 ## Diagnosis
 
-Check the `description` and `summary` alert annotations for more details on
-which API is being accessed, for example:
-```text
-              description: "Detected requests to the deprecated virtualmachines.kubevirt.io/v1alpha3 API."
-              summary: "2 requests were detected in the last 10 minutes."
-```
+- Check the __Description__ and __Summary__ sections of the alert to identify the
+  deprecated API as in the following example:
+
+  __Description__
+
+  `Detected requests to the deprecated virtualmachines.kubevirt.io/v1alpha3 API.`
+
+  __Summary__
+
+  `2 requests were detected in the last 10 minutes.`
 
 ## Mitigation
 
-Make sure to only use a supported version when making requests to the API.
+Use fully supported APIs. The alert resolves itself after 10 minutes if the
+deprecated API is not used.
 
-Some requests to deprecated APIs are made by KubeVirt components themselves
-(e.g VirtualMachineInstancePresets). These alerts cannot be mitigated because
-the requests are still necessary to serve the deprecated API. They are harmless
-and will be resolved when the deprecated API is removed in a future release of
-KubeVirt.
-
-Alerts will resolve after 10 minutes if the deprecated API is not used again.
-
+<!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

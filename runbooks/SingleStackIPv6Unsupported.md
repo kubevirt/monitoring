@@ -16,12 +16,32 @@ possible.
 
 ## Diagnosis
 
+<!--USstart-->
 1. Obtain the network details for the cluster using:
    ```shell
     $ kubectl describe network cluster
     ```
 
 2. It contains only an IPv6 CIDR under `Cluster Network`.
+<!--USend-->
+
+<!--DS: - Check the cluster network configuration by running the following command:
+  ```shell
+  $ oc get network.config cluster -o yaml
+  ```
+  The output displays only an IPv6 CIDR for the cluster network.
+
+  Example output:
+  ```text
+  apiVersion: config.openshift.io/v1
+  kind: Network
+  metadata:
+    name: cluster
+  spec:
+    clusterNetwork:
+    - cidr: fd02::/48
+      hostPrefix: 64
+  ```-->
 
 ## Mitigation
 
