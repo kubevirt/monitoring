@@ -18,9 +18,6 @@ They reflect and describe exactly what is being exposed.
 
 ## [kubevirt](https://github.com/kubevirt/kubevirt/tree/main)
 
-### kubevirt_info
-Version information.
-
 ### kubevirt_allocatable_nodes
 The number of allocatable nodes in the cluster. Type: Gauge.
 
@@ -32,6 +29,9 @@ Indicates whether the Software Emulation is enabled in the configuration. Type: 
 
 ### kubevirt_console_active_connections
 Amount of active Console connections, broken down by namespace and vmi name. Type: Gauge.
+
+### kubevirt_info
+Version information. Type: Gauge.
 
 ### kubevirt_memory_delta_from_requested_bytes
 The delta between the pod with highest memory working set or rss and its requested memory for each container, virt-controller, virt-handler, virt-api and virt-operator. Type: Gauge.
@@ -163,7 +163,7 @@ The total amount of memory written out to swap space of the guest in bytes. Type
 The amount of memory left completely unused by the system. Memory that is available but used for reclaimable caches should NOT be reported as free. Type: Gauge.
 
 ### kubevirt_vmi_memory_usable_bytes
-The amount of memory which can be reclaimed by balloon without pushing the guest system to swap, corresponds to 'Available' in /proc/meminfo Type: Gauge.
+The amount of memory which can be reclaimed by balloon without pushing the guest system to swap, corresponds to 'Available' in /proc/meminfo. Type: Gauge.
 
 ### kubevirt_vmi_memory_used_bytes
 Amount of `used` memory as seen by the domain. Type: Gauge.
@@ -211,7 +211,7 @@ The total number of rx packets dropped on vNIC interfaces. Type: Counter.
 Total network traffic received packets. Type: Counter.
 
 ### kubevirt_vmi_network_traffic_bytes_total
-Deprecated. Type: Counter.
+[Deprecated] Total number of bytes sent and received. Type: Counter.
 
 ### kubevirt_vmi_network_transmit_bytes_total
 Total network traffic transmitted in bytes. Type: Counter.
@@ -298,6 +298,9 @@ Amount of active VNC connections, broken down by namespace and vmi name. Type: G
 ### kubevirt_cdi_clone_pods_high_restart
 The number of CDI clone pods with high restart count. Type: Gauge.
 
+### kubevirt_cdi_clone_progress_total
+The clone progress in percentage. Type: Counter.
+
 ### kubevirt_cdi_cr_ready
 CDI install ready. Type: Gauge.
 
@@ -310,8 +313,14 @@ Number of DataVolumes pending for default storage class to be configured. Type: 
 ### kubevirt_cdi_import_pods_high_restart
 The number of CDI import pods with high restart count. Type: Gauge.
 
+### kubevirt_cdi_openstack_populator_progress_total
+Progress of volume population. Type: Counter.
+
 ### kubevirt_cdi_operator_up
 CDI operator status. Type: Gauge.
+
+### kubevirt_cdi_ovirt_progress_total
+Progress of volume population. Type: Counter.
 
 ### kubevirt_cdi_storageprofile_info
 `StorageProfiles` info labels: `storageclass`, `provisioner`, `complete` indicates if all storage profiles recommended PVC settings are complete, `default` indicates if it's the Kubernetes default storage class, `virtdefault` indicates if it's the default virtualization storage class, `rwx` indicates if the storage class supports `ReadWriteMany`, `smartclone` indicates if it supports snapshot or CSI based clone. Type: Gauge.
