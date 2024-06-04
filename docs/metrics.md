@@ -135,6 +135,9 @@ Used VM filesystem capacity in bytes. Type: Gauge.
 ### kubevirt_vmi_info
 Information about VirtualMachineInstances. Type: Gauge.
 
+### kubevirt_vmi_last_api_connection_timestamp_seconds
+Virtual Machine Instance last API connection timestamp. Including VNC, console, portforward, SSH and usbredir connections. Type: Gauge.
+
 ### kubevirt_vmi_memory_actual_balloon_bytes
 Current balloon size in bytes. Type: Gauge.
 
@@ -315,6 +318,9 @@ Number of DataVolumes pending for default storage class to be configured. Type: 
 
 ### kubevirt_cdi_import_pods_high_restart
 The number of CDI import pods with high restart count. Type: Gauge.
+
+### kubevirt_cdi_import_progress_total
+The import progress in percentage. Type: Counter.
 
 ### kubevirt_cdi_openstack_populator_progress_total
 Progress of volume population. Type: Counter.
