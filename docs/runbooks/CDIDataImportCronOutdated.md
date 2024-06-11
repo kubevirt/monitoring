@@ -94,7 +94,7 @@ Importer (CDI) should resolve the issue within a few seconds.
 
 2. If the issue does not resolve itself, or, if you have changed the default
 storage class in the cluster, you must delete the existing boot sources
-(datavolumes or volumesnapshots) in the cluster namespace that are configured
+(data volumes or volume snapshots) in the cluster namespace that are configured
 with the previous default storage class. The CDI will recreate the data volumes
 with the newly configured default storage class.
 
