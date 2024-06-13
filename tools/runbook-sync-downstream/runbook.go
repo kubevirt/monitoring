@@ -15,10 +15,10 @@ import (
 var (
 	runbookRegex = regexp.MustCompile(`.*\.md`)
 
-	editedByRegex           = regexp.MustCompile(`<!-- Edited by .*-->`)
-	downstreamCommentsRegex = regexp.MustCompile(`<!--DS: (.*)-->`)
-	multipleNewLinesRegex   = regexp.MustCompile(`\n\n+`)
-	asciiDocLinksRegex      = regexp.MustCompile(`link:(https://[^[\]]+)\[([^[\]]+)\]`)
+	downstreamCommentsRegex       = regexp.MustCompile(`(?s)<!--DS: (.*?)-->`)
+	multipleNewLinesRegex         = regexp.MustCompile(`\n\n+`)
+	asciiDocLinksRegex            = regexp.MustCompile(`link:(https://[^[\]]+)\[([^[\]]+)\]`)
+	trailingSpaceAtEndOfLineRegex = regexp.MustCompile(`[ ]+\n`)
 )
 
 type runbook struct {
@@ -118,8 +118,8 @@ func copyRunbook(name string) error {
 	// Replace all 'kubectl' with 'oc'
 	content = strings.ReplaceAll(content, "kubectl", "oc")
 
-	// Remove <!-- Edited by <name>, <date> --> comments
-	content = editedByRegex.ReplaceAllString(content, "")
+	// Replace all namespaces
+	content = strings.ReplaceAll(content, "namespace: kubevirt-hyperconverged", "namespace: openshift-cnv")
 
 	// Remove all US comments
 	content = removeTextBetweenTags(content, "<!--USstart-->", "<!--USend-->")
@@ -128,7 +128,11 @@ func copyRunbook(name string) error {
 	content = downstreamCommentsRegex.ReplaceAllString(content, "$1")
 
 	// Replace 'KubeVirt' with 'OpenShift Virtualization' when not in code blocks
-	content = replaceOutsideCodeBlocks(content, "KubeVirt", "OpenShift Virtualization")
+	content = replaceOnlyInText(content, "Hyperconverged", "")
+	content = replaceOnlyInText(content, "KubeVirt", "OpenShift Virtualization")
+
+	// Replace 'Kubernetes' with 'OpenShift Container Platform' when not in code blocks
+	content = replaceOnlyInText(content, "Kubernetes", "OpenShift Container Platform")
 
 	// Replace AsciiDoc links with Markdown links
 	content = asciiDocLinksRegex.ReplaceAllString(content, "[$2]($1)")
@@ -136,7 +140,54 @@ func copyRunbook(name string) error {
 	// Remove multiple (2+) new lines
 	content = multipleNewLinesRegex.ReplaceAllString(content, "\n\n")
 
+	content = wrapLines(content, 80)
+
+	// Remove trailing spaces from all lines
+	content = trailingSpaceAtEndOfLineRegex.ReplaceAllString(content, "\n")
+
+	// Keep only one empty line at the end of the file
+	content = strings.TrimRight(content, "\n")
+
 	return createAndWriteFile(to, content)
+}
+
+func wrapLines(content string, maxLineLength int) string {
+	var result strings.Builder
+	lines := strings.Split(content, "\n")
+
+	inBlockCode := false
+	inInlineCode := false
+
+	for _, line := range lines {
+		lineLength := 0
+		words := strings.SplitAfter(line, " ")
+
+		for _, word := range words {
+			if strings.HasPrefix(word, "```") {
+				inBlockCode = true
+			} else if strings.HasPrefix(word, "`") {
+				inInlineCode = true
+			}
+
+			if lineLength+len(word) > maxLineLength && !inBlockCode && !inInlineCode {
+				result.WriteString("\n")
+				lineLength = 0
+			}
+
+			if strings.HasSuffix(word, "```") || strings.HasSuffix(word, "``` ") {
+				inBlockCode = false
+			} else if strings.HasSuffix(word, "`") || strings.HasSuffix(word, "` ") {
+				inInlineCode = false
+			}
+
+			result.WriteString(word)
+			lineLength += len(word)
+		}
+
+		result.WriteString("\n")
+	}
+
+	return result.String()
 }
 
 func removeTextBetweenTags(content, startTag, endTag string) string {
@@ -161,25 +212,55 @@ func removeTextBetweenTags(content, startTag, endTag string) string {
 	return result.String()
 }
 
-func replaceOutsideCodeBlocks(text string, old string, new string) string {
-	codeBlockPattern := "```[^`]*```"
-	inlineCodePattern := "`[^`]*`"
-	reCodeBlock := regexp.MustCompile(codeBlockPattern)
-	reInlineCode := regexp.MustCompile(inlineCodePattern)
+func replaceOnlyInText(text string, old string, new string) string {
+	var result strings.Builder
+	lines := strings.Split(text, "\n")
 
-	newText := reCodeBlock.ReplaceAllStringFunc(text, func(match string) string {
-		return match
-	})
+	isTitleLine := false
+	inBlockCode := false
+	inInlineCode := false
 
-	newText = reInlineCode.ReplaceAllStringFunc(newText, func(match string) string {
-		return match
-	})
+	for _, line := range lines {
+		if strings.HasPrefix(line, "#") {
+			isTitleLine = true
+		} else {
+			isTitleLine = false
+		}
 
-	newText = strings.ReplaceAll(newText, old, new)
+		words := strings.SplitAfter(line, " ")
 
-	return newText
+		for _, word := range words {
+			trimmedWord := strings.TrimSpace(word)
+
+			if !inBlockCode && !inInlineCode {
+				if strings.HasPrefix(trimmedWord, "```") {
+					inBlockCode = true
+				} else if strings.HasPrefix(trimmedWord, "`") {
+					inInlineCode = true
+				}
+			}
+
+			if !inBlockCode && !inInlineCode && !isTitleLine && strings.Contains(word, old) {
+				word = strings.ReplaceAll(word, old, new)
+				if new == "" {
+					word = strings.TrimSuffix(word, " ")
+				}
+			}
+
+			if inBlockCode && strings.HasSuffix(trimmedWord, "```") {
+				inBlockCode = false
+			} else if inInlineCode && strings.HasSuffix(trimmedWord, "`") {
+				inInlineCode = false
+			}
+
+			result.WriteString(word)
+		}
+
+		result.WriteString("\n")
+	}
+
+	return result.String()
 }
-
 func createAndWriteFile(path, content string) error {
 	if _, statErr := os.Stat(path); os.IsNotExist(statErr) {
 		_, err := os.Create(path)
