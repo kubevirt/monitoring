@@ -16,17 +16,12 @@ method is host-assisted cloning, which is much less efficient.
 If the default storage class does not support ReadWriteMany, virtual machines
 (VMs) cannot be live migrated.
 
-<!--DS: Note: A default OpenShift Virtualization storage class has precedence
-over a default OpenShift Container Platform storage class when creating a
-VM disk.-->
-
 ## Diagnosis
 
 1. Get the default KubeVirt storage class by running the following command:
 
    ```bash
    $ export CDI_DEFAULT_VIRT_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name')"
-   $ echo default_virt_sc=$CDI_DEFAULT_VIRT_SC
    ```
 
 2. If a default KubeVirt storage class exists, check that it supports
@@ -41,7 +36,6 @@ storage class by running the following command:
 
    ```bash
    $ export CDI_DEFAULT_K8S_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name')"
-   $ echo default_k8s_sc=$CDI_DEFAULT_K8S_SC
    ```
 
 4. If a default Kubernetes storage class exists, check that it supports
