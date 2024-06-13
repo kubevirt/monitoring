@@ -36,3 +36,11 @@ monitoringlinter-test: monitoringlinter-build
 lint-markdown:
 	echo "Linting markdown files"
 	podman run -v ${PWD}:/workdir:Z docker.io/davidanson/markdownlint-cli2:v0.13.0 "/workdir/docs/*runbooks/*.md"
+
+.PHONY: build-runbook-sync-downstream
+build-runbook-sync-downstream:
+	cd tools/runbook-sync-downstream && go build -ldflags="-s -w" -o _out/runbook-sync-downstream .
+
+.PHONY: runbook-sync-downstream
+runbook-sync-downstream: build-runbook-sync-downstream
+	tools/runbook-sync-downstream/_out/runbook-sync-downstream
