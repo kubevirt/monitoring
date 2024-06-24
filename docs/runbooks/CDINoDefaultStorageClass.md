@@ -19,13 +19,13 @@ does not have a specified storage class remains in a "pending" state.
 command:
 
   ```bash
-  $ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name'
+  $ kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubernetes\.io\/is-default-class=="true")].metadata.name}'
   ```
 
 2. Check for a default KubeVirt storage class by running the following command:
 
   ```bash
-  $ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name'
+  $ kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubevirt\.io\/is-default-virt-class=="true")].metadata.name}'
   ```
 
 ## Mitigation

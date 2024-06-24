@@ -19,7 +19,7 @@ Obtain a list of default virtualization storage classes by running the following
 command:
 
 ```bash
-$ kubectl get sc -o json | jq '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name'
+$ kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubevirt\.io\/is-default-virt-class=="true")].metadata.name}'
 ```
 
 ## Mitigation

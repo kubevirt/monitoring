@@ -15,6 +15,10 @@ For golden images, _latest_ refers to the latest operating system of the
 distribution. For other disk images, _latest_ refers to the latest hash of the
 image that is available.
 
+In case there is no default (Kubernetes or KubeVirt) storage class, and the
+DataImportCron import PVC is pending for one, the alert is suppressed as the
+root cause is already alerted by CDINoDefaultStorageClass.
+
 ## Impact
 
 VMs might be created from outdated disk images.
@@ -37,10 +41,10 @@ VMs might fail to start because no boot source is available for cloning.
    event is displayed: `DataVolume.storage spec is missing accessMode and no
    storageClass to choose profile`.
 
-2. Obtain the `DataImportCron` namespace and name:
+2. Obtain the `DataImportCrons` which are not up-to-date:
 
    ```bash
-   $ kubectl get dataimportcron -A -o json | jq -r '.items[] | select(.status.conditions[] | select(.type == "UpToDate" and .status == "False")) | .metadata.namespace + "/" + .metadata.name'
+   $ kubectl get dataimportcron -A -o jsonpath='{range .items[*]}{.status.conditions[?(@.type=="UpToDate")].status}{"\t"}{.metadata.namespace}{"/"}{.metadata.name}{"\n"}{end}' | grep False
    ```
 
 3. If a default storage class is not defined on the cluster, check the
@@ -77,7 +81,7 @@ object:
 6. Set the `CDI_NAMESPACE` environment variable:
 
    ```bash
-   $ export CDI_NAMESPACE="$(kubectl get deployment -A | grep cdi-operator | awk '{print $1}')"
+   $ export CDI_NAMESPACE="$(kubectl get deployment -A -o jsonpath='{.items[?(.metadata.name=="cdi-operator")].metadata.namespace}')"
    ```
 
 7. Check the `cdi-deployment` log for error messages:
