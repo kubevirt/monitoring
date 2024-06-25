@@ -27,19 +27,20 @@ VMs might fail to start because no boot source is available for cloning.
 
 ## Diagnosis
 
-1. Check the cluster for a default storage class:
+1. Check the cluster for a default (Kubernetes and/or virtualization) storage class:
 
    ```bash
-   $ kubectl get sc
+   $ kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubernetes\.io\/is-default-class=="true")].metadata.name}'
+
+   $ kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubevirt\.io\/is-default-virt-class=="true")].metadata.name}'
    ```
 
-   The output displays the storage classes with `(default)` beside the name of
-   the default storage class. You must set a default storage class, either on
-   the cluster or in the `DataImportCron` specification, in order for the
-   `DataImportCron` to poll and import golden images. If no storage class is
-   defined, the DataVolume controller fails to create PVCs and the following
-   event is displayed: `DataVolume.storage spec is missing accessMode and no
-   storageClass to choose profile`.
+   The output displays the default (Kubernetes and/or virtualization) storage
+   class. You must either set a default storage class on the cluster, or ask for
+   a specific storage class in the `DataImportCron` specification, in order for
+   the `DataImportCron` to poll and import golden images. If the effective
+   storage class does not exist, the created import DataVolume and PVC will be
+   in Pending phase.
 
 2. Obtain the `DataImportCrons` which are not up-to-date:
 
@@ -48,34 +49,23 @@ VMs might fail to start because no boot source is available for cloning.
    ```
 
 3. If a default storage class is not defined on the cluster, check the
-`DataImportCron` specification for a default storage class:
+`DataImportCron` specification for optional storage class:
 
    ```bash
-   $ kubectl get dataimportcron <dataimportcron> -o yaml | grep -B 5 storageClassName
-   ```
-
-   Example output:
-
-   ```yaml
-           url: docker://.../cdi-func-test-tinycore
-       storage:
-         resources:
-           requests:
-             storage: 5Gi
-         storageClassName: rook-ceph-block
+   $ kubectl -n <namespace> get dataimportcron <dataimportcron> -o jsonpath='{.spec.template.spec.storage.storageClassName}{"\n"}'
    ```
 
 4. Obtain the name of the `DataVolume` associated with the `DataImportCron`
 object:
 
    ```bash
-   $ kubectl -n <namespace> get dataimportcron <dataimportcron> -o json | jq .status.lastImportedPVC.name
+   $ kubectl -n <namespace> get dataimportcron <dataimportcron> -o jsonpath='{.status.lastImportedPVC.name}{"\n"}'
    ```
 
-5. Check the `DataVolume` log for error messages:
+5. Check the `DataVolume` status:
 
    ```bash
-   $ kubectl -n <namespace> get dv <datavolume> -o yaml
+   $ kubectl -n <namespace> get dv <datavolume> -o jsonpath-as-json='{.status}'
    ```
 
 6. Set the `CDI_NAMESPACE` environment variable:
