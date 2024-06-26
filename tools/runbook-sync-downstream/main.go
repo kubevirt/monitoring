@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	githubUsername = "openshift-merge-bot[bot]"
-	githubEmail    = "148852131+openshift-merge-bot[bot]@users.noreply.github.com"
+	githubUsername = "hco-bot"
+	githubEmail    = "71450783+hco-bot@users.noreply.github.com"
 
 	upstreamCloneDir      = "/tmp/kubevirt-monitoring"
 	upstreamRepositoryURL = "github.com/kubevirt/monitoring"
@@ -25,15 +25,18 @@ const (
 	downstreamMainBranch      = "master"
 	downstreamCloneDir        = "/tmp/runbooks"
 	downstreamRepositoryOwner = "openshift"
+	downstreamRepositoryFork  = "hco-bot"
 	downstreamRepositoryName  = "runbooks"
 	downstreamRunbooksDir     = "alerts/openshift-virtualization-operator"
 	downstreamDeprecateSubDir = "deprecated"
 
-	customRemoteName = "tokenized"
+	originRemoteName = "origin"
+	forkRemoteName   = "fork"
 )
 
 var (
 	downstreamRepositoryURL = fmt.Sprintf("github.com/%s/%s", downstreamRepositoryOwner, downstreamRepositoryName)
+	forkedRepositoryURL     = fmt.Sprintf("github.com/%s/%s", downstreamRepositoryFork, downstreamRepositoryName)
 )
 
 type runbookSyncArgs struct {
@@ -236,7 +239,7 @@ func (rbSync *runbookSync) commitAndPush(worktree *git.Worktree, msg string) err
 	}
 
 	err = rbSync.downstreamRepo.Push(&git.PushOptions{
-		RemoteName: customRemoteName,
+		RemoteName: forkRemoteName,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to push changes: %w", err)
@@ -249,7 +252,7 @@ func (rbSync *runbookSync) commitAndPush(worktree *git.Worktree, msg string) err
 func (rbSync *runbookSync) prForBranchPreviouslyCreated(branchName string) (bool, *github.PullRequest, error) {
 	prs, _, err := rbSync.ghClient.PullRequests.List(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, &github.PullRequestListOptions{
 		State: "all",
-		Head:  fmt.Sprintf("%s:%s", downstreamRepositoryOwner, branchName),
+		Head:  fmt.Sprintf("%s:%s", downstreamRepositoryFork, branchName),
 	})
 	if err != nil {
 		return false, nil, err
@@ -263,7 +266,7 @@ func (rbSync *runbookSync) prForBranchPreviouslyCreated(branchName string) (bool
 }
 
 func (rbSync *runbookSync) createPR(branchName string, title string, body string) error {
-	headBranch := fmt.Sprintf("%s:%s", downstreamRepositoryOwner, branchName)
+	headBranch := fmt.Sprintf("%s:%s", downstreamRepositoryFork, branchName)
 	baseBranch := downstreamMainBranch
 
 	prOpts := &github.NewPullRequest{
@@ -274,7 +277,7 @@ func (rbSync *runbookSync) createPR(branchName string, title string, body string
 	}
 
 	if rbSync.dryRun {
-		klog.Warningf("[DRY RUN] skipping PR creation '%s', %s => %s", *prOpts.Title, *prOpts.Head, *prOpts.Base)
+		klog.Warningf("[DRY RUN] skipping PR creation '%s', %s => %s/%s %s", *prOpts.Title, *prOpts.Head, downstreamRepositoryOwner, downstreamRepositoryName, *prOpts.Base)
 		return nil
 	}
 

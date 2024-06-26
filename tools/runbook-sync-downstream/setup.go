@@ -15,7 +15,7 @@ func setup(githubToken string) (*git.Repository, *git.Repository) {
 	if err != nil {
 		klog.Fatal(fmt.Errorf("failed to clone or update repository: %w", err))
 	}
-	addRemoteWithTokenToLocalRepo(downstreamRepo, githubToken)
+	addRemotesToDownstreamRepo(downstreamRepo, githubToken)
 
 	upstreamRepo, err := deleteAndClone(upstreamRepositoryURL, upstreamCloneDir)
 	if err != nil {
@@ -45,8 +45,34 @@ func deleteAndClone(repoUrl string, dest string) (*git.Repository, error) {
 	return repo, nil
 }
 
-func addRemoteWithTokenToLocalRepo(repo *git.Repository, githubToken string) {
-	remote, err := repo.Remote(customRemoteName)
+func addRemotesToDownstreamRepo(repo *git.Repository, githubToken string) {
+	addOriginRemoteToDownstreamRepo(repo)
+	addForkRemoteToDownstreamRepo(repo, githubToken)
+}
+
+func addOriginRemoteToDownstreamRepo(repo *git.Repository) {
+	remote, err := repo.Remote(originRemoteName)
+	if err != nil && !errors.Is(err, git.ErrRemoteNotFound) {
+		klog.Fatal(fmt.Errorf("failed to get remote: %w", err))
+	} else if err == nil {
+		klog.Info("remote already exists, deleting")
+		deleteErr := repo.DeleteRemote(remote.Config().Name)
+		if deleteErr != nil {
+			klog.Fatal(fmt.Errorf("failed to delete remote: %w", err))
+		}
+	}
+
+	_, err = repo.CreateRemote(&config.RemoteConfig{
+		Name: originRemoteName,
+		URLs: []string{fmt.Sprintf("https://%s", downstreamRepositoryURL)},
+	})
+	if err != nil {
+		klog.Fatal(fmt.Errorf("failed to create remote: %w", err))
+	}
+}
+
+func addForkRemoteToDownstreamRepo(repo *git.Repository, githubToken string) {
+	remote, err := repo.Remote(forkRemoteName)
 	if err != nil && !errors.Is(err, git.ErrRemoteNotFound) {
 		klog.Fatal(fmt.Errorf("failed to get remote: %w", err))
 	} else if err == nil {
@@ -58,8 +84,8 @@ func addRemoteWithTokenToLocalRepo(repo *git.Repository, githubToken string) {
 	}
 
 	_, err = repo.CreateRemote(&config.RemoteConfig{
-		Name: customRemoteName,
-		URLs: []string{fmt.Sprintf("https://oauth2:%s@%s", githubToken, downstreamRepositoryURL)},
+		Name: forkRemoteName,
+		URLs: []string{fmt.Sprintf("https://oauth2:%s@%s", githubToken, forkedRepositoryURL)},
 	})
 	if err != nil {
 		klog.Fatal(fmt.Errorf("failed to create remote: %w", err))

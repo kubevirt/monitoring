@@ -1,0 +1,23 @@
+name: Run runbook-sync-downstream
+
+on:
+  schedule:
+    - cron:  '30 4 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  runbook_sync_downstream:
+    name: Run runbook-sync-downstream
+    if: (github.repository == 'kubevirt/monitoring')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.22'
+
+      - name: Run runbook-sync-downstream
+        run: DRY_RUN=false GITHUB_TOKEN=${{ secrets.HCO_BOT_TOKEN }} make runbook-sync-downstream
