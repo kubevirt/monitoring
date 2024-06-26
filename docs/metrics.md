@@ -138,6 +138,9 @@ Information about VirtualMachineInstances. Type: Gauge.
 ### kubevirt_vmi_last_api_connection_timestamp_seconds
 Virtual Machine Instance last API connection timestamp. Including VNC, console, portforward, SSH and usbredir connections. Type: Gauge.
 
+### kubevirt_vmi_launcher_memory_overhead_bytes
+Estimation of the memory amount required for virt-launcher's infrastructure components (e.g. libvirt, QEMU). Type: Gauge.
+
 ### kubevirt_vmi_memory_actual_balloon_bytes
 Current balloon size in bytes. Type: Gauge.
 
@@ -332,7 +335,7 @@ CDI operator status. Type: Gauge.
 Progress of volume population. Type: Counter.
 
 ### kubevirt_cdi_storageprofile_info
-`StorageProfiles` info labels: `storageclass`, `provisioner`, `complete` indicates if all storage profiles recommended PVC settings are complete, `default` indicates if it's the Kubernetes default storage class, `virtdefault` indicates if it's the default virtualization storage class, `rwx` indicates if the storage class supports `ReadWriteMany`, `smartclone` indicates if it supports snapshot or CSI based clone. Type: Gauge.
+`StorageProfiles` info labels: `storageclass`, `provisioner`, `complete` indicates if all storage profiles recommended PVC settings are complete, `default` indicates if it's the Kubernetes default storage class, `virtdefault` indicates if it's the default virtualization storage class, `rwx` indicates if the storage class supports `ReadWriteMany`, `smartclone` indicates if it supports snapshot or CSI based clone, `degraded` indicates it is not optimal for virtualization. Type: Gauge.
 
 ### kubevirt_cdi_upload_pods_high_restart
 The number of CDI upload server pods with high restart count. Type: Gauge.
