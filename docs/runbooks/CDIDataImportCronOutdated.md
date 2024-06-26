@@ -15,8 +15,8 @@ For golden images, _latest_ refers to the latest operating system of the
 distribution. For other disk images, _latest_ refers to the latest hash of the
 image that is available.
 
-In case there is no default (Kubernetes or KubeVirt) storage class, and the
-DataImportCron import PVC is pending for one, the alert is suppressed as the
+In case there is no default (Kubernetes or virtualization) storage class, and the
+`DataImportCron` import PVC is `Pending` for one, the alert is suppressed as the
 root cause is already alerted by CDINoDefaultStorageClass.
 
 ## Impact
@@ -27,20 +27,22 @@ VMs might fail to start because no boot source is available for cloning.
 
 ## Diagnosis
 
-1. Check the cluster for a default (Kubernetes and/or virtualization) storage class:
-
+1. Check the cluster for a default Kubernetes storage class:
    ```bash
    $ kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubernetes\.io\/is-default-class=="true")].metadata.name}'
+   ```
 
+   Check the cluster for a default virtualization storage class:
+   ```bash
    $ kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubevirt\.io\/is-default-virt-class=="true")].metadata.name}'
    ```
 
    The output displays the default (Kubernetes and/or virtualization) storage
    class. You must either set a default storage class on the cluster, or ask for
    a specific storage class in the `DataImportCron` specification, in order for
-   the `DataImportCron` to poll and import golden images. If the effective
+   the `DataImportCron` to poll and import golden images. If the default
    storage class does not exist, the created import DataVolume and PVC will be
-   in Pending phase.
+   in `Pending` phase.
 
 2. Obtain the `DataImportCrons` which are not up-to-date:
 

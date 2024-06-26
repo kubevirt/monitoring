@@ -9,8 +9,8 @@ based) and ReadWriteMany access mode.
 A default virtualization storage class has precedence over a default Kubernetes
 storage class for creating a VirtualMachine disk image.
 
-In case of single-node OpenShift, the alert is suppressed if there is a default
-storage class that supports smart cloning, but not ReadWriteMany.
+<!--DS: In case of single-node OpenShift, the alert is suppressed if there is a default
+storage class that supports smart cloning, but not ReadWriteMany.-->
 
 ## Impact
 
