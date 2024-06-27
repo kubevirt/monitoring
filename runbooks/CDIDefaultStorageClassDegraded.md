@@ -2,11 +2,15 @@
 
 ## Meaning
 
-This alert fires when there is no default storage class that supports smart
-cloning (CSI or snapshot-based) or the ReadWriteMany access mode.
+This alert fires when there is/are default (Kubernetes and/or virtualization)
+storage class(es), but none of them supports both smart cloning (CSI or snapshot
+based) and ReadWriteMany access mode.
 
 A default virtualization storage class has precedence over a default Kubernetes
 storage class for creating a VirtualMachine disk image.
+
+<!--DS: In case of single-node OpenShift, the alert is suppressed if there is a default
+storage class that supports smart cloning, but not ReadWriteMany.-->
 
 ## Impact
 
@@ -18,31 +22,32 @@ If the default storage class does not support ReadWriteMany, virtual machines
 
 ## Diagnosis
 
-1. Get the default KubeVirt storage class by running the following command:
+1. Get the default virtualization storage class by running the following
+command:
 
    ```bash
-   $ export CDI_DEFAULT_VIRT_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubevirt.io/is-default-virt-class"=="true")|.name')"
+   $ export CDI_DEFAULT_VIRT_SC="$(kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubevirt\.io\/is-default-virt-class=="true")].metadata.name}')"
    ```
 
-2. If a default KubeVirt storage class exists, check that it supports
+2. If a default virtualization storage class exists, check that it supports
 ReadWriteMany by running the following command:
 
    ```bash
-   $ kubectl get storageprofile $CDI_DEFAULT_VIRT_SC -o json | jq '.status.claimPropertySets'| grep ReadWriteMany
+   $ kubectl get storageprofile $CDI_DEFAULT_VIRT_SC -o jsonpath='{.status.claimPropertySets}' | grep ReadWriteMany
    ```
 
-3. If there is no default KubeVirt storage class, get the default Kubernetes
-storage class by running the following command:
+3. If there is no default virtualization storage class, get the default
+Kubernetes storage class by running the following command:
 
    ```bash
-   $ export CDI_DEFAULT_K8S_SC="$(kubectl get sc -o json | jq -r '.items[].metadata|select(.annotations."storageclass.kubernetes.io/is-default-class"=="true")|.name')"
+   $ export CDI_DEFAULT_K8S_SC="$(kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubernetes\.io\/is-default-class=="true")].metadata.name}')"
    ```
 
 4. If a default Kubernetes storage class exists, check that it supports
 ReadWriteMany by running the following command:
 
    ```bash
-   $ kubectl get storageprofile $CDI_DEFAULT_K8S_SC -o json | jq '.status.claimPropertySets'| grep ReadWriteMany
+   $ kubectl get storageprofile $CDI_DEFAULT_VIRT_SC -o jsonpath='{.status.claimPropertySets}' | grep ReadWriteMany
    ```
 
 <!--USstart-->
@@ -52,7 +57,7 @@ for details about smart clone prerequisites.
 
 ## Mitigation
 
-Ensure that you have a default storage class, either Kubernetes or KubeVirt, and
+Ensure that you have a default (Kubernetes or virtualization) storage class, and
 that the default storage class supports smart cloning and ReadWriteMany.
 
 <!--USstart-->
