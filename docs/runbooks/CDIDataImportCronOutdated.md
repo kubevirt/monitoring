@@ -51,7 +51,7 @@ VMs might fail to start because no boot source is available for cloning.
    ```
 
 3. If a default storage class is not defined on the cluster, check the
-`DataImportCron` specification for `DataVolume` template storage class:
+`DataImportCron` specification for a `DataVolume` template storage class:
 
    ```bash
    $ kubectl -n <namespace> get dataimportcron <dataimportcron> -o jsonpath='{.spec.template.spec.storage.storageClassName}{"\n"}'
