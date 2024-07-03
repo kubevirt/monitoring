@@ -2,9 +2,9 @@
 
 ## Meaning
 
-This alert fires when there is/are default (Kubernetes and/or virtualization)
-storage class(es), but none of them supports both smart cloning (CSI or snapshot
-based) and ReadWriteMany access mode.
+This alert fires if the default storage class does not support smart cloning
+(CSI or snapshot-based) or the ReadWriteMany access mode. The alert does not
+fire if at least one default storage class supports these features.
 
 A default virtualization storage class has precedence over a default Kubernetes
 storage class for creating a VirtualMachine disk image.

@@ -2,17 +2,17 @@
 
 ## Meaning
 
-This alert fires when there is no default (Kubernetes or virtualization) storage
-class, and a data volume is `Pending` for one.
+This alert fires when a data volume is `Pending` because there is no default
+storage class.
 
 A default virtualization storage class has precedence over a default Kubernetes
 storage class for creating a VirtualMachine disk image.
 
 ## Impact
 
-If there is no default (Kubernetes or virtualization) storage class, a data
-volume that does not have a specified storage class remains in a `Pending`
-phase.
+If there is no default Kubernetes storage class and no default virtualization
+storage class, a data volume that does not have a specified storage class
+remains in a `Pending` phase.
 
 ## Diagnosis
 
@@ -32,7 +32,7 @@ command:
 
 ## Mitigation
 
-Create a default (Kubernetes and/or virtualization) storage class.
+Create a default storage class for Kubernetes, virtualization, or both.
 
 A default virtualization storage class has precedence over a default Kubernetes
 storage class for creating a virtual machine disk image.
