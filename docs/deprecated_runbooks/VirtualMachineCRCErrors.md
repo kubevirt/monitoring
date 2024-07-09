@@ -1,5 +1,8 @@
 # VirtualMachineCRCErrors
 
+Note: This file is deprecated.
+See VMStorageClassWarning for the corresponding runbook content.
+
 ## Meaning
 
 When running VMs using ODF storage with 'rbd' mounter or 'rbd.csi.ceph.com'

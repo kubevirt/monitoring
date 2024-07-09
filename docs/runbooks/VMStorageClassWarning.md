@@ -39,6 +39,7 @@ $ kubectl get pv ${PV_NAME} -o=jsonpath='{.spec.storageClassName}'
 
 ## Mitigation
 
+<!--USstart-->
 It is recommended to create a dedicated StorageClass with "krbd:rxbounce" map
 option for the disks of virtual machines, to use a bounce buffer when receiving
 data. The default behavior is to read directly into the destination buffer. A
@@ -67,3 +68,16 @@ If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
+
+<!--DSstart -->
+
+Create a default OpenShift Virtualization storage class
+with the `krbd:rxbounce` map option. For details, see
+[Optimizing ODF PersistentVolumes for Windows VMs](https://access.redhat.com/articles/6978371).
+
+If you cannot resolve the issue, log in to the
+[Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.
+
+<!--DSend -->
