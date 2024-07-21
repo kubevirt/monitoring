@@ -26,7 +26,7 @@ If the default storage class does not support ReadWriteMany, virtual machines
 command:
 
    ```bash
-   $ export CDI_DEFAULT_VIRT_SC="$(kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubevirt\.io\/is-default-virt-class=="true")].metadata.name}')"
+   $ export CDI_DEFAULT_VIRT_SC="$(kubectl get sc -o jsonpath='{.items[?(.metadata.annotations.storageclass\.kubernetes\.io\/is-default-class=="true")].metadata.name}')"
    ```
 
 2. If a default virtualization storage class exists, check that it supports
