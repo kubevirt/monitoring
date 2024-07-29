@@ -20,21 +20,30 @@ major service outages.
 Obtain a list of VirtualMachines with an incorrectly configured storage class by
 running the following PromQL query:
 
-<!--DS: You can use the Openshift metrics explorer available at 'https://{OPENSHIFT_BASE_URL}/monitoring/query-browser'.-->
+<!--USstart-->
+**Note:** You can use the Prometheus metrics explorer to run the expression.
+<!--USend-->
+
+<!--DS: **Note:** You can use the Openshift metrics explorer available at 'https://{OPENSHIFT_BASE_URL}/monitoring/query-browser'.-->
 
 ```promql
-$ kubevirt_ssp_vm_rbd_volume{rxbounce_enabled="false", volume_mode="Block"} == 1
+$ kubevirt_ssp_vm_rbd_block_volume_without_rxbounce == 1
+```
 
-kubevirt_ssp_vm_rbd_volume{name="testvmi-gwgdqp22k7", namespace="test_ns", pv_name="testvmi-gwgdqp22k7", rxbounce_enabled="false", volume_mode="Block"} 1
+Example output:
+
+```plaintext
+kubevirt_ssp_vm_rbd_block_volume_without_rxbounce{name="testvmi-gwgdqp22k7", namespace="test_ns_1"} 1
+kubevirt_ssp_vm_rbd_block_volume_without_rxbounce{name="testvmi-rjqbjg47a8", namespace="test_ns_2"} 1
 ```
 
 The output displays a list of VirtualMachines that use a storage class without
 `rxbounce_enabled`.
 
-Obtain the storage class name by running the following command:
+Obtain the VM volumes by running the following command:
 
 ```bash
-$ kubectl get pv ${PV_NAME} -o=jsonpath='{.spec.storageClassName}'
+$ kubectl get vm <vm-name> -o json | jq -r '.spec.template.spec.volumes[] | if .dataVolume then "DataVolume - " + .dataVolume.name elif .persistentVolumeClaim then "PersistentVolumeClaim - " + .persistentVolumeClaim.claimName else empty end'
 ```
 
 ## Mitigation
