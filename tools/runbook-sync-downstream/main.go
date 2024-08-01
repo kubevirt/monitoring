@@ -21,10 +21,12 @@ package main
 
 import (
 	"context"
+	"embed"
 	"fmt"
 	"os"
 	"path"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/go-git/go-git/v5"
@@ -47,7 +49,6 @@ const (
 	downstreamRepositoryFork  = "hco-bot"
 	downstreamRepositoryName  = "runbooks"
 	downstreamRunbooksDir     = "alerts/openshift-virtualization-operator"
-	downstreamDeprecateSubDir = "deprecated"
 
 	originRemoteName = "origin"
 	forkRemoteName   = "fork"
@@ -56,6 +57,9 @@ const (
 var (
 	downstreamRepositoryURL = fmt.Sprintf("github.com/%s/%s", downstreamRepositoryOwner, downstreamRepositoryName)
 	forkedRepositoryURL     = fmt.Sprintf("github.com/%s/%s", downstreamRepositoryFork, downstreamRepositoryName)
+
+	//go:embed templates/deprecated_runbook.tmpl
+	deprecatedRunbookTemplate embed.FS
 )
 
 type runbookSyncArgs struct {
@@ -200,18 +204,10 @@ func (rbSync *runbookSync) deprecateRunbook(rb runbook) string {
 		klog.Fatalf("failed to create branch: %v", err)
 	}
 
-	err = os.MkdirAll(path.Join(downstreamCloneDir, downstreamRunbooksDir, downstreamDeprecateSubDir), os.ModePerm)
-	if err != nil {
-		klog.Fatalf("failed to create deprecate subdirectory: %v", err)
-	}
+	klog.Infof("updating runbook with deprecation message")
+	deprecatedRunbook(runbookName)
 
-	klog.Infof("moving file %s", rb.name)
-	err = os.Rename(path.Join(downstreamCloneDir, downstreamRunbooksDir, rb.name), path.Join(downstreamCloneDir, downstreamRunbooksDir, downstreamDeprecateSubDir, rb.name))
-	if err != nil {
-		klog.Fatalf("failed to move file: %v", err)
-	}
-
-	commitMessage := fmt.Sprintf("Deprecate CNV runbook %s", rb.name)
+	commitMessage := fmt.Sprintf("Deprecate CNV runbook %s", runbookName)
 
 	err = rbSync.commitAndPush(worktree, commitMessage)
 	if err != nil {
@@ -308,4 +304,23 @@ func (rbSync *runbookSync) createPR(branchName string, title string, body string
 	klog.Infof("PR created: %s", pr.GetHTMLURL())
 
 	return nil
+}
+
+func deprecatedRunbook(runbookName string) {
+	tmpl, err := template.ParseFS(deprecatedRunbookTemplate, "templates/deprecated_runbook.tmpl")
+	if err != nil {
+		klog.Fatalf("failed to parse template: %v", err)
+	}
+
+	p := path.Join(downstreamCloneDir, downstreamRunbooksDir, runbookName+".md")
+	f, err := os.OpenFile(p, os.O_RDWR, 0644)
+	if err != nil {
+		klog.Fatalf("failed to open file: %v", err)
+	}
+	defer f.Close()
+
+	err = tmpl.Execute(f, struct{ RunbookName string }{RunbookName: runbookName})
+	if err != nil {
+		klog.Fatalf("failed to execute template: %v", err)
+	}
 }
