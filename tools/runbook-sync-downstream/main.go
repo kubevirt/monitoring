@@ -177,9 +177,13 @@ func (rbSync *runbookSync) updateRunbook(rb runbook) string {
 		rb.name, upstreamRepositoryURL, rb.upstreamLastUpdated,
 	)
 
-	err = rbSync.createPR(branchName, commitMessage, body)
+	newPR, err := rbSync.createPR(branchName, commitMessage, body)
 	if err != nil {
 		klog.Fatalf("failed to create PR: %v", err)
+	}
+
+	if err := rbSync.closeOutdatedRunbookPRs(newPR, runbookName); err != nil {
+		klog.Fatalf("failed to close outdated PRs: %v", err)
 	}
 
 	return branchName
@@ -222,7 +226,7 @@ func (rbSync *runbookSync) deprecateRunbook(rb runbook) string {
 		rb.name, upstreamRepositoryURL,
 	)
 
-	err = rbSync.createPR(branchName, commitMessage, body)
+	_, err = rbSync.createPR(branchName, commitMessage, body)
 	if err != nil {
 		klog.Fatalf("failed to create PR: %v", err)
 	}
@@ -280,7 +284,7 @@ func (rbSync *runbookSync) prForBranchPreviouslyCreated(branchName string) (bool
 	return true, prs[0], nil
 }
 
-func (rbSync *runbookSync) createPR(branchName string, title string, body string) error {
+func (rbSync *runbookSync) createPR(branchName string, title string, body string) (*github.PullRequest, error) {
 	headBranch := fmt.Sprintf("%s:%s", downstreamRepositoryFork, branchName)
 	baseBranch := downstreamMainBranch
 
@@ -293,15 +297,55 @@ func (rbSync *runbookSync) createPR(branchName string, title string, body string
 
 	if rbSync.dryRun {
 		klog.Warningf("[DRY RUN] skipping PR creation '%s', %s => %s/%s %s", *prOpts.Title, *prOpts.Head, downstreamRepositoryOwner, downstreamRepositoryName, *prOpts.Base)
-		return nil
+		return nil, nil
 	}
 
 	pr, _, err := rbSync.ghClient.PullRequests.Create(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, prOpts)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	klog.Infof("PR created: %s", pr.GetHTMLURL())
+
+	return pr, nil
+}
+
+func (rbSync *runbookSync) closeOutdatedRunbookPRs(newPr *github.PullRequest, runbookName string) error {
+	prs, _, err := rbSync.ghClient.PullRequests.List(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, &github.PullRequestListOptions{
+		State: "open",
+		Base:  downstreamMainBranch,
+	})
+	if err != nil {
+		return err
+	}
+
+	for _, oldPR := range prs {
+		if strings.Contains(oldPR.GetTitle(), runbookName) && *oldPR.User.Login == githubUsername {
+			if err := rbSync.closeOutdatedRunbookPR(oldPR, newPr); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+func (rbSync *runbookSync) closeOutdatedRunbookPR(oldPR *github.PullRequest, newPr *github.PullRequest) error {
+	klog.Infof("closing outdated PR: %s", oldPR.GetHTMLURL())
+
+	if rbSync.dryRun {
+		klog.Warning("[DRY RUN] skipping PR close")
+		return nil
+	}
+
+	body := *oldPR.Body + fmt.Sprintf("\n\nThis pull request has been closed in favor of a newer one. Please refer to the updated PR for the latest changes and discussion: %s.", newPr.GetHTMLURL())
+	_, _, err := rbSync.ghClient.PullRequests.Edit(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, oldPR.GetNumber(), &github.PullRequest{
+		State: github.String("closed"),
+		Body:  github.String(body),
+	})
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
