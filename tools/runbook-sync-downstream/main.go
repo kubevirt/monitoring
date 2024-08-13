@@ -310,7 +310,7 @@ func (rbSync *runbookSync) createPR(branchName string, title string, body string
 	return pr, nil
 }
 
-func (rbSync *runbookSync) closeOutdatedRunbookPRs(newPr *github.PullRequest, runbookName string) error {
+func (rbSync *runbookSync) closeOutdatedRunbookPRs(newPR *github.PullRequest, runbookName string) error {
 	prs, _, err := rbSync.ghClient.PullRequests.List(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, &github.PullRequestListOptions{
 		State: "open",
 		Base:  downstreamMainBranch,
@@ -320,14 +320,18 @@ func (rbSync *runbookSync) closeOutdatedRunbookPRs(newPr *github.PullRequest, ru
 	}
 
 	for _, oldPR := range prs {
-		if strings.Contains(oldPR.GetTitle(), runbookName) && *oldPR.User.Login == githubUsername {
-			if err := rbSync.closeOutdatedRunbookPR(oldPR, newPr); err != nil {
+		if isAutomatedPRForSameRunbook(oldPR, runbookName) && oldPR.GetNumber() != newPR.GetNumber() {
+			if err := rbSync.closeOutdatedRunbookPR(oldPR, newPR); err != nil {
 				return err
 			}
 		}
 	}
 
 	return nil
+}
+
+func isAutomatedPRForSameRunbook(oldPR *github.PullRequest, runbookName string) bool {
+	return strings.Contains(oldPR.GetTitle(), runbookName) && oldPR.GetUser().GetLogin() == githubUsername
 }
 
 func (rbSync *runbookSync) closeOutdatedRunbookPR(oldPR *github.PullRequest, newPr *github.PullRequest) error {
