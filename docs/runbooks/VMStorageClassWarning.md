@@ -72,7 +72,16 @@ provisioner: openshift-storage.rbd.csi.ceph.com
 # ...
 ```
 
+<!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
+
+<!--DS: See [Optimizing ODF PersistentVolumes for Windows VMs](https://access.redhat.com/articles/6978371)
+for details.-->
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
