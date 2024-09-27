@@ -105,6 +105,9 @@ The total number of VMs created by namespace, since install. Type: Counter.
 ### kubevirt_vm_error_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to error status. Type: Counter.
 
+### kubevirt_vm_info
+Information about Virtual Machines. Type: Gauge.
+
 ### kubevirt_vm_migrating_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to migrating status. Type: Counter.
 
@@ -300,6 +303,9 @@ Returns the amount of space in bytes restored from the source virtual machine. T
 ### kubevirt_vmsnapshot_persistentvolumeclaim_labels
 Returns the labels of the persistent volume claims that are used for restoring virtual machines. Type: Gauge.
 
+### kubevirt_vmsnapshot_succeeded_timestamp_seconds
+Returns the timestamp of successful virtual machine snapshot. Type: Gauge.
+
 ### kubevirt_vnc_active_connections
 Amount of active VNC connections, broken down by namespace and vmi name. Type: Gauge.
 
@@ -428,6 +434,9 @@ Monitors resources for potential problems. Type: Gauge.
 
 ### kubevirt_hco_hyperconverged_cr_exists
 Indicates whether the HyperConverged custom resource exists (1) or not (0). Type: Gauge.
+
+### kubevirt_hco_misconfigured_descheduler
+Indicates whether the optional descheduler is not properly configured (1) to work with KubeVirt or not (0). Type: Gauge.
 
 ### kubevirt_hco_out_of_band_modifications_total
 Count of out-of-band modifications overwritten by HCO. Type: Counter.
