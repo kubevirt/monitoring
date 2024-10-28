@@ -24,7 +24,7 @@ import (
 )
 
 var projectsInfo = []*projectInfo{
-	{"KUBEVIRT", "kubevirt", "docs/metrics.md"},
+	{"KUBEVIRT", "kubevirt", "docs/observability/metrics.md"},
 	{"CDI", "containerized-data-importer", "doc/metrics.md"},
 	{"NETWORK_ADDONS", "cluster-network-addons-operator", "docs/metrics.md"},
 	{"SSP", "ssp-operator", "docs/metrics.md"},
