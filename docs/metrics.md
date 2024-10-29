@@ -105,11 +105,17 @@ The total number of VMs created by namespace, since install. Type: Counter.
 ### kubevirt_vm_error_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to error status. Type: Counter.
 
+### kubevirt_vm_info
+Information about Virtual Machines. Type: Gauge.
+
 ### kubevirt_vm_migrating_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to migrating status. Type: Counter.
 
 ### kubevirt_vm_non_running_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to paused/stopped status. Type: Counter.
+
+### kubevirt_vm_resource_limits
+Resources limits by Virtual Machine. Reports memory and CPU limits. Type: Gauge.
 
 ### kubevirt_vm_resource_requests
 Resources requested by Virtual Machine. Reports memory and CPU requests. Type: Gauge.
@@ -258,6 +264,9 @@ Histogram of VM phase transitions duration from deletion time in seconds. Type: 
 ### kubevirt_vmi_phase_transition_time_seconds
 Histogram of VM phase transitions duration between different phases in seconds. Type: Histogram.
 
+### kubevirt_vmi_status_addresses
+The addresses of a VirtualMachineInstance. This metric provides the address of an available network interface associated with the VMI in the 'address' label, and about the type of address, such as internal IP, in the 'type' label. Type: Gauge.
+
 ### kubevirt_vmi_storage_flush_requests_total
 Total storage flush requests. Type: Counter.
 
@@ -299,6 +308,9 @@ Returns the amount of space in bytes restored from the source virtual machine. T
 
 ### kubevirt_vmsnapshot_persistentvolumeclaim_labels
 Returns the labels of the persistent volume claims that are used for restoring virtual machines. Type: Gauge.
+
+### kubevirt_vmsnapshot_succeeded_timestamp_seconds
+Returns the timestamp of successful virtual machine snapshot. Type: Gauge.
 
 ### kubevirt_vnc_active_connections
 Amount of active VNC connections, broken down by namespace and vmi name. Type: Gauge.
@@ -428,6 +440,9 @@ Monitors resources for potential problems. Type: Gauge.
 
 ### kubevirt_hco_hyperconverged_cr_exists
 Indicates whether the HyperConverged custom resource exists (1) or not (0). Type: Gauge.
+
+### kubevirt_hco_misconfigured_descheduler
+Indicates whether the optional descheduler is not properly configured (1) to work with KubeVirt or not (0). Type: Gauge.
 
 ### kubevirt_hco_out_of_band_modifications_total
 Count of out-of-band modifications overwritten by HCO. Type: Counter.
