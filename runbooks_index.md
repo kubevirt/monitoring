@@ -49,6 +49,7 @@
 - [SSPCommonTemplatesModificationReverted.md](runbooks/SSPCommonTemplatesModificationReverted.md)
 - [VirtHandlerRESTErrorsBurst.md](runbooks/VirtHandlerRESTErrorsBurst.md)
 - [KubevirtVmHighMemoryUsage.md](runbooks/KubevirtVmHighMemoryUsage.md)
+- [OperatorConditionsUnhealthy.md](runbooks/OperatorConditionsUnhealthy.md)
 - [OutdatedVirtualMachineInstanceWorkloads.md](runbooks/OutdatedVirtualMachineInstanceWorkloads.md)
 - [VirtControllerRESTErrorsHigh.md](runbooks/VirtControllerRESTErrorsHigh.md)
 - [KubemacpoolDown.md](runbooks/KubemacpoolDown.md)
