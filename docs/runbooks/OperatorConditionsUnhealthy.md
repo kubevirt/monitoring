@@ -2,12 +2,12 @@
 
 ## Meaning
 
-This alert fires when the and operator conditions or its secondary resources
+This alert triggers when the operator conditions or its secondary resources
 are in an error or warning state.
 
 ## Impact
 
-Resources maintained by the operator may not be functioning correctly.
+Resources maintained by the operator might not be functioning correctly.
 
 ## Diagnosis
 
@@ -17,7 +17,7 @@ Check the operator conditions:
 kubectl get <CR> <CR_OBJECT> -n <namespace> -o jsonpath='{.status.conditions}'
 ```
 
-e.g.:
+For example:
 
 ```bash
 kubectl get HyperConverged kubevirt-hyperconverged -n kubevirt -o jsonpath='{.status.conditions}'
@@ -26,8 +26,9 @@ kubectl get HyperConverged kubevirt-hyperconverged -n kubevirt -o jsonpath='{.st
 ## Mitigation
 
 Based on the information obtained during the diagnosis procedure, try to
-identify the root cause within the operator or any of its secondary resources
+identify the root cause within the operator or any of its secondary resources,
 and resolve the issue.
+
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
