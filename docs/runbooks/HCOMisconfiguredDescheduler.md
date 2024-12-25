@@ -14,7 +14,8 @@ and a live migration takes time to perform.
 Therefore, when a `virt-launcher` pod is migrating to another node in the background,
 the descheduler detects this as a pod that failed to be evicted. As a consequence,
 the manner in which KubeVirt handles eviction requests causes the descheduler
-to make incorrect decisions and take incorrect actions that might destabilize the cluster.
+to make incorrect decisions and take incorrect actions that might
+destabilize the cluster.
 
 To correctly handle the special case of an evicted VM pod triggering a live
 migration to another node, the `Kube Descheduler Operator` introduced
@@ -44,8 +45,8 @@ to unstable or unpredictable behavior, which negatively impacts cluster stabilit
          devEnableEvictionsInBackground: true
    ```
 
-If these lines are not present, the `Kube Descheduler Operator` is not correctly configured
-to work alongside KubeVirt.
+If these lines are not present, the `Kube Descheduler Operator` is not correctly
+configured to work alongside KubeVirt.
 
 ## Mitigation
 
