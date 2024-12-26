@@ -10,6 +10,7 @@
 - [KubemacpoolDown.md](runbooks/KubemacpoolDown.md)
 - [NoReadyVirtController.md](runbooks/NoReadyVirtController.md)
 - [VirtHandlerRESTErrorsBurst.md](runbooks/VirtHandlerRESTErrorsBurst.md)
+- [HCOOperatorConditionsUnhealthy.md](runbooks/HCOOperatorConditionsUnhealthy.md)
 - [LowVirtAPICount.md](runbooks/LowVirtAPICount.md)
 - [VMStorageClassWarning.md](runbooks/VMStorageClassWarning.md)
 - [SSPOperatorDown.md](runbooks/SSPOperatorDown.md)
@@ -55,7 +56,6 @@
 - [LowReadyVirtControllersCount.md](runbooks/LowReadyVirtControllersCount.md)
 - [SSPDown.md](runbooks/SSPDown.md)
 - [CnaoDown.md](runbooks/CnaoDown.md)
-- [OperatorConditionsUnhealthy.md](runbooks/OperatorConditionsUnhealthy.md)
 - [SingleStackIPv6Unsupported.md](runbooks/SingleStackIPv6Unsupported.md)
 
 ## Deprecated Runbooks
@@ -68,6 +68,7 @@
 - [KubeVirtComponentExceedsRequestedMemory.md](runbooks/KubeVirtComponentExceedsRequestedMemory.md)
 - [KubeVirtVMStuckInStartingState.md](runbooks/KubeVirtVMStuckInStartingState.md)
 - [KubeVirtVMStuckInMigratingState.md](runbooks/KubeVirtVMStuckInMigratingState.md)
+- [OperatorConditionsUnhealthy.md](runbooks/OperatorConditionsUnhealthy.md)
 
 ## Renamed Runbooks
 
