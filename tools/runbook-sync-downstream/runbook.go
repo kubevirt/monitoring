@@ -34,6 +34,7 @@ import (
 var (
 	runbookRegex = regexp.MustCompile(`.*\.md`)
 
+	namespaceRegex                = regexp.MustCompile(`(namespace:|-n|--namespace) (kubevirt(?:-hyperconverged)?)`)
 	downstreamCommentsRegex       = regexp.MustCompile(`(?s)<!--DS: (.*?)-->`)
 	multipleNewLinesRegex         = regexp.MustCompile(`\n\n+`)
 	asciiDocLinksRegex            = regexp.MustCompile(`link:(https://[^[\]]+)\[([^[\]]+)\]`)
@@ -132,13 +133,16 @@ func copyRunbook(name string) error {
 		return fmt.Errorf("failed to read runbook %s: %w", name, err)
 	}
 
-	content := string(file)
+	content := replaceContents(string(file))
+	return createAndWriteFile(to, content)
+}
 
+func replaceContents(content string) string {
 	// Replace all 'kubectl' with 'oc'
 	content = strings.ReplaceAll(content, "kubectl", "oc")
 
 	// Replace all namespaces
-	content = strings.ReplaceAll(content, "namespace: kubevirt-hyperconverged", "namespace: openshift-cnv")
+	content = namespaceRegex.ReplaceAllString(content, "$1 openshift-cnv")
 
 	// Remove all US comments
 	content = removeTextBetweenTags(content, "<!--USstart-->", "<!--USend-->")
@@ -167,7 +171,7 @@ func copyRunbook(name string) error {
 	// Keep only one empty line at the end of the file
 	content = strings.TrimRight(content, "\n")
 
-	return createAndWriteFile(to, content)
+	return content
 }
 
 func wrapLines(content string, maxLineLength int) string {
