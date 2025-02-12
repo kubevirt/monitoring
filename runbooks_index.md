@@ -2,6 +2,7 @@
 
 - [HCOMisconfiguredDescheduler.md](runbooks/HCOMisconfiguredDescheduler.md)
 - [VirtApiRESTErrorsHigh.md](runbooks/VirtApiRESTErrorsHigh.md)
+- [HighCPUWorkload.md](runbooks/HighCPUWorkload.md)
 - [KubeVirtNoAvailableNodesToRunVMs.md](runbooks/KubeVirtNoAvailableNodesToRunVMs.md)
 - [KubeMacPoolDuplicateMacsFound.md](runbooks/KubeMacPoolDuplicateMacsFound.md)
 - [CDIStorageProfilesIncomplete.md](runbooks/CDIStorageProfilesIncomplete.md)
@@ -19,6 +20,7 @@
 - [VirtOperatorRESTErrorsHigh.md](runbooks/VirtOperatorRESTErrorsHigh.md)
 - [KubevirtVmHighMemoryUsage.md](runbooks/KubevirtVmHighMemoryUsage.md)
 - [HCOInstallationIncomplete.md](runbooks/HCOInstallationIncomplete.md)
+- [NodeNetworkInterfaceDown.md](runbooks/NodeNetworkInterfaceDown.md)
 - [CDIOperatorDown.md](runbooks/CDIOperatorDown.md)
 - [LowReadyVirtOperatorsCount.md](runbooks/LowReadyVirtOperatorsCount.md)
 - [SSPCommonTemplatesModificationReverted.md](runbooks/SSPCommonTemplatesModificationReverted.md)
@@ -39,6 +41,7 @@
 - [CDIDataVolumeUnusualRestartCount.md](runbooks/CDIDataVolumeUnusualRestartCount.md)
 - [CnaoDown.md](runbooks/CnaoDown.md)
 - [SSPFailingToReconcile.md](runbooks/SSPFailingToReconcile.md)
+- [HAControlPlaneDown.md](runbooks/HAControlPlaneDown.md)
 - [VirtOperatorDown.md](runbooks/VirtOperatorDown.md)
 - [VMStorageClassWarning.md](runbooks/VMStorageClassWarning.md)
 - [LowVirtAPICount.md](runbooks/LowVirtAPICount.md)
