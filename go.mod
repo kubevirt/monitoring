@@ -1,4 +1,4 @@
-module github.com/kubevirt/monitoring/monitoringlinter
+module github.com/kubevirt/monitoring
 
 go 1.23.6
 

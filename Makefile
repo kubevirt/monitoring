@@ -22,15 +22,15 @@ promlinter-push:
 
 .PHONY: monitoringlinter-unit-test
 monitoringlinter-unit-test:
-	cd monitoringlinter && go test ./...
+	go test ./monitoringlinter/...
 
 .PHONY: monitoringlinter-build
 monitoringlinter-build:
-	cd monitoringlinter && go build ./cmd/monitoringlinter
+	go build -o bin/ ./monitoringlinter/cmd/monitoringlinter
 
 .PHONY: monitoringlinter-test
 monitoringlinter-test: monitoringlinter-build
-	cd monitoringlinter && ./tests/e2e.sh
+	./monitoringlinter/tests/e2e.sh
 
 .PHONY: lint-markdown
 lint-markdown:
