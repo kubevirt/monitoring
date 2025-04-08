@@ -3,6 +3,9 @@ on:
   release:
     types:
       - published
+env:
+  IMAGE_NAME: quay.io/kubevirt/prom-metrics-linter
+  BUILD_PLATFORMS: linux/amd64,linux/arm64,linux/s390x
 
 jobs:
   build:
@@ -12,14 +15,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
       - name: Login to quay.io
         run: docker login -u="${{ secrets.QUAY_USER }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
 
-      - name: Build the Docker image
-        run: |
-          IMAGE_NAME="quay.io/kubevirt/prom-metrics-linter:${GITHUB_REF##*/}"
-          CONTAINER_RUNTIME=docker IMG="${IMAGE_NAME}" make promlinter-build
-          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
-
-      - name: Push the Docker image
-        run: CONTAINER_RUNTIME=docker IMG="${{ env.IMAGE_NAME }}" make promlinter-push
+      - name: Build and push the Docker image
+        uses: docker/build-push-action@v5.3.0
+        with:
+          context: test/metrics/prom-metrics-linter
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          file: test/metrics/prom-metrics-linter/Dockerfile
+          platforms: ${{ env.BUILD_PLATFORMS }}
