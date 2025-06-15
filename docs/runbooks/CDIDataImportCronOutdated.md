@@ -111,6 +111,6 @@ for more information.
 
 If you cannot resolve the issue, see the following resources:
 
-- [OKD Help](https://www.okd.io/help/)
+- [OKD Help](https://okd.io/docs/community/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->

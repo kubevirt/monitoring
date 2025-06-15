@@ -36,7 +36,7 @@ The KubeVirt Users should have the same experience when searching for a node, co
     - **Kubevirt_vmi**_network_transmit_packets_total
 
 
-3. Metric `Help` message MUST be verbose, since it is being propagated to the [metrics.md](https://github.com/kubevirt/kubevirt/blob/main/docs/metrics.md) file, when running `make-generate`.
+3. Metric `Help` message MUST be verbose, since it is being propagated to the [metrics.md](https://github.com/kubevirt/kubevirt/blob/main/docs/observability/metrics.md) file, when running `make-generate`.
 
 ### KubeVirt Recording Rules
 
