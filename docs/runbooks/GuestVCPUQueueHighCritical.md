@@ -13,8 +13,8 @@ indicating severe CPU contention.
 ## Diagnosis
 Follow the below steps with extra focus on:
 * **Duration** – How long is the queue > 20
-* **Host saturation** – if node CPU is also > 90 %, migrate other VMs or mark the
-   node as unschedulable so that no new Pods/VMs are placed thereon it.
+* **Host saturation** - if node CPU is also > 90%, migrate other VMs or
+  mark the node as unschedulable so that no new Pods/VMs are placed thereon it.
 
 1. **Confirm queue length**
    ```promql
@@ -34,7 +34,8 @@ Follow the below steps with extra focus on:
 ## Mitigation
 | Horizon  | Action                                                           |
 |----------|------------------------------------------------------------------|
-| Immediate| **Prioritise**: live-migrate VM; hot-plug vCPUs; stop or throttle hot threads.                                            |
+| Immediate| **Prioritise**: live-migrate VM; hot-plug vCPUs; stop or throttle |
+|          | hot threads.                                                   |
 | Short term| Raise vCPU limit or split workload across additional VMs.       |
 | Long term| Adjust placement rules; add autoscaling tied to run-queue length.|
 
@@ -43,7 +44,8 @@ Follow the below steps with extra focus on:
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
-- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+- [#virtualization Slack channel](
+  https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
 
 <!--DS: If you cannot resolve the issue, log in to the

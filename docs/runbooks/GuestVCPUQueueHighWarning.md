@@ -31,15 +31,18 @@ The run‑queue length is derived from `guest_load_1m – vCPU_count`.
 ## Mitigation
 | Horizon | Action |
 |---------|--------|
-| Immediate | Optionally live‑migrate the VM to a quieter node or throttle noisy processes.   |
-| Short term | Hot‑plug / increase vCPUs; tune application thread pools.                      |
-| Long term  | Implement horizontal scaling (HPA/KEDA, VMReplicaSet); review placement rules. |
+| Immediate | Optionally live‑migrate the VM to a quieter node or throttle    |
+|           | noisy processes.                                                |
+| Short term | Hot‑plug / increase vCPUs; tune application thread pools.       |
+| Long term  | Implement horizontal scaling (HPA/KEDA, VMReplicaSet); review   |
+|            | placement rules.                                                |
 
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://www.okd.io/help/)
-- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+- [#virtualization Slack channel](
+  https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
 
 <!--DS: If you cannot resolve the issue, log in to the
