@@ -54,6 +54,7 @@
 - [VirtApiRESTErrorsBurst.md](runbooks/VirtApiRESTErrorsBurst.md)
 - [LowReadyVirtOperatorsCount.md](runbooks/LowReadyVirtOperatorsCount.md)
 - [VMCannotBeEvicted.md](runbooks/VMCannotBeEvicted.md)
+- [HCOMultiArchGoldenImagesDisabled.md](runbooks/HCOMultiArchGoldenImagesDisabled.md)
 - [VirtOperatorDown.md](runbooks/VirtOperatorDown.md)
 - [PersistentVolumeFillingUp.md](runbooks/PersistentVolumeFillingUp.md)
 - [CDINotReady.md](runbooks/CDINotReady.md)
