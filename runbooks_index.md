@@ -1,5 +1,6 @@
 # KubeVirt Runbooks
 
+- [VirtualMachineStuckInUnhealthyState.md](runbooks/VirtualMachineStuckInUnhealthyState.md)
 - [CDIDefaultStorageClassDegraded.md](runbooks/CDIDefaultStorageClassDegraded.md)
 - [OrphanedVirtualMachineInstances.md](runbooks/OrphanedVirtualMachineInstances.md)
 - [SSPTemplateValidatorDown.md](runbooks/SSPTemplateValidatorDown.md)
@@ -16,6 +17,7 @@
 - [HCOMisconfiguredDescheduler.md](runbooks/HCOMisconfiguredDescheduler.md)
 - [UnsupportedHCOModification.md](runbooks/UnsupportedHCOModification.md)
 - [VirtOperatorRESTErrorsHigh.md](runbooks/VirtOperatorRESTErrorsHigh.md)
+- [VirtualMachineStuckOnNode.md](runbooks/VirtualMachineStuckOnNode.md)
 - [HCOGoldenImageWithNoSupportedArchitecture.md](runbooks/HCOGoldenImageWithNoSupportedArchitecture.md)
 - [SSPDown.md](runbooks/SSPDown.md)
 - [NoLeadingVirtOperator.md](runbooks/NoLeadingVirtOperator.md)
