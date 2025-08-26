@@ -22,6 +22,7 @@
 - [SSPDown.md](runbooks/SSPDown.md)
 - [NoLeadingVirtOperator.md](runbooks/NoLeadingVirtOperator.md)
 - [VirtHandlerRESTErrorsBurst.md](runbooks/VirtHandlerRESTErrorsBurst.md)
+- [DeprecatedMachineType.md](runbooks/DeprecatedMachineType.md)
 - [KubeVirtNoAvailableNodesToRunVMs.md](runbooks/KubeVirtNoAvailableNodesToRunVMs.md)
 - [CDIStorageProfilesIncomplete.md](runbooks/CDIStorageProfilesIncomplete.md)
 - [CDINoDefaultStorageClass.md](runbooks/CDINoDefaultStorageClass.md)
