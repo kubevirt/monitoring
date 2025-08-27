@@ -57,7 +57,6 @@
 - [VirtOperatorDown.md](runbooks/VirtOperatorDown.md)
 - [PersistentVolumeFillingUp.md](runbooks/PersistentVolumeFillingUp.md)
 - [CDINotReady.md](runbooks/CDINotReady.md)
-- [SSPOperatorDown.md](runbooks/SSPOperatorDown.md)
 - [KubeVirtDeprecatedAPIRequested.md](runbooks/KubeVirtDeprecatedAPIRequested.md)
 - [HighNodeCPUFrequency.md](runbooks/HighNodeCPUFrequency.md)
 - [HPPNotReady.md](runbooks/HPPNotReady.md)
@@ -81,6 +80,7 @@
 - [KubeVirtVMStuckInErrorState.md](runbooks/KubeVirtVMStuckInErrorState.md)
 - [VirtualMachineCRCErrors.md](runbooks/VirtualMachineCRCErrors.md)
 - [KubeVirtComponentExceedsRequestedCPU.md](runbooks/KubeVirtComponentExceedsRequestedCPU.md)
+- [SSPOperatorDown.md](runbooks/SSPOperatorDown.md)
 - [KubeMacPoolDown.md](runbooks/KubeMacPoolDown.md)
 
 ## Renamed Runbooks
