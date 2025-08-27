@@ -1,4 +1,7 @@
-# VirtHandlerRESTErrorsHigh
+# VirtHandlerRESTErrorsHigh [Deprecated]
+
+This alert has been deprecated; it does not indicate a genuine issue. If
+triggered, it may be safely ignored and silenced.
 
 ## Meaning
 
@@ -67,3 +70,4 @@ If you cannot resolve the issue, see the following resources:
 - [OKD Help](https://okd.io/docs/community/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
+
