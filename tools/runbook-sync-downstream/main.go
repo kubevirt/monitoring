@@ -58,6 +58,9 @@ var (
 	downstreamRepositoryURL = fmt.Sprintf("github.com/%s/%s", downstreamRepositoryOwner, downstreamRepositoryName)
 	forkedRepositoryURL     = fmt.Sprintf("github.com/%s/%s", downstreamRepositoryFork, downstreamRepositoryName)
 
+	prReviewersUsernames = []string{"machadovilaca", "sradco", "avlitman", "jherrman"}
+	prReviewersFmt       = fmt.Sprintf("/cc @%s", strings.Join(prReviewersUsernames, " @"))
+
 	//go:embed templates/deprecated_runbook.tmpl
 	deprecatedRunbookTemplate embed.FS
 )
@@ -173,8 +176,8 @@ func (rbSync *runbookSync) updateRunbook(rb runbook) string {
 		"This is an automated PR by 'tools/openshift-virtualization-operator/runbook-sync'.\n\n"+
 			"CNV runbook '%s' was updated in upstream https://%s at %s.\n"+
 			"This PR syncs the runbook in this repository to contain all new added changes.\n\n"+
-			"/cc @machadovilaca",
-		rb.name, upstreamRepositoryURL, rb.upstreamLastUpdated,
+			"%s",
+		rb.name, upstreamRepositoryURL, rb.upstreamLastUpdated, prReviewersFmt,
 	)
 
 	newPR, err := rbSync.createPR(branchName, commitMessage, body)
@@ -222,8 +225,8 @@ func (rbSync *runbookSync) deprecateRunbook(rb runbook) string {
 		"This is an automated PR by 'tools/openshift-virtualization-operator/runbook-sync'.\n\n"+
 			"CNV runbook '%s' was deprecated in upstream https://%s.\n"+
 			"This PR moves the runbook to the 'deprecate' subdirectory.\n\n"+
-			"/cc @machadovilaca",
-		rb.name, upstreamRepositoryURL,
+			"%s",
+		rb.name, upstreamRepositoryURL, prReviewersFmt,
 	)
 
 	_, err = rbSync.createPR(branchName, commitMessage, body)
