@@ -2,7 +2,7 @@
 
 ## Meaning
 
-This alert fires when a CPU frequency on a node exceeds 80% of the maximum
+This alert triggers when a CPU frequency on a node exceeds 80% of the maximum
 frequency for more than 5 minutes.
 
 ## Impact
@@ -57,21 +57,21 @@ High CPU frequency can indicate:
 ## Mitigation
 
 1. Immediate actions:
-   - Monitor the CPU temperature to ensure it's within safe limits
-   - Check if the high frequency is due to legitimate high CPU demand
-   - Verify CPU settings if needed
+   - Monitor the CPU temperature to ensure it is within safe limits.
+   - Check if the high frequency is due to legitimate high CPU demand.
+   - Verify CPU settings if needed.
 
 2. If caused by high CPU utilization:
-   - Identify and analyze CPU-intensive pods
-   - Consider redistributing workloads across nodes
-   - Evaluate pod resource limits and requests
-   - Scale horizontally if needed
+   - Identify and analyze CPU-intensive pods.
+   - Consider redistributing workloads across nodes.
+   - Evaluate pod resource limits and requests.
+   - Scale horizontally if needed.
 
 3. If thermal throttling is suspected:
-   - Check system cooling and ventilation
-   - Monitor ambient temperature
-   - Consider reducing workload temporarily
-   - Verify proper thermal management settings
+   - Check system cooling and ventilation.
+   - Monitor ambient temperature.
+   - Consider reducing workload temporarily.
+   - Verify proper thermal management settings.
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
