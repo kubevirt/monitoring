@@ -16,34 +16,28 @@ critical for cluster-wide virtualization functionality.
 The responsiveness of KubeVirt might become negatively affected. For example,
 certain requests might be missed.
 
-In addition, if another `virt-launcher` instance terminates unexpectedly,
+In addition, if another `virt-controller` instance terminates unexpectedly,
 KubeVirt might become completely unresponsive.
 
 ## Diagnosis
 
-1. Set the `NAMESPACE` environment variable:
+1. Verify that running `virt-controller` pods are available:
 
    ```bash
-   $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+   $ kubectl -n kubevirt get pods -l kubevirt.io=virt-controller
    ```
 
-2. Verify that running `virt-controller` pods are available:
+2. Check the `virt-controller` logs for error messages:
 
    ```bash
-   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
+   $ kubectl -n kubevirt logs <virt-controller>
    ```
 
-3. Check the `virt-launcher` logs for error messages:
-
-   ```bash
-   $ kubectl -n $NAMESPACE logs <virt-launcher>
-   ```
-
-4. Obtain the details of the `virt-launcher` pod to check for status conditions
+3. Obtain the details of the `virt-controller` pod to check for status conditions
 such as unexpected termination or a `NotReady` state.
 
    ```bash
-   $ kubectl -n $NAMESPACE describe pod/<virt-launcher>
+   $ kubectl -n kubevirt describe pod/<virt-controller>
    ```
 
 ## Mitigation
