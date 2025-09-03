@@ -212,7 +212,7 @@ func (rbSync *runbookSync) deprecateRunbook(rb runbook) string {
 	}
 
 	klog.Infof("updating runbook with deprecation message")
-	deprecatedRunbook(runbookName)
+	deprecatedRunbook(runbookName, downstreamCloneDir)
 
 	commitMessage := fmt.Sprintf("Deprecate CNV runbook %s", runbookName)
 
@@ -357,20 +357,53 @@ func (rbSync *runbookSync) closeOutdatedRunbookPR(oldPR *github.PullRequest, new
 	return nil
 }
 
-func deprecatedRunbook(runbookName string) {
+func deprecatedRunbook(runbookName string, cloneDir string) {
+	p := path.Join(cloneDir, downstreamRunbooksDir, runbookName+".md")
+
+	content, err := os.ReadFile(p)
+	if err != nil {
+		klog.Fatalf("failed to read file: %v", err)
+	}
+
+	originalContent := string(content)
+
+	if strings.Contains(originalContent, "[Deprecated]") {
+		klog.Infof("runbook %s is already deprecated", runbookName)
+		return
+	}
+
+	lines := strings.Split(originalContent, "\n")
+	var contentWithoutTitle []string
+	titleRemoved := false
+
+	for _, line := range lines {
+		if !titleRemoved && strings.HasPrefix(line, "# ") {
+			titleRemoved = true
+			continue
+		}
+		contentWithoutTitle = append(contentWithoutTitle, line)
+	}
+
 	tmpl, err := template.ParseFS(deprecatedRunbookTemplate, "templates/deprecated_runbook.tmpl")
 	if err != nil {
 		klog.Fatalf("failed to parse template: %v", err)
 	}
 
-	p := path.Join(downstreamCloneDir, downstreamRunbooksDir, runbookName+".md")
-	f, err := os.OpenFile(p, os.O_RDWR, 0644)
+	f, err := os.Create(p)
 	if err != nil {
-		klog.Fatalf("failed to open file: %v", err)
+		klog.Fatalf("failed to create file: %v", err)
 	}
 	defer f.Close()
 
-	err = tmpl.Execute(f, struct{ RunbookName string }{RunbookName: runbookName})
+	templateData := struct {
+		RunbookName     string
+		OriginalContent string
+	}{
+		RunbookName:     runbookName,
+		OriginalContent: strings.Join(contentWithoutTitle, "\n"),
+	}
+
+	err = tmpl.Execute(f, templateData)
 	if err != nil {
 		klog.Fatalf("failed to execute template: %v", err)
 	}
