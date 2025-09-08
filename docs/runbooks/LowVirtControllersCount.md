@@ -33,8 +33,8 @@ KubeVirt might become completely unresponsive.
    $ kubectl -n kubevirt logs <virt-controller>
    ```
 
-3. Obtain the details of the `virt-controller` pod to check for status conditions
-such as unexpected termination or a `NotReady` state.
+3. Obtain the details of the `virt-controller` pod to check for status
+conditions such as unexpected termination or a `NotReady` state.
 
    ```bash
    $ kubectl -n kubevirt describe pod/<virt-controller>

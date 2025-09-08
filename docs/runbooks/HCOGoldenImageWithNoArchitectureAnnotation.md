@@ -5,8 +5,8 @@
 When running on a heterogeneous cluster, the DataImportCronTemplate objects
 (DICTs; also known as golden images) in the hyperconverged cluster operator
 (HCO) must be annotated with the `ssp.kubevirt.io/dict.architectures`
-annotation, where the value is the list of the architectures supported by the
-image that is defined in each DICT.
+annotation. The value of this annotation is a list of architectures supported by
+the image, which is defined in each DICT.
 
 For pre-defined DICTs, this annotation is already set. For custom DICTs
 (user-defined DICTs), this annotation must be set by the user in the
@@ -43,7 +43,7 @@ different than the image architecture, the VM fails to start.
 the `ssp.kubevirt.io/dict.architectures` annotation is set for each of them. If
 the annotation is not set, then this alert is triggered.
 
-Below is an example for a HyperConverged CR with a valid DICT with the
+   Below is an example for a HyperConverged CR with a valid DICT with the
   `ssp.kubevirt.io/dict.architectures` annotation set:
   ```yaml
   apiVersion: hco.kubevirt.io/v1beta1
@@ -71,12 +71,12 @@ User-defined DICTs are defined in the `HyperConverged` CR, in the
 
 1. Check what architectures are supported by the image:
 
-```bash
-$ podman manifest inspect your-registry/your-image:latest
-```
+   ```bash
+   $ podman manifest inspect your-registry/your-image:latest
+   ```
 
-For details, see the
-[podman manifest inspect documentation](https://docs.podman.io/en/latest/markdown/podman-manifest-inspect.1.html).
+   For details, see the
+  [podman manifest inspect documentation](https://docs.podman.io/en/latest/markdown/podman-manifest-inspect.1.html).
 
 If the image is a multi-architecture manifest ("fat manifest"), it includes the
 `manifests` field, which is a list of architectures supported by the image. If
@@ -86,15 +86,15 @@ is its architecture.
 2. Edit the `HyperConverged` CR to add the missing
 `ssp.kubevirt.io/dict.architectures` annotation.
 
-The format of the annotation is a comma-separated list of architectures,
-for example: `amd64,arm64,s390x`.
+  The format of the annotation is a comma-separated list of architectures,
+  for example: `amd64,arm64,s390x`.
 
 3. If the image does not support any of the architectures supported by the
 cluster, rebuild the image for one or more of the architectures supported
 by the cluster, or remove the DICT from the `HyperConverged` CR.
 
-For more information about building multi-architecture images, see the
-[podman documentation](https://docs.podman.io/en/latest/markdown/podman-manifest-create.1.html).
+  For more information about building multi-architecture images, see the
+  [podman documentation](https://docs.podman.io/en/latest/markdown/podman-manifest-create.1.html).
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,

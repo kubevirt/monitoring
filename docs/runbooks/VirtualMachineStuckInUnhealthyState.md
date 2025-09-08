@@ -2,14 +2,14 @@
 
 ## Meaning
 
-This alert fires when a VirtualMachine has been stuck in an unhealthy state
+This alert triggers when a VirtualMachine (VM) has been in an unhealthy state
 for more than 10 minutes and does not have an associated VMI
 (VirtualMachineInstance).
 
-The alert indicates that a VirtualMachine is experiencing early-stage
-lifecycle issues before a VMI can be successfully created.
-This typically occurs during the initial phases of VM startup when KubeVirt
-is trying to provision resources, pull images, or schedule the workload.
+The alert indicates that a VM is experiencing early-stage lifecycle issues
+before a VMI can be successfully created. This typically occurs during the
+initial phases of VM startup when KubeVirt is trying to provision resources,
+pull images, or schedule the workload.
 
 **Affected States:**
 - `Provisioning` - Resources (DataVolumes, PVCs) are being prepared
@@ -21,36 +21,35 @@ is trying to provision resources, pull images, or schedule the workload.
 
 - **Severity:** Warning
 - **User Impact:** VMs cannot start or are stuck in error states
-- **Business Impact:** Workloads cannot be deployed, affecting application
+- **Business Impact:** Workloads cannot be deployed, which affects application
   availability
 
 ## Possible Causes
 
 ### Resource-Related Issues
-- **Insufficient cluster resources** (CPU, memory, storage)
-- **Missing or misconfigured storage classes**
-- **PVC provisioning failures**
-- **DataVolume creation/import failures**
+- Insufficient cluster resources (CPU, memory, storage)
+- Missing or misconfigured storage classes
+- PVC provisioning failures
+- DataVolume creation/import failures
 
 ### Image and Registry Issues
-- **Container image pull failures** for containerDisk volumes
-- **Registry authentication problems**
-- **Network connectivity issues to image registries**
-- **Missing or corrupted VM disk images**
+- Container image pull failures for containerDisk volumes
+- Registry authentication problems
+- Network connectivity issues to image registries
+- Missing or corrupted VM disk images
 
 ### Scheduling and Node Issues
-- **No schedulable nodes available** (all nodes cordoned/unschedulable)
-- **Insufficient resources** like KVM/GPU on available nodes or a
-  mismatch between requested and available CPU models
-- **Node selector constraints** cannot be satisfied
-- **Taints and tolerations** preventing scheduling
+- No schedulable nodes available (all nodes cordoned/unschedulable)
+- Insufficient resources like KVM/GPU on available nodes
+- A mismatch between requested and available CPU models
+- Node selector constraints cannot be satisfied
+- Taints and tolerations preventing scheduling
 
 ### Configuration Issues
-- **Invalid VM specifications** (malformed YAML, unsupported
-  features)
-- **Missing required Secrets or ConfigMaps**
-- **Incorrect resource requests/limits**
-- **Network configuration errors**
+- Invalid VM specifications (malformed YAML, unsupported features)
+- Missing required Secrets or ConfigMaps
+- Incorrect resource requests/limits
+- Network configuration errors
 
 ## Diagnosis
 
@@ -138,7 +137,7 @@ Inspect the following details in the VM's spec to catch common
 misconfigurations:
 
 - Disks and volumes (in spec.template.spec.domain.devices and volumes):
-  - A bootable disk is defined using bootOrder: 1
+  - A bootable disk is defined using *bootOrder: 1*
   - Each disk name matches a volume name
   - Volume sources are valid: PVC, DataVolume, containerDisk, secret, or
     configMap
@@ -159,7 +158,7 @@ misconfigurations:
 ## Mitigation
 
 ### Resource Issues
-1. **Scale cluster** if insufficient resources
+1. **Scale up the cluster** if the issue is insufficient resources
 2. **Create missing storage classes** or configure default storage
 3. **Resolve PVC/DataVolume failures**:
    ```bash
@@ -197,10 +196,10 @@ misconfigurations:
    - nodeSelector, affinity, and tolerations
    - Required CPU model, host devices, or features
 
-2. **Verify node taints and tolerations** allow scheduling:
+2. **Verify that node taints and tolerations** allow scheduling:
    - Ensure the VM tolerates node taints that apply to target nodes
 
-3. **Ensure nodes have required capabilities**:
+3. **Ensure that nodes have required capabilities**:
    - KVM availability, CPU features, GPU, SR-IOV, or storage access
 
 4. If nodes were intentionally cordoned for maintenance, **uncordon** when
@@ -210,7 +209,7 @@ misconfigurations:
    ```
 
 ### Configuration Issues Resolution
-1. **Fix VM specification errors** based on kubectl describe output:
+1. **Fix VM specification errors** based on the *kubectl describe* output:
    ```bash
    # Edit VM specification directly
    kubectl edit vm <vm-name> -n <namespace>
@@ -280,13 +279,11 @@ misconfigurations:
 ## Escalation
 
 Escalate to the cluster administrator if:
-- Multiple VMs affected simultaneously (possible cluster-wide
-  issue)
+- Multiple VMs are affected simultaneously (possible cluster-wide issue)
 - Issue persists after following resolution steps
-- Suspected KubeVirt component malfunction
-- Unable to access system logs for further diagnosis
-- You don't have enough permissions to run the diagnosis and/or
-  mitigation steps.
+- A malfunction of KubeVirt components is suspected
+- You are unable to access system logs for further diagnosis
+- You do not have enough permissions to run the diagnosis or mitigation steps
 
 ## Related Alerts
 

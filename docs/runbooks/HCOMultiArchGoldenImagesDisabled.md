@@ -2,58 +2,48 @@
 
 ## Meaning
 
-DataImportCron (DIC; also known as golden images) are used to create boot
-images for virtual machines. The images are preloaded in the cluster, and then
-they are used to create virtual machines boot disks with a specific operating
-system. By default, the preloaded images are with the architecture of the
-cluster node that was used to create the image.
+DataImportCron objects (DIC; also known as golden images) are used to create
+boot images for virtual machines (VMs). The images are preloaded in the cluster,
+and then they are used to create VM boot disks with a specific operating system.
+By default, the preloaded images use the architecture of the cluster node that
+was used to create the image.
 
 If the `enableMultiArchBootImageImport` feature gate is enabled in the
-HyperConverged custom resource (CR), then multiple preloaded images are created
-for each DataImportCronTemplate (DICT), one for each architecture supported by
-the cluster, and by the original image.
+HyperConverged custom resource (CR), multiple preloaded images are created for
+each DataImportCronTemplate (DICT), one for each architecture supported by the
+cluster and by the original image.
 
-This allows the virtual machines to be scheduled on nodes with the same
-architecture as the preloaded image.
+This allows the VMs to be scheduled on nodes with the same architecture as the
+preloaded image.
 
-This alert is triggered When running on a heterogeneous cluster, a cluster with
-nodes of different architectures, while the `enableMultiArchBootImageImport`
+This alert is triggered when running on a heterogeneous cluster (a cluster with
+nodes of different architectures) while the `enableMultiArchBootImageImport`
 feature gate is disabled in the HyperConverged CR.
 
 ## Impact
 
-When running on a heterogeneous cluster, the preloaded image may be with a
-different architecture than the architecture of the node that the VM is
-scheduled on.
+When running on a heterogeneous cluster, the preloaded image may use a different
+architecture than the architecture of the node that the VM is scheduled on.
 
 In this case, the VM will fail to start, as the image architecture is not
 compatible with the node architecture.
 
 ## Diagnosis
 
-HCO checks what are the workload node architectures in the cluster. By default,
-HCO considers the worker nodes as the workload nodes. If the
+HCO checks the workload node architectures in the cluster. By default, HCO
+considers the worker nodes as the workload nodes. If the
 `spec.workloads.nodePlacement` field in the HyperConverged CR is populated,
-then the HCO considers the nodes that match the node selector in this field as
-the workload nodes.
+HCO considers the nodes that match the node selector in this field as the
+workload nodes.
 
 HCO publishes the list of the workload node architectures in the
 `status.nodeInfo.workloadsArchitectures` field in the HyperConverged CR.
 
 Read the HyperConverged CR:
 
-<!--DS:
-```bash
-oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o yaml
-```
--->
-<!--USstart-->
-
 ```bash
 kubectl get hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
 ```
-
-<!--USend-->
 
 The result will look similar to this:
 
@@ -76,19 +66,19 @@ status:
 
 ## Mitigation
 
-To address this issue, you can either enable the multi arch boot image feature,
+To address this issue, you can either enable the multi-arch boot image feature,
 or modify the workloads node placement in the HyperConverged CR to include only
 nodes with a single architecture.
 
-### Enable the multi arch boot image feature
+### Enable the multi-arch boot image feature
 
-The multi arch boot image feature is in alpha stage, and it is not enabled by
-default. Enabling this feature will cause the creation of multiple preloaded
-images for each DataImportCronTemplate (DICT), one for each architecture
-supported by the cluster, and by the original image. However, this feature is
-not generally available, and it is not fully supported.
+The multi-arch boot image feature is in the alpha stage, and it is not enabled
+by default. Enabling this feature will result in the creation of multiple
+preloaded images for each DataImportCronTemplate (DICT), one for each
+architecture supported by the cluster, and by the original image. However, this
+feature is not generally available, and it is not fully supported.
 
-To enable the multi arch boot image feature, set the
+To enable the multi-arch boot image feature, set the
 `enableMultiArchBootImageImport` feature gate in the HyperConverged CR to `true`
 
 If the HyperConverged CR contains the `spec.dataImportCronTemplates` field,
@@ -99,12 +89,6 @@ the [HCOGoldenImageWithNoArchitectureAnnotation](HCOGoldenImageWithNoArchitectur
 runbook for more details.
 
 Edit the HyperConverged CR:
-<!--DS:
-```bash
-oc edit hyperconverged -n openshift-cnv kubevirt-hyperconverged -o yaml
-```
--->
-<!--USstart-->
 
 ```bash
 kubectl edit hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
@@ -175,13 +159,14 @@ spec:
 
 Save the changes and exit the editor.
 
-<!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
-attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
-- [OKD Help](https://okd.io/docs/community/help/)
-- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
-
+- [OKD Help](https://www.okd.io/help/)
+- [#virtualization Slack channel](
+  https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
