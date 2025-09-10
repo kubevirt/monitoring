@@ -122,13 +122,6 @@ the workloads node placement in the HyperConverged CR to include only nodes with
 a single architecture.
 
 Edit the HyperConverged CR:
-<!--DS:
-```bash
-oc edit hyperconverged -n openshift-cnv kubevirt-hyperconverged -o yaml
-```
--->
-<!--USstart-->
-
 ```bash
 kubectl edit hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
 ```
