@@ -7,45 +7,47 @@ https://github.com/prometheus-operator/runbooks/blob/main/content/runbooks/kuber
 
 ## Meaning
 
-There can be various reasons why a volume is filling up.
-This runbook does not cover application specific reasons, only mitigations
-for volumes that are legitimately filling.
-
-As always refer to recommended scenarios for given service.
+A persistent volume associated with your cluster has crossed the warning
+threshold of 90% used capacity and is expected to fill up within 4 days.
 
 ## Impact
 
-Service degradation, switching to read only mode.
+Service degradation, switching to read-only mode.
 
 ## Diagnosis
 
-Check app usage in time.
-Check if there are any configurations such as snapshotting, automatic data retention.
+- Check persistent volume claim (PVC) usage from within a pod that mounts the
+PVC. You can use the *exec* command to check the mounted filesystem in a pod:
+
+```shell
+$ kubectl exec -it <pod-name> -n <namespace> -- df -h /path/to/mount
+```
+
+- Check if services are enabled that might use large amounts of storage.
+For example, these might include snapshots or automatic data retention.
 
 ## Mitigation
 
 ### Data retention
 
-Deleting no longer needed data is the fastest and the cheapest solution.
+Deleting data that you no longer need is the fastest and the cheapest solution.
 
-Ask the service owner if specific old data can be deleted.
-Enable data retention especially for snapshots, if possible.
+Request the service owner to delete specific sets of old data.
 
 ### Data export
 
-If data is not needed in the service but needs to be processed later
-then send it to somewhere else, for example to S3 bucket.
+If data is not needed in the service but needs to be processed later,
+move it to a different storage resource, such as an S3 bucket.
 
 ### Data rebalance in the cluster
 
-Some services automatically rebalance data on the cluster when one node
-fills up.
-Some allow to rebalance data across existing nodes, the other may require
-adding new nodes.
-If this is supported then increase number of replicas and wait for data
-migration or trigger it manually.
+Some services automatically rebalance data on the cluster when a node fills up.
+Some of these make it possible to rebalance data across existing nodes, others
+may require adding new nodes. If data rebalancing is supported in your cluster,
+increase the number of replicas and wait for data migration, or trigger the
+migration manually.
 
-Example services that support this:
+Example services that support data rebalancing:
 
 - cassandra
 - ceph
@@ -55,95 +57,85 @@ Example services that support this:
 - kafka
 - minio
 
-**Notice**: some services may require special scaling conditions such as
-adding twice more nodes than exist now.
+**Note**: Some services may require special scaling conditions for data
+rebalancing, such as doubling the number of active nodes.
 
 ### Direct Volume resizing
 
-If volume resizing is available, it's easiest to increase the capacity of
-the volume.
+If volume resizing is available, you can increase the capacity of the volume:
 
-To check if volume expansion is available, run this with your namespace
-and PVC-name replaced.
+1. Check that volume expansion is available. To do so, use the following command
+and replace `<my-namespace>` and `<my-pvc>`:
 
-```shell
-$ kubectl get storageclass `kubectl -n <my-namespace> get pvc <my-pvc> -ojson | jq -r '.spec.storageClassName'`       
-NAME                 PROVISIONER            RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
-standard (default)   kubernetes.io/gce-pd   Delete          Immediate           true                   28d
-```
+   ```shell
+   $ kubectl get storageclass `kubectl -n <my-namespace> get pvc <my-pvc> -ojson | jq -r '.spec.storageClassName'`
+   NAME                 PROVISIONER            RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+   standard (default)   kubernetes.io/gce-pd   Delete          Immediate           true                   28d
+   ```
 
-In this case `ALLOWVOLUMEEXPANSION` is true, so we can make use of the feature.
+   This example displays  `ALLOWVOLUMEEXPANSION` as `true`, which means you can
+   use volume resizing.
 
-To resize the volume run:
+2. Resize the volume:
+   ```shell
+   $ kubectl -n <my-namespace> edit pvc <my-pvc>
+   ```
 
-```shell
-$ kubectl -n <my-namespace> edit pvc <my-pvc>
-```
+3. Edit `.spec.resources.requests.storage` to use the required storage size.
+If this succeeds, the PVC status will state "Waiting for user to (re-)start a
+pod to finish file system resize of volume on node."
 
-And edit `.spec.resources.requests.storage` to the new desired storage size.
-Eventually the PVC status will say "Waiting for user to (re-)start a pod to
-finish file system resize of volume on node."
+4. Verify that the setting has been changed accordingly:
+    ```shell
+    $ kubectl -n <my-namespace> get pvc <my-pvc>
+    ```
 
-You can check this with:
+5. When prompted by the PVC status, restart the respective pod. The following
+command automatically finds the pod that mounts the PVC and deletes it. However,
+if you know the pod name, you can also directly delete that pod:
 
-```shell
-$ kubectl -n <my-namespace> get pvc <my-pvc>
-```
-
-Once the PVC status says to restart the respective pod, run this to restart it
-(this automatically finds the pod that mounts the PVC and deletes it,
-if you know the pod name, you can also just simply delete that pod):
-
-```shell
-$ kubectl -n <my-namespace> delete pod `kubectl -n <my-namespace> get pod -ojson | jq -r '.items[] | select(.spec.volumes[] .persistentVolumeClaim.claimName=="<my-pvc>") | .metadata.name'`
-```
+   ```shell
+   $ oc -n <my-namespace> delete pod `oc -n <my-namespace> get pod -ojson | jq -r '.items[] | select(.spec.volumes[] .persistentVolumeClaim.claimName=="<my-pvc>") | .metadata.name'`
+   ```
 
 ### Migrate data to a new, larger volume
 
-When resizing is not available and the data is not safe to be deleted,
-then the only way is to create a larger volume and migrate the data.
+If resizing is not available and the data is not safe to delete, the best
+solution is to create a larger volume and migrate the data.
 
-TODO
+### Purge the volume
 
-### Purge volume
+If the data is ephemeral and volume expansion is not available, it may be best
+to purge the volume.
 
-When the data is ephemeral and volume expansion is not available,
-it may be best to purge the volume.
+**WARNING**: This will permanently delete the data on the volume.
 
-**WARNING/DANGER**: This will permanently delete the data on the volume.
-Performing these steps is your responsibility.
+### Migrate data to a new, larger instance pool in the same cluster
 
-TODO
+In very specific scenarios, it is better to schedule data migration in the same
+cluster, but to a new instance. This may be difficult to accomplish due to how
+certain resources are managed in Kubernetes.
 
-### Migrate data to new, larger instance pool in the same cluster
+The general procedure is as follows:
+1. Add new nodes with greater capacity than the existing cluster.
+2. Trigger data migration.
+3. Scale the original instance pool to 0, and then delete it.
 
-In very specific scenarios it is better to schedule data migration in the
-same cluster but to a new instances.
-This is sometimes hard to accomplish due to the way how certain resources
-are managed in kubernetes.
+### Migrate data to a new, larger cluster
 
-In general procedure is like this:
+This is the most common scenario for resolving filling up persistent volumes.
+However, it is significantly more expensive and may be time-consuming.
+Also, migrating to a new cluster might cause split-brain issues.
+As an example, the general procedure may have the following steps:
 
-- add new nodes with bigger capacity than existing cluster
-- trigger data migration
-- scale in to 0 old instance pool and after that delete it.
-
-### Migrate data to new, larger cluster
-
-This is most common scenario, but is much more expensive and may be a bit
-time consuming.
-Also sometimes this causes split brain issues when writing.
-
-In general procedure is like this, this is only a suggestion, though:
-
-- create data snapshot on existing cluster
-- add new cluster with bigger capacity than existing cluster
-- start data restore on new cluster based on the snapshot
-- switch old cluster to read only mode
-- reconfigure networking to point to new cluster
-- trigger data migration from old cluster to new cluster to sync difference
-  between snapshot and latest writes
-- remove old cluster
+1. Create a data snapshot on the existing cluster.
+2. Add a new cluster with greater capacity than the existing cluster.
+3. Start a data restore operation on the new cluster based on the snapshot.
+4. Switch the old cluster to read-only mode
+5. Reconfigure networking to point to the new cluster.
+6. Trigger data migration from the old cluster to the new cluster to sync the
+differences between the snapshot and the latest writes.
+7. Remove the old cluster.
 
 ### Support
 
