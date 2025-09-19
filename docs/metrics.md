@@ -18,6 +18,9 @@ They reflect and describe exactly what is being exposed.
 
 ## [kubevirt](https://github.com/kubevirt/kubevirt/tree/main)
 
+### cluster:kubevirt_virt_controller_pods_running:count
+The number of virt-controller pods that are running. Type: Gauge.
+
 ### kubevirt_allocatable_nodes
 The number of allocatable nodes in the cluster. Type: Gauge.
 
@@ -93,11 +96,11 @@ Indication for a virt-operator that is ready to take the lead. Type: Gauge.
 ### kubevirt_virt_operator_up
 The number of virt-operator pods that are up. Type: Gauge.
 
-### kubevirt_vm_container_free_memory_bytes_based_on_rss
-The current available memory of the VM containers based on the rss. Type: Gauge.
+### kubevirt_vm_container_memory_request_margin_based_on_rss_bytes
+Difference between requested memory and rss for VM containers (request margin). Can be negative when usage exceeds request. Type: Gauge.
 
-### kubevirt_vm_container_free_memory_bytes_based_on_working_set_bytes
-The current available memory of the VM containers based on the working set. Type: Gauge.
+### kubevirt_vm_container_memory_request_margin_based_on_working_set_bytes
+Difference between requested memory and working set for VM containers (request margin). Can be negative when usage exceeds request. Type: Gauge.
 
 ### kubevirt_vm_create_date_timestamp_seconds
 Virtual Machine creation timestamp. Type: Gauge.
@@ -116,6 +119,9 @@ Virtual Machine last transition timestamp to error status. Type: Counter.
 
 ### kubevirt_vm_info
 Information about Virtual Machines. Type: Gauge.
+
+### kubevirt_vm_labels
+The metric exposes the VM labels as Prometheus labels. Configure allowed and ignored labels via the 'kubevirt-vm-labels-config' ConfigMap. Type: Gauge.
 
 ### kubevirt_vm_migrating_status_last_transition_timestamp_seconds
 Virtual Machine last transition timestamp to migrating status. Type: Counter.
@@ -225,14 +231,14 @@ The total Guest OS data to be migrated to the new VM. Type: Counter.
 ### kubevirt_vmi_migration_dirty_memory_rate_bytes
 The rate of memory being dirty in the Guest OS. Type: Gauge.
 
-### kubevirt_vmi_migration_disk_transfer_rate_bytes
-The rate at which the memory is being transferred. Type: Gauge.
-
 ### kubevirt_vmi_migration_end_time_seconds
 The time at which the migration ended. Type: Gauge.
 
 ### kubevirt_vmi_migration_failed
 Indicates if the VMI migration failed. Type: Gauge.
+
+### kubevirt_vmi_migration_memory_transfer_rate_bytes
+The rate at which the memory is being transferred. Type: Gauge.
 
 ### kubevirt_vmi_migration_phase_transition_time_from_creation_seconds
 Histogram of VM migration phase transitions duration from creation time in seconds. Type: Histogram.
