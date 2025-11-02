@@ -1,0 +1,56 @@
+{
+  "operators": {
+    "kubevirt": [
+      "kubevirt_allocatable_nodes",
+      "kubevirt_api_request_deprecated_total",
+      "kubevirt_memory_delta_from_requested_bytes",
+      "kubevirt_nodes_with_kvm",
+      "kubevirt_number_of_vms",
+      "kubevirt_virt_api_up",
+      "kubevirt_virt_controller_ready",
+      "kubevirt_virt_controller_up",
+      "kubevirt_virt_handler_up",
+      "kubevirt_virt_operator_leading",
+      "kubevirt_virt_operator_ready",
+      "kubevirt_virt_operator_up",
+      "kubevirt_vm_container_memory_request_margin_based_on_rss_bytes",
+      "kubevirt_vm_container_memory_request_margin_based_on_working_set_bytes",
+      "kubevirt_vm_created_total",
+      "kubevirt_vmi_guest_vcpu_queue",
+      "kubevirt_vmi_memory_used_bytes",
+      "kubevirt_vmi_phase_count",
+      "kubevirt_vmi_vcpu_count",
+      "kubevirt_vmsnapshot_disks_restored_from_source",
+      "kubevirt_vmsnapshot_disks_restored_from_source_bytes",
+      "kubevirt_vmsnapshot_persistentvolumeclaim_labels"
+    ],
+    "hco": [
+      "cnv_abnormal",
+      "kubevirt_hyperconverged_operator_health_status"
+    ],
+    "cdi": [
+      "kubevirt_cdi_clone_pods_high_restart",
+      "kubevirt_cdi_import_pods_high_restart",
+      "kubevirt_cdi_operator_up",
+      "kubevirt_cdi_upload_pods_high_restart"
+    ],
+    "cnao": [
+      "kubevirt_cnao_cr_kubemacpool_aggregated",
+      "kubevirt_cnao_kubemacpool_duplicate_macs",
+      "kubevirt_cnao_kubemacpool_manager_up",
+      "kubevirt_cnao_operator_up"
+    ],
+    "hpp": [
+      "kubevirt_hpp_operator_up"
+    ],
+    "ssp": [
+      "cnv:vmi_status_running:count",
+      "kubevirt_ssp_common_templates_restored_increase",
+      "kubevirt_ssp_operator_reconcile_succeeded_aggregated",
+      "kubevirt_ssp_operator_up",
+      "kubevirt_ssp_template_validator_rejected_increase",
+      "kubevirt_ssp_template_validator_up"
+    ]
+  }
+}
+
