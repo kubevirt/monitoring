@@ -19,10 +19,12 @@
 package main
 
 import (
+	_ "embed"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
+	"sort"
 
 	"github.com/prometheus/client_golang/prometheus/testutil/promlint"
 	dto "github.com/prometheus/client_model/go"
@@ -33,6 +35,13 @@ var (
 	operatorName    string
 	subOperatorName string
 )
+
+//go:embed allowlist.json
+var embeddedAllowlist []byte
+
+type allowlistConfig struct {
+	Operators map[string][]string `json:"operators"`
+}
 
 func init() {
 	// Define command-line flags
@@ -50,10 +59,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Parse metric families from the JSON representation
-	families := parseMetricFamilies(metricFamilies)
+	// Parse input JSON containing metricFamilies and optional recordingRules.
+	families, recordingRules, err := parseInput(metricFamilies)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error parsing input: %v\n", err)
+		os.Exit(1)
+	}
 
-	// Call customRules function to apply the custom rules to the linter
+	// Lint metrics with promlint, then apply custom validations
 	linter := promlint.NewWithMetricFamilies(families)
 
 	problems, err := linter.Lint()
@@ -62,21 +75,55 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Collect and print metric problems first (sorted by metric name)
+	metricProblems := problems
 	for _, family := range families {
-		problems = CustomLinterRules(problems, family, operatorName, subOperatorName)
+		metricProblems = CustomMetricsValidation(metricProblems, family, operatorName, subOperatorName)
+	}
+	sort.Slice(metricProblems, func(i, j int) bool { return metricProblems[i].Metric < metricProblems[j].Metric })
+	for _, p := range metricProblems {
+		fmt.Printf("%s: %s\n", p.Metric, p.Text)
 	}
 
-	for _, problem := range problems {
-		fmt.Printf("%s: %s\n", problem.Metric, problem.Text)
+	// Then collect and print recording rule problems (sorted by rule name), skipping allowlisted names
+	allow := map[string]struct{}{}
+	if len(embeddedAllowlist) > 0 {
+		var cfg allowlistConfig
+		if err := json.Unmarshal(embeddedAllowlist, &cfg); err != nil {
+			panic("failed to read the allow list; " + err.Error())
+		}
+		for _, n := range cfg.Operators[subOperatorName] {
+			allow[n] = struct{}{}
+		}
+	}
+	ruleProblems := []promlint.Problem{}
+	for _, rr := range recordingRules {
+		if _, ok := allow[rr.Record]; !ok {
+			ruleProblems = append(ruleProblems, CustomRecordingRuleValidation(rr)...)
+		}
+	}
+	sort.Slice(ruleProblems, func(i, j int) bool { return ruleProblems[i].Metric < ruleProblems[j].Metric })
+	for _, p := range ruleProblems {
+		fmt.Printf("%s: %s\n", p.Metric, p.Text)
 	}
 }
 
-func parseMetricFamilies(jsonStr string) []*dto.MetricFamily {
-	var families []*dto.MetricFamily
-	err := json.Unmarshal([]byte(jsonStr), &families)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error parsing metric families: %v\n", err)
-		os.Exit(1)
+type recordingRule struct {
+	Record string `json:"record"`
+	Expr   string `json:"expr"`
+	Type   string `json:"type,omitempty"`
+}
+
+type inputJSON struct {
+	MetricFamilies []*dto.MetricFamily `json:"metricFamilies"`
+	RecordingRules []recordingRule     `json:"recordingRules"`
+}
+
+func parseInput(jsonStr string) ([]*dto.MetricFamily, []recordingRule, error) {
+	// Expect a JSON with metricFamilies and optional recordingRules
+	var env inputJSON
+	if err := json.Unmarshal([]byte(jsonStr), &env); err != nil {
+		return nil, nil, err
 	}
-	return families
+	return env.MetricFamilies, env.RecordingRules, nil
 }
