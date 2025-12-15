@@ -1,5 +1,6 @@
 # KubeVirt Runbooks
 
+- [VirtLauncherPodsStuckFailed.md](runbooks/VirtLauncherPodsStuckFailed.md)
 - [KubeVirtVMIExcessiveMigrations.md](runbooks/KubeVirtVMIExcessiveMigrations.md)
 - [SingleStackIPv6Unsupported.md](runbooks/SingleStackIPv6Unsupported.md)
 - [LowVirtControllersCount.md](runbooks/LowVirtControllersCount.md)
