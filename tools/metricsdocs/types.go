@@ -50,6 +50,18 @@ type project struct {
 	metricsDocPath string
 }
 
+type Metric struct {
+	Operator    string
+	Name        string
+	Type        string
+	Description string
+}
+
+type TemplateOperator struct {
+	Name string
+	Link string
+}
+
 type releaseData struct {
 	org      string
 	projects []*project
