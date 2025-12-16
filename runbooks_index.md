@@ -69,6 +69,7 @@
 - [CDIMultipleDefaultVirtStorageClasses.md](runbooks/CDIMultipleDefaultVirtStorageClasses.md)
 - [VirtAPIDown.md](runbooks/VirtAPIDown.md)
 - [NetworkAddonsConfigNotReady.md](runbooks/NetworkAddonsConfigNotReady.md)
+- [VirtualMachineInstanceHasEphemeralHotplugVolume.md](runbooks/VirtualMachineInstanceHasEphemeralHotplugVolume.md)
 
 ## Deprecated Runbooks
 
