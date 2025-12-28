@@ -1,4 +1,7 @@
-# KubevirtVmHighMemoryUsage
+# KubevirtVmHighMemoryUsage [Deprecated]
+
+This alert has been deprecated. If triggered in older environments, it may be
+safely ignored and silenced.
 
 ## Meaning
 
@@ -45,3 +48,5 @@ following example:
              requests:
                memory: 128Mi
    ```
+
+
