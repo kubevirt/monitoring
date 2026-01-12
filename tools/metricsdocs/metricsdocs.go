@@ -192,29 +192,32 @@ func (r *releaseData) writeMetrics(metrics []Metric) {
 
 func sortMetrics(metrics []Metric) {
 	sort.SliceStable(metrics, func(i, j int) bool {
-		if metrics[i].Operator != metrics[j].Operator {
-			if metrics[i].Operator == "kubevirt" {
-				return true
-			}
-			if metrics[j].Operator == "kubevirt" {
-				return false
-			}
-			return metrics[i].Operator < metrics[j].Operator
+		mi, mj := metrics[i], metrics[j]
+		if mi.Operator != mj.Operator {
+			return mi.Operator == "kubevirt" || (mj.Operator != "kubevirt" && mi.Operator < mj.Operator)
 		}
-		return metrics[i].Name < metrics[j].Name
+		if mi.Kind != mj.Kind {
+			return mi.Kind == "Metric"
+		}
+		return mi.Name < mj.Name
 	})
 }
 
 func getOperatorOrder(metrics []Metric) []string {
 	seen := make(map[string]bool)
-	var operatorOrder []string
+	var kubevirt, others []string
 	for _, m := range metrics {
 		if !seen[m.Operator] {
-			operatorOrder = append(operatorOrder, m.Operator)
+			if m.Operator == "kubevirt" {
+				kubevirt = append(kubevirt, m.Operator)
+			} else {
+				others = append(others, m.Operator)
+			}
 			seen[m.Operator] = true
 		}
 	}
-	return operatorOrder
+	sort.Strings(others)
+	return append(kubevirt, others...)
 }
 
 func (r *releaseData) buildOperators(operatorOrder []string) []TemplateOperator {
@@ -272,96 +275,49 @@ func readLines(path string) ([]string, error) {
 
 func (p *project) parseMetricsDoc(content []string, operatorName string) []Metric {
 	var metrics []Metric
-	var currentMetric *Metric
-	inMetricsSection := false
 
-	for i, line := range content {
-		if isBeginning(line) {
-			metrics, currentMetric = p.handleMetricBeginning(metrics, currentMetric, line, operatorName)
-			inMetricsSection = true
-		} else if inMetricsSection {
-			if isEnd(line) {
-				metrics = p.appendMetricIfValid(metrics, currentMetric)
-				break
-			}
+	for _, line := range content {
+		if isEnd(line) {
+			break
+		}
 
-			if currentMetric != nil {
-				metrics, currentMetric = p.processMetricLine(metrics, currentMetric, line, content, i)
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "|------") {
+			continue
+		}
+
+		if strings.HasPrefix(trimmed, "|") {
+			if metric := p.parseTableRow(line, operatorName); metric != nil {
+				metrics = append(metrics, *metric)
 			}
 		}
 	}
 
-	return p.appendMetricIfValid(metrics, currentMetric)
-}
-
-func (p *project) handleMetricBeginning(metrics []Metric, currentMetric *Metric, line, operatorName string) ([]Metric, *Metric) {
-	metrics = p.appendMetricIfValid(metrics, currentMetric)
-	metricName := strings.TrimSpace(strings.TrimPrefix(line, "### "))
-	return metrics, &Metric{
-		Operator:    operatorName,
-		Name:        metricName,
-		Type:        "",
-		Description: "",
-	}
-}
-
-func (p *project) processMetricLine(metrics []Metric, currentMetric *Metric, line string, content []string, lineIndex int) ([]Metric, *Metric) {
-	trimmedLine := strings.TrimSpace(line)
-	if trimmedLine == "" {
-		if lineIndex+1 < len(content) && isBeginning(content[lineIndex+1]) {
-			metrics = p.appendMetricIfValid(metrics, currentMetric)
-			return metrics, nil
-		}
-		return metrics, currentMetric
-	}
-
-	if strings.Contains(trimmedLine, "Type:") {
-		return p.parseTypeLine(metrics, currentMetric, trimmedLine)
-	}
-
-	p.appendToDescription(currentMetric, trimmedLine)
-	return metrics, currentMetric
-}
-
-func (p *project) parseTypeLine(metrics []Metric, currentMetric *Metric, line string) ([]Metric, *Metric) {
-	parts := strings.SplitN(line, "Type:", 2)
-	if len(parts) != 2 {
-		p.appendToDescription(currentMetric, line)
-		return metrics, currentMetric
-	}
-
-	desc := strings.TrimSuffix(strings.TrimSpace(parts[0]), ".")
-	p.appendToDescription(currentMetric, desc)
-
-	typePart := strings.TrimSuffix(strings.TrimSpace(parts[1]), ".")
-	currentMetric.Type = typePart
-
-	metrics = p.appendMetricIfValid(metrics, currentMetric)
-	return metrics, nil
-}
-
-func (p *project) appendToDescription(m *Metric, text string) {
-	if m.Description != "" {
-		m.Description += " " + text
-	} else {
-		m.Description = text
-	}
-}
-
-func (p *project) appendMetricIfValid(metrics []Metric, m *Metric) []Metric {
-	if m != nil && m.Name != "" {
-		p.finalizeMetric(m)
-		return append(metrics, *m)
-	}
 	return metrics
 }
 
-func (p *project) finalizeMetric(m *Metric) {
-	m.Description = strings.TrimSpace(m.Description)
-}
+func (p *project) parseTableRow(line string, operatorName string) *Metric {
+	parts := strings.Split(line, "|")
+	if len(parts) < 5 {
+		return nil
+	}
 
-func isBeginning(s string) bool {
-	return strings.HasPrefix(s, "### ")
+	name := strings.TrimSpace(parts[1])
+	kind := strings.TrimSpace(parts[2])
+	metricType := strings.TrimSpace(parts[3])
+	description := strings.TrimSpace(parts[4])
+
+	if name == "" || name == "Name" {
+		return nil
+	}
+
+	return &Metric{
+		Operator:    operatorName,
+		Name:        name,
+		Kind:        kind,
+		Type:        metricType,
+		Description: description,
+	}
 }
 
 func isEnd(s string) bool {
