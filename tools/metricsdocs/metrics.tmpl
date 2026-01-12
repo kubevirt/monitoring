@@ -13,10 +13,10 @@ They reflect and describe exactly what is being exposed.
 
 ## Metrics
 
-The following table contains all metrics from operators listed above. Each row represents a single metric with its operator, name, type (Gauge, Counter, Histogram, etc.), and description.
+The following table contains all metrics from operators listed above. Each row represents a single metric with its operator, name, kind (Metric or Recording rule), type (Gauge, Counter, Histogram, etc.), and description.
 
-| Operator Name | Metric Name | Type | Description |
-|----------|------|------|-------------|
-{{range .Metrics}}| {{.Operator | escapePipe}} | {{.Name | codeSpan}} | {{.Type | escapePipe}} | {{.Description | normalizeDescription}} |
+| Operator Name | Name | Kind | Type | Description |
+|----------|------|------|------|-------------|
+{{range .Metrics}}| {{.Operator | escapePipe}} | {{.Name | codeSpan}} | {{.Kind | escapePipe}} | {{.Type | escapePipe}} | {{.Description | normalizeDescription}} |
 {{end}}
 

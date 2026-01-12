@@ -53,6 +53,7 @@ type project struct {
 type Metric struct {
 	Operator    string
 	Name        string
+	Kind        string
 	Type        string
 	Description string
 }
