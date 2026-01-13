@@ -62,6 +62,26 @@ extended period with no meaningful swap I/O, approaching OOM conditions.
 
 - Increase VM memory (hotplug if supported; otherwise restart may be required)
 
+To increase VM memory in the VM spec:
+
+  ```bash
+  # Edit the VM and adjust spec.template.spec.domain.resources.{requests,limits}.memory
+  kubectl edit vm <vm-name> -n <namespace>
+  ```
+
+If a restart is required to apply the change, gracefully stop the VM when appropriate:
+
+  ```bash
+  # Stop the VM (you can start it again from your usual workflow)
+  virtctl stop <vm-name> -n <namespace>
+  ```
+
+Start the VM after updating the memory:
+
+  ```bash
+  virtctl start <vm-name> -n <namespace>
+  ```
+
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
