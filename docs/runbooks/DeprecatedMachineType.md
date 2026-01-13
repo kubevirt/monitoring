@@ -49,6 +49,18 @@ following:
 **Important:** Plan and apply these updates before performing cluster
 upgrades to avoid VM restart failures or compatibility issues.
 
+Alternative: remove the machine field to let KubeVirt default to the newest
+supported type:
+
+```bash
+# Removes spec.template.spec.domain.machine so the mutating webhook defaults it
+kubectl patch vm <vm-name> -n <namespace> --type='json' \
+  -p='[{"op":"remove","path":"/spec/template/spec/domain/machine"}]'
+```
+
+Note: The automation tool performs these JSON patches
+in bulk across multiple VMs.
+
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
