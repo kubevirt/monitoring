@@ -4,6 +4,8 @@ This alert has been deprecated;
 It currently monitors VM MAC addresses instead of running VMI MACs, which can
 produce false positives.
 If triggered, it may be safely ignored and silenced.
+Instead use KubemacpoolMACCollisionDetected alert that fires for running VMI
+MAC collisions.
 
 ## Meaning
 
