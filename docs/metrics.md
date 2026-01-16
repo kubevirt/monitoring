@@ -9,12 +9,6 @@ They reflect and describe exactly what is being exposed.
 | Operator Name |
 |---------------|
 | [kubevirt](https://github.com/kubevirt/kubevirt/tree/main) |
-| [cluster-network-addons-operator](https://github.com/kubevirt/cluster-network-addons-operator/tree/main) |
-| [containerized-data-importer](https://github.com/kubevirt/containerized-data-importer/tree/main) |
-| [hostpath-provisioner](https://github.com/kubevirt/hostpath-provisioner/tree/main) |
-| [hostpath-provisioner-operator](https://github.com/kubevirt/hostpath-provisioner-operator/tree/main) |
-| [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator/tree/main) |
-| [ssp-operator](https://github.com/kubevirt/ssp-operator/tree/main) |
 
 
 ## Metrics
@@ -91,9 +85,10 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_vmi_memory_unused_bytes` | Gauge | The amount of memory left completely unused by the system. Memory that is available but used for reclaimable caches should NOT be reported as free |
 | kubevirt | `kubevirt_vmi_memory_usable_bytes` | Gauge | The amount of memory which can be reclaimed by balloon without pushing the guest system to swap, corresponds to 'Available' in /proc/meminfo |
 | kubevirt | `kubevirt_vmi_memory_used_bytes` | Gauge | Amount of `used` memory as seen by the domain |
+| kubevirt | `kubevirt_vmi_migration_data_bytes_total` | Counter | The total Guest OS data to be migrated to the new VM |
 | kubevirt | `kubevirt_vmi_migration_data_processed_bytes` | Gauge | The total Guest OS data processed and migrated to the new VM |
 | kubevirt | `kubevirt_vmi_migration_data_remaining_bytes` | Gauge | The remaining guest OS data to be migrated to the new VM |
-| kubevirt | `kubevirt_vmi_migration_data_total_bytes` | Counter | The total Guest OS data to be migrated to the new VM |
+| kubevirt | `kubevirt_vmi_migration_data_total_bytes` | Counter | [Deprecated] Replaced by kubevirt_vmi_migration_data_bytes_total |
 | kubevirt | `kubevirt_vmi_migration_dirty_memory_rate_bytes` | Gauge | The rate of memory being dirty in the Guest OS |
 | kubevirt | `kubevirt_vmi_migration_end_time_seconds` | Gauge | The time at which the migration ended |
 | kubevirt | `kubevirt_vmi_migration_failed` | Gauge | Indicates if the VMI migration failed |
@@ -146,49 +141,12 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_workqueue_retries_total` | Counter | Total number of retries handled by workqueue |
 | kubevirt | `kubevirt_workqueue_unfinished_work_seconds` | Gauge | How many seconds of work has done that is in progress and hasn't been observed by work_duration. Large values indicate stuck threads. One can deduce the number of stuck threads by observing the rate at which this increases |
 | kubevirt | `kubevirt_workqueue_work_duration_seconds` | Histogram | How long in seconds processing an item from workqueue takes |
+| kubevirt | `vmi:kubevirt_vmi_memory_available_bytes:sum` | Gauge | Sum of available memory bytes per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_memory_headroom_ratio:sum` | Gauge | Usable memory to available memory ratio per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_pgmajfaults:rate30m` | Gauge | Rate of major page faults over 30 minutes per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_pgmajfaults:rate5m` | Gauge | Rate of major page faults over 5 minutes per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_swap_traffic_bytes:rate30m` | Gauge | Total swap I/O traffic rate over 30 minutes per VMI (swap in + swap out, aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_swap_traffic_bytes:rate5m` | Gauge | Total swap I/O traffic rate over 5 minutes per VMI (swap in + swap out, aggregated by name, namespace) |
 | kubevirt | `vmi:kubevirt_vmi_vcpu:count` | Gauge | The number of the VMI vCPUs |
-| cluster-network-addons-operator | `kubevirt_cnao_cr_kubemacpool_aggregated` | Gauge | Total count of KubeMacPool manager pods deployed by CNAO CR |
-| cluster-network-addons-operator | `kubevirt_cnao_cr_kubemacpool_deployed` | Gauge | KubeMacpool is deployed by CNAO CR |
-| cluster-network-addons-operator | `kubevirt_cnao_cr_ready` | Gauge | CNAO CR Ready |
-| cluster-network-addons-operator | `kubevirt_cnao_kubemacpool_duplicate_macs` | Gauge | Total count of duplicate KubeMacPool MAC addresses |
-| cluster-network-addons-operator | `kubevirt_cnao_kubemacpool_manager_up` | Gauge | Total count of running KubeMacPool manager pods |
-| cluster-network-addons-operator | `kubevirt_cnao_operator_up` | Gauge | Total count of running CNAO operators |
-| containerized-data-importer | `kubevirt_cdi_clone_pods_high_restart` | Gauge | The number of CDI clone pods with high restart count |
-| containerized-data-importer | `kubevirt_cdi_clone_progress_total` | Counter | The clone progress in percentage |
-| containerized-data-importer | `kubevirt_cdi_cr_ready` | Gauge | CDI install ready |
-| containerized-data-importer | `kubevirt_cdi_dataimportcron_outdated` | Gauge | DataImportCron has an outdated import |
-| containerized-data-importer | `kubevirt_cdi_datavolume_pending` | Gauge | Number of DataVolumes pending for default storage class to be configured |
-| containerized-data-importer | `kubevirt_cdi_import_pods_high_restart` | Gauge | The number of CDI import pods with high restart count |
-| containerized-data-importer | `kubevirt_cdi_import_progress_total` | Counter | The import progress in percentage |
-| containerized-data-importer | `kubevirt_cdi_openstack_populator_progress_total` | Counter | Progress of volume population |
-| containerized-data-importer | `kubevirt_cdi_operator_up` | Gauge | CDI operator status |
-| containerized-data-importer | `kubevirt_cdi_ovirt_progress_total` | Counter | Progress of volume population |
-| containerized-data-importer | `kubevirt_cdi_storageprofile_info` | Gauge | `StorageProfiles` info labels: `storageclass`, `provisioner`, `complete` indicates if all storage profiles recommended PVC settings are complete, `default` indicates if it's the Kubernetes default storage class, `virtdefault` indicates if it's the default virtualization storage class, `rwx` indicates if the storage class supports `ReadWriteMany`, `smartclone` indicates if it supports snapshot or CSI based clone, `degraded` indicates it is not optimal for virtualization |
-| containerized-data-importer | `kubevirt_cdi_upload_pods_high_restart` | Gauge | The number of CDI upload server pods with high restart count |
-| hostpath-provisioner | `kubevirt_hpp_pool_path_shared_with_os` | Gauge | HPP pool path sharing a filesystem with OS, fix to prevent HPP PVs from causing disk pressure and affecting node operation |
-| hostpath-provisioner-operator | `kubevirt_hpp_cr_ready` | Gauge | HPP CR Ready |
-| hostpath-provisioner-operator | `kubevirt_hpp_operator_up` | Gauge | The number of running hostpath-provisioner-operator pods |
-| hyperconverged-cluster-operator | `cluster:vmi_request_cpu_cores:sum` | Gauge | Sum of CPU core requests for all running virt-launcher VMIs across the entire Kubevirt cluster |
-| hyperconverged-cluster-operator | `cnv_abnormal` | Gauge | Monitors resources for potential problems |
-| hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_architecture_annotation` | Gauge | Indicates whether the DataImportCronTemplate has the ssp.kubevirt.io/dict.architectures annotation (0) or not (1) |
-| hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_supported_architectures` | Gauge | Indicates whether the DataImportCronTemplate has supported architectures (0) or not (1) |
-| hyperconverged-cluster-operator | `kubevirt_hco_hyperconverged_cr_exists` | Gauge | Indicates whether the HyperConverged custom resource exists (1) or not (0) |
-| hyperconverged-cluster-operator | `kubevirt_hco_memory_overcommit_percentage` | Gauge | Indicates the cluster-wide configured VM memory overcommit percentage |
-| hyperconverged-cluster-operator | `kubevirt_hco_misconfigured_descheduler` | Gauge | Indicates whether the optional descheduler is not properly configured (1) to work with KubeVirt or not (0) |
-| hyperconverged-cluster-operator | `kubevirt_hco_out_of_band_modifications_total` | Counter | Count of out-of-band modifications overwritten by HCO |
-| hyperconverged-cluster-operator | `kubevirt_hco_single_stack_ipv6` | Gauge | Indicates whether the underlying cluster is single stack IPv6 (1) or not (0) |
-| hyperconverged-cluster-operator | `kubevirt_hco_system_health_status` | Gauge | Indicates whether the system health status is healthy (0), warning (1), or error (2), by aggregating the conditions of HCO and its secondary resources |
-| hyperconverged-cluster-operator | `kubevirt_hco_unsafe_modifications` | Gauge | Count of unsafe modifications in the HyperConverged annotations |
-| hyperconverged-cluster-operator | `kubevirt_hyperconverged_operator_health_status` | Gauge | Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric |
-| ssp-operator | `cnv:vmi_status_running:count` | Gauge | The total number of running VMIs, labeled with node, instance type, preference and guest OS information |
-| ssp-operator | `kubevirt_ssp_common_templates_restored_increase` | Gauge | The increase in the number of common templates restored by the operator back to their original state, over the last hour |
-| ssp-operator | `kubevirt_ssp_common_templates_restored_total` | Counter | The total number of common templates restored by the operator back to their original state |
-| ssp-operator | `kubevirt_ssp_operator_reconcile_succeeded` | Gauge | Set to 1 if the reconcile process of all operands completes with no errors, and to 0 otherwise |
-| ssp-operator | `kubevirt_ssp_operator_reconcile_succeeded_aggregated` | Gauge | The total number of ssp-operator pods reconciling with no errors |
-| ssp-operator | `kubevirt_ssp_operator_up` | Gauge | The total number of running ssp-operator pods |
-| ssp-operator | `kubevirt_ssp_template_validator_rejected_increase` | Gauge | The increase in the number of rejected template validators, over the last hour |
-| ssp-operator | `kubevirt_ssp_template_validator_rejected_total` | Counter | The total number of rejected template validators |
-| ssp-operator | `kubevirt_ssp_template_validator_up` | Gauge | The total number of running virt-template-validator pods |
-| ssp-operator | `kubevirt_ssp_vm_rbd_block_volume_without_rxbounce` | Gauge | [ALPHA] VM with RBD mounted Block volume (without rxbounce option set) |
 
 
