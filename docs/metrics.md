@@ -91,9 +91,10 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_vmi_memory_unused_bytes` | Gauge | The amount of memory left completely unused by the system. Memory that is available but used for reclaimable caches should NOT be reported as free |
 | kubevirt | `kubevirt_vmi_memory_usable_bytes` | Gauge | The amount of memory which can be reclaimed by balloon without pushing the guest system to swap, corresponds to 'Available' in /proc/meminfo |
 | kubevirt | `kubevirt_vmi_memory_used_bytes` | Gauge | Amount of `used` memory as seen by the domain |
+| kubevirt | `kubevirt_vmi_migration_data_bytes_total` | Counter | The total Guest OS data to be migrated to the new VM |
 | kubevirt | `kubevirt_vmi_migration_data_processed_bytes` | Gauge | The total Guest OS data processed and migrated to the new VM |
 | kubevirt | `kubevirt_vmi_migration_data_remaining_bytes` | Gauge | The remaining guest OS data to be migrated to the new VM |
-| kubevirt | `kubevirt_vmi_migration_data_total_bytes` | Counter | The total Guest OS data to be migrated to the new VM |
+| kubevirt | `kubevirt_vmi_migration_data_total_bytes` | Counter | [Deprecated] Replaced by kubevirt_vmi_migration_data_bytes_total |
 | kubevirt | `kubevirt_vmi_migration_dirty_memory_rate_bytes` | Gauge | The rate of memory being dirty in the Guest OS |
 | kubevirt | `kubevirt_vmi_migration_end_time_seconds` | Gauge | The time at which the migration ended |
 | kubevirt | `kubevirt_vmi_migration_failed` | Gauge | Indicates if the VMI migration failed |
@@ -146,6 +147,12 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_workqueue_retries_total` | Counter | Total number of retries handled by workqueue |
 | kubevirt | `kubevirt_workqueue_unfinished_work_seconds` | Gauge | How many seconds of work has done that is in progress and hasn't been observed by work_duration. Large values indicate stuck threads. One can deduce the number of stuck threads by observing the rate at which this increases |
 | kubevirt | `kubevirt_workqueue_work_duration_seconds` | Histogram | How long in seconds processing an item from workqueue takes |
+| kubevirt | `vmi:kubevirt_vmi_memory_available_bytes:sum` | Gauge | Sum of available memory bytes per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_memory_headroom_ratio:sum` | Gauge | Usable memory to available memory ratio per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_pgmajfaults:rate30m` | Gauge | Rate of major page faults over 30 minutes per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_pgmajfaults:rate5m` | Gauge | Rate of major page faults over 5 minutes per VMI (aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_swap_traffic_bytes:rate30m` | Gauge | Total swap I/O traffic rate over 30 minutes per VMI (swap in + swap out, aggregated by name, namespace) |
+| kubevirt | `vmi:kubevirt_vmi_swap_traffic_bytes:rate5m` | Gauge | Total swap I/O traffic rate over 5 minutes per VMI (swap in + swap out, aggregated by name, namespace) |
 | kubevirt | `vmi:kubevirt_vmi_vcpu:count` | Gauge | The number of the VMI vCPUs |
 | cluster-network-addons-operator | `kubevirt_cnao_cr_kubemacpool_aggregated` | Gauge | Total count of KubeMacPool manager pods deployed by CNAO CR |
 | cluster-network-addons-operator | `kubevirt_cnao_cr_kubemacpool_deployed` | Gauge | KubeMacpool is deployed by CNAO CR |
