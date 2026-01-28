@@ -14,7 +14,7 @@ Resources maintained by the operator might not be functioning correctly.
 Check the operator conditions:
 
 ```bash
-kubectl get HyperConverged kubevirt-hyperconverged -n kubevirt -o jsonpath='{.status.conditions}'
+$ kubectl get HyperConverged kubevirt-hyperconverged -n kubevirt -o jsonpath='{.status.conditions}'
 ```
 
 ## Mitigation
@@ -24,7 +24,7 @@ identify the root cause within the operator or any of its secondary resources,
 and resolve the issue.
 
 <!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 
 <!--USstart-->
