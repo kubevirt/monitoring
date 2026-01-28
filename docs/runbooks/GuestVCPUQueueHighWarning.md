@@ -9,7 +9,7 @@ uninterruptible threads. The run‑queue length is derived from
 
 ## Impact
 
-* Moderate CPU contention inside the guest. Latency may spike but workload still
+* Moderate CPU contention inside the guest VM. Latency might spike but workload still
 progresses.
 
 * An early signal that the VM might need additional vCPUs or that a short‑lived
@@ -39,7 +39,7 @@ process is causing bursts.
 
 * **Immediately:** Consider live-migrating the VM to a node under a lighter load,
 or throttle demanding processes.
-* **Short term:** Hot-plug or increase vCPU limit; tune application thread pools.
+* **Short term:** Hot plug or increase vCPU limit; tune application thread pools.
 * **Long term:** Implement horizontal scaling (HPA/KEDA, VMReplicaSet);
 review placement rules.
 
@@ -52,5 +52,5 @@ If you cannot resolve the issue, see the following resources:
 <!--USend-->
 
 <!--DS: If you cannot resolve the issue, log in to the
-[Customer Portal](https://access.redhat.com) and open a support case,
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->

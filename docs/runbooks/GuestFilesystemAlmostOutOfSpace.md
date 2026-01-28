@@ -7,8 +7,8 @@ of available disk space.
 
 The alert has the following severity levels:
 
-- **Warning**: Triggers when file-system usage is between 85% and 95% for 5 minutes.
-- **Critical**: Triggers when file-system usage exceeds 95%.
+- **Warning**: Triggers when file system usage is between 85% and 95% for 5 minutes.
+- **Critical**: Triggers when file system usage exceeds 95%.
 
 The alert provides details about the specific file system (`disk_name`), its
 mount point (`mount_point`), the VMI name, and namespace.
@@ -86,9 +86,8 @@ disk usage in the guest OS:
       $ virtctl restart <vm-name> -n <namespace>
       ```
 
-      This step causes the disk.img to be resized to match the new PVC size.
-      While this is primarily needed for filesystem volumes, it's recommended
-      to always restart for consistency.
+      This step resizes the disk.img to match the new PVC size.
+      While this is primarily needed for file system volumes, restarting to apply changes in generally recommended.
 
 ### Long-term Solutions
 
@@ -111,7 +110,7 @@ cleanup, investigate the root cause such as application bugs, excessive logging,
 or unexpected data growth.
 
 <!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
+link:https://access.redhat.com[Red Hat Customer Portal] and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
