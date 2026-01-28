@@ -2,7 +2,6 @@
 
 - [VirtLauncherPodsStuckFailed.md](runbooks/VirtLauncherPodsStuckFailed.md)
 - [KubeVirtVMIExcessiveMigrations.md](runbooks/KubeVirtVMIExcessiveMigrations.md)
-- [SingleStackIPv6Unsupported.md](runbooks/SingleStackIPv6Unsupported.md)
 - [LowVirtControllersCount.md](runbooks/LowVirtControllersCount.md)
 - [CDIStorageProfilesIncomplete.md](runbooks/CDIStorageProfilesIncomplete.md)
 - [KubeVirtVMGuestMemoryAvailableLow.md](runbooks/KubeVirtVMGuestMemoryAvailableLow.md)
@@ -71,6 +70,7 @@
 
 ## Deprecated Runbooks
 
+- [SingleStackIPv6Unsupported.md](runbooks/SingleStackIPv6Unsupported.md)
 - [KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md](runbooks/KubevirtHyperconvergedClusterOperatorNMOInUseAlert.md)
 - [VirtualMachineCRCErrors.md](runbooks/VirtualMachineCRCErrors.md)
 - [VirtApiRESTErrorsHigh.md](runbooks/VirtApiRESTErrorsHigh.md)
