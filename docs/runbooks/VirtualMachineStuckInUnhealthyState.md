@@ -56,80 +56,80 @@ pull images, or schedule the workload.
 ### 1. Check VM Status and Events
 ```bash
 # Get VM details and status
-kubectl get vm <vm-name> -n <namespace> -o yaml
+$ kubectl get vm <vm-name> -n <namespace> -o yaml
 
 # Check VM events for error messages
-kubectl describe vm <vm-name> -n <namespace>
+$ kubectl describe vm <vm-name> -n <namespace>
 
 # Look for related events in the namespace
-kubectl get events -n <namespace> --sort-by='.lastTimestamp'
+$ kubectl get events -n <namespace> --sort-by='.lastTimestamp'
 ```
 
 ### 2. Verify Resource Availability
 ```bash
 # Check node resources and schedulability
-kubectl get nodes -o wide
-kubectl describe nodes
+$ kubectl get nodes -o wide
+$ kubectl describe nodes
 
 # Check storage classes and provisioners
-kubectl get storageclass
-kubectl get pv,pvc -n <namespace>
+$ kubectl get storageclass
+$ kubectl get pv,pvc -n <namespace>
 
 # For DataVolumes (if using)
-kubectl get datavolume -n <namespace>
-kubectl describe datavolume <dv-name> -n <namespace>
+$ kubectl get datavolume -n <namespace>
+$ kubectl describe datavolume <dv-name> -n <namespace>
 ```
 
 ### 3. Check Image Availability (for containerDisk)
 ```bash
 # If using containerDisk, verify image accessibility from the affected node
 # Start a debug session on the node hosting the VM (or a representative node)
-kubectl debug node/<node-name> -it --image=busybox
+$ kubectl debug node/<node-name> -it --image=busybox
 
 # Inside the debug pod, check which container runtime is used
-ps aux | grep -E "(containerd|dockerd|crio)"
+$ ps aux | grep -E "(containerd|dockerd|crio)"
 
 # For CRI-O/containerd clusters use crictl to pull the image
-crictl pull <vm-disk-image>
+$ crictl pull <vm-disk-image>
 
 # For Docker-based clusters (less common)
-docker pull <vm-disk-image>
+$ docker pull <vm-disk-image>
 
 # Exit the debug session when done
-exit
+$ exit
 
 # Check image pull secrets if required
-kubectl get secrets -n <namespace>
+$ kubectl get secrets -n <namespace>
 ```
 
 ### 4. Verify KubeVirt Configuration
 ```bash
 # Discover the KubeVirt installation namespace
-export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
+$ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
 
 # Check KubeVirt CR conditions (expect Available=True)
-kubectl get kubevirt -n "$NAMESPACE" \
+$ kubectl get kubevirt -n "$NAMESPACE" \
   -o jsonpath='{range .items[*].status.conditions[*]}{.type}={.status}{"\n"}{end}'
 
 # Or check a single CR named 'kubevirt'
-kubectl get kubevirt kubevirt -n "$NAMESPACE" \
+$ kubectl get kubevirt kubevirt -n "$NAMESPACE" \
   -o jsonpath='{.status.conditions[?(@.type=="Available")].status}'
 
 # Verify virt-controller is running
-kubectl get pods -n "$NAMESPACE" \
+$ kubectl get pods -n "$NAMESPACE" \
   -l kubevirt.io=virt-controller
 
 # Check virt-controller logs for errors
 # Replace <virt-controller-pod> with a pod name from the list above
-kubectl logs -n "$NAMESPACE" <virt-controller-pod>
+$ kubectl logs -n "$NAMESPACE" <virt-controller-pod>
 
 # Verify virt-handler is running
-kubectl get pods -n "$NAMESPACE" \
+$ kubectl get pods -n "$NAMESPACE" \
   -l kubevirt.io=virt-handler -o wide
 
 # Check virt-handler logs for errors (daemonset uses per-node pods)
 # Replace <virt-handler-pod> with a pod name from the list above
-kubectl logs -n "$NAMESPACE" <virt-handler-pod>
+$ kubectl logs -n "$NAMESPACE" <virt-handler-pod>
 ```
 
 ### 5. Review VM Specification
@@ -162,30 +162,30 @@ misconfigurations:
 2. **Create missing storage classes** or configure default storage
 3. **Resolve PVC/DataVolume failures**:
    ```bash
-   kubectl get pvc -n <namespace>
-   kubectl describe pvc <pvc-name> -n <namespace>
+   $ kubectl get pvc -n <namespace>
+   $ kubectl describe pvc <pvc-name> -n <namespace>
    ```
 
 ### Image Issues
 1. **Verify image accessibility**:
    ```bash
    # Validate from the node
-   kubectl debug node/<node-name> -it --image=busybox
+   $ kubectl debug node/<node-name> -it --image=busybox
 
    # Inside the debug pod, detect runtime and pull
-   ps aux | grep -E "(containerd|dockerd|crio)"
+   $ ps aux | grep -E "(containerd|dockerd|crio)"
 
    # For CRI-O/containerd clusters:
-   crictl pull <image-name>
+   $ crictl pull <image-name>
 
    # For Docker-based clusters (less common):
-   docker pull <image-name>
+   $ docker pull <image-name>
 
-   exit
+   $ exit
    ```
 2. **Configure image pull secrets** if needed:
    ```bash
-   kubectl create secret docker-registry <secret-name> \
+   $ kubectl create secret docker-registry <secret-name> \
      --docker-server=<registry-url> \
      --docker-username=<username> \
      --docker-password=<password>
@@ -205,23 +205,23 @@ misconfigurations:
 4. If nodes were intentionally cordoned for maintenance, **uncordon** when
    appropriate:
    ```bash
-   kubectl uncordon <node-name>
+   $ kubectl uncordon <node-name>
    ```
 
 ### Configuration Issues Resolution
 1. **Fix VM specification errors** based on the *kubectl describe* output:
    ```bash
    # Edit VM specification directly
-   kubectl edit vm <vm-name> -n <namespace>
+   $ kubectl edit vm <vm-name> -n <namespace>
 
    # Or patch specific fields
-   kubectl patch vm <vm-name> -n <namespace> --type='merge' \
+   $ kubectl patch vm <vm-name> -n <namespace> --type='merge' \
      -p='{"spec":{"template":{"spec":{"domain":{"resources": \
        {"requests":{"memory":"2Gi"}}}}}}}'
    ```
 2. **Create missing secrets/configmaps**:
    ```bash
-   kubectl create secret generic <secret-name> \
+   $ kubectl create secret generic <secret-name> \
      --from-literal=key=value
    ```
 3. **Adjust resource requests** if they exceed node capacity
@@ -230,18 +230,18 @@ misconfigurations:
 - **Restart the VM** to apply specification changes:
   ```bash
   # Restart the VM to pick up spec changes
-  virtctl restart <vm-name> -n <namespace>
+  $ virtctl restart <vm-name> -n <namespace>
   ```
 - **Scale down non-critical workloads** temporarily if resource
   constraints exist
 - **Change storage class** if PVC provisioning fails:
   ```bash
   # Check current storage class status
-  kubectl get storageclass
-  kubectl describe storageclass <current-storage-class>
+  $ kubectl get storageclass
+  $ kubectl describe storageclass <current-storage-class>
 
   # Look for PVC provisioning errors
-  kubectl describe pvc <pvc-name> -n <namespace>
+  $ kubectl describe pvc <pvc-name> -n <namespace>
 
   # If seeing "no volume provisioner" or similar errors,
   # specify a working storage class in VM spec:

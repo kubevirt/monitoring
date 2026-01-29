@@ -32,7 +32,7 @@ process is causing bursts.
 
 4. **Verify vCPU allocation**
    ```bash
-   oc get vmi $VM -ojsonpath='{.spec.domain.cpu}'
+   $ oc get vmi $VM -ojsonpath='{.spec.domain.cpu}'
    ```
 
 ## Mitigation

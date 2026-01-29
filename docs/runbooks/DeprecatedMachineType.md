@@ -53,7 +53,7 @@ supported type:
 
 ```bash
 # Removes spec.template.spec.domain.machine so the mutating webhook defaults it
-kubectl patch vm <vm-name> -n <namespace> --type='json' \
+$ kubectl patch vm <vm-name> -n <namespace> --type='json' \
   -p='[{"op":"remove","path":"/spec/template/spec/domain/machine"}]'
 ```
 

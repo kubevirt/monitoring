@@ -39,7 +39,7 @@ HCO publishes the list of the workload node architectures in the
 Read the HyperConverged CR:
 
 ```bash
-kubectl get hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
+$ kubectl get hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
 ```
 
 The result looks similar to this:
@@ -89,7 +89,7 @@ runbook for more details.
 3. Edit the HyperConverged CR:
 
 ```bash
-kubectl edit hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
+$ kubectl edit hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
 ```
 
 The editor opens with the HyperConverged CR YAML.
@@ -121,7 +121,7 @@ a single architecture.
 
 1. Edit the HyperConverged CR:
 ```bash
-kubectl edit hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
+$ kubectl edit hyperconverged -n kubevirt-hyperconverged kubevirt-hyperconverged -o yaml
 ```
 
 The editor opens with the HyperConverged CR YAML.
