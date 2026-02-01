@@ -23,26 +23,30 @@ import (
 	"os"
 )
 
+const defaultOrg = "kubevirt"
+
 var projectsInfo = []*projectInfo{
-	{"KUBEVIRT", "kubevirt", "docs/observability/metrics.md"},
-	{"CDI", "containerized-data-importer", "doc/metrics.md"},
-	{"NETWORK_ADDONS", "cluster-network-addons-operator", "docs/metrics.md"},
-	{"SSP", "ssp-operator", "docs/metrics.md"},
-	{"NMO", "node-maintenance-operator", "docs/metrics.md"},
-	{"HPPO", "hostpath-provisioner-operator", "docs/metrics.md"},
-	{"HPP", "hostpath-provisioner", "docs/metrics.md"},
-	{"HCO", "hyperconverged-cluster-operator", "docs/metrics.md"},
+	{"KUBEVIRT", "kubevirt", defaultOrg, "docs/observability/metrics.md"},
+	{"CDI", "containerized-data-importer", defaultOrg, "doc/metrics.md"},
+	{"NETWORK_ADDONS", "cluster-network-addons-operator", defaultOrg, "docs/metrics.md"},
+	{"SSP", "ssp-operator", defaultOrg, "docs/metrics.md"},
+	{"NMO", "node-maintenance-operator", defaultOrg, "docs/metrics.md"},
+	{"HPPO", "hostpath-provisioner-operator", defaultOrg, "docs/metrics.md"},
+	{"HPP", "hostpath-provisioner", defaultOrg, "docs/metrics.md"},
+	{"HCO", "hyperconverged-cluster-operator", defaultOrg, "docs/metrics.md"},
 }
 
 type projectInfo struct {
 	short          string
 	name           string
+	org            string
 	metricsDocPath string
 }
 
 type project struct {
 	short   string
 	name    string
+	org     string
 	version string
 
 	repoDir        string
@@ -64,7 +68,6 @@ type TemplateOperator struct {
 }
 
 type releaseData struct {
-	org      string
 	projects []*project
 
 	outFile *os.File

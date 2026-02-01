@@ -80,16 +80,12 @@ func parseArguments() *releaseData {
 		log.Fatal("--config-file is a required argument")
 	}
 
-	org := "kubevirt"
-	baseDir := fmt.Sprintf("%s/%s/", *cacheDir, org)
-
 	return &releaseData{
-		org:      org,
-		projects: createProjects(*configFile, baseDir, org),
+		projects: createProjects(*configFile, *cacheDir),
 	}
 }
 
-func createProjects(configFile string, baseDir string, org string) []*project {
+func createProjects(configFile string, cacheDir string) []*project {
 	config := getConfig(configFile)
 
 	var projects []*project
@@ -103,10 +99,11 @@ func createProjects(configFile string, baseDir string, org string) []*project {
 		projects = append(projects, &project{
 			short:   info.short,
 			name:    info.name,
+			org:     info.org,
 			version: version,
 
-			repoDir:        baseDir + info.name,
-			repoUrl:        fmt.Sprintf("https://github.com/%s/%s.git", org, info.name),
+			repoDir:        fmt.Sprintf("%s/%s/%s", cacheDir, info.org, info.name),
+			repoUrl:        fmt.Sprintf("https://github.com/%s/%s.git", info.org, info.name),
 			metricsDocPath: info.metricsDocPath,
 		})
 	}
@@ -246,16 +243,16 @@ func (r *releaseData) buildOperators(operatorOrder []string) []TemplateOperator 
 }
 
 func (p *project) writeComponentMetrics() string {
-	resp, err := http.Get(fmt.Sprintf("https://api.github.com/repos/kubevirt/%s/releases/tags/%s", p.name, p.version))
+	resp, err := http.Get(fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/tags/%s", p.org, p.name, p.version))
 
 	if err == nil {
 		defer resp.Body.Close()
 	}
 
 	if err != nil || resp.StatusCode != http.StatusOK {
-		return fmt.Sprintf("[%s](https://github.com/kubevirt/%s/tree/%s)", p.name, p.name, p.version)
+		return fmt.Sprintf("[%s](https://github.com/%s/%s/tree/%s)", p.name, p.org, p.name, p.version)
 	}
-	return fmt.Sprintf("[%s - %s](https://github.com/kubevirt/%s/releases/tag/%s)", p.name, p.version, p.name, p.version)
+	return fmt.Sprintf("[%s - %s](https://github.com/%s/%s/releases/tag/%s)", p.name, p.version, p.org, p.name, p.version)
 }
 
 func readLines(path string) ([]string, error) {
