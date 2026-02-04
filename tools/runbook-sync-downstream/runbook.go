@@ -151,7 +151,6 @@ func replaceContents(content string) string {
 	content = downstreamCommentsRegex.ReplaceAllString(content, "$1")
 
 	// Replace 'KubeVirt' with 'OpenShift Virtualization' when not in code blocks
-	content = replaceOnlyInText(content, "Hyperconverged", "")
 	content = replaceOnlyInText(content, "KubeVirt", "OpenShift Virtualization")
 
 	// Replace 'Kubernetes' with 'OpenShift Container Platform' when not in code blocks
