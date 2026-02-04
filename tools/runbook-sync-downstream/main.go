@@ -66,14 +66,16 @@ var (
 )
 
 type runbookSyncArgs struct {
-	githubToken string
-	dryRun      bool
+	githubToken                    string
+	dryRun                         bool
+	shouldReopenAndUpdateClosedPRs bool
 }
 
 type runbookSync struct {
-	ghClient       *github.Client
-	downstreamRepo *git.Repository
-	dryRun         bool
+	ghClient                       *github.Client
+	downstreamRepo                 *git.Repository
+	dryRun                         bool
+	shouldReopenAndUpdateClosedPRs bool
 }
 
 func main() {
@@ -91,9 +93,10 @@ func main() {
 	}
 
 	rbSync := &runbookSync{
-		ghClient:       github.NewClient(nil).WithAuthToken(rbSyncArgs.githubToken),
-		downstreamRepo: downstreamRepo,
-		dryRun:         rbSyncArgs.dryRun,
+		ghClient:                       github.NewClient(nil).WithAuthToken(rbSyncArgs.githubToken),
+		downstreamRepo:                 downstreamRepo,
+		dryRun:                         rbSyncArgs.dryRun,
+		shouldReopenAndUpdateClosedPRs: rbSyncArgs.shouldReopenAndUpdateClosedPRs,
 	}
 
 	rbSync.createRunbooksBranches(runbooksToUpdate, runbooksToDeprecate)
@@ -114,9 +117,15 @@ func getRunbookSyncArgs() runbookSyncArgs {
 	}
 	klog.Infof("dry run: %s", dryRun)
 
+	shouldReopenAndUpdateClosedPRs := os.Getenv("SHOULD_REOPEN_AND_UPDATE_CLOSED_PRS")
+	if shouldReopenAndUpdateClosedPRs == "" {
+		shouldReopenAndUpdateClosedPRs = "false"
+	}
+
 	return runbookSyncArgs{
-		githubToken: githubToken,
-		dryRun:      dryRun != "false",
+		githubToken:                    githubToken,
+		dryRun:                         dryRun != "false",
+		shouldReopenAndUpdateClosedPRs: shouldReopenAndUpdateClosedPRs == "true",
 	}
 }
 
@@ -272,8 +281,15 @@ func (rbSync *runbookSync) commitAndPush(worktree *git.Worktree, msg string) err
 }
 
 func (rbSync *runbookSync) prForBranchPreviouslyCreated(branchName string) (bool, *github.PullRequest, error) {
+	state := "all"
+
+	// only list open PRs if we should reopen and update closed PRs
+	if rbSync.shouldReopenAndUpdateClosedPRs {
+		state = "open"
+	}
+
 	prs, _, err := rbSync.ghClient.PullRequests.List(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, &github.PullRequestListOptions{
-		State: "all",
+		State: state,
 		Head:  fmt.Sprintf("%s:%s", downstreamRepositoryFork, branchName),
 	})
 	if err != nil {
