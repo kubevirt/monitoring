@@ -44,7 +44,7 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_vm_labels` | Metric | Gauge | The metric exposes the VM labels as Prometheus labels. Configure allowed and ignored labels via the 'kubevirt-vm-labels-config' ConfigMap. |
 | kubevirt | `kubevirt_vm_migrating_status_last_transition_timestamp_seconds` | Metric | Counter | Virtual Machine last transition timestamp to migrating status. |
 | kubevirt | `kubevirt_vm_non_running_status_last_transition_timestamp_seconds` | Metric | Counter | Virtual Machine last transition timestamp to paused/stopped status. |
-| kubevirt | `kubevirt_vm_resource_limits` | Metric | Gauge | Resources limits by Virtual Machine. Reports memory and CPU limits. |
+| kubevirt | `kubevirt_vm_resource_limits` | Metric | Gauge | Resource limits set for a Virtual Machine. Reports CPU and memory limits only when they are defined. |
 | kubevirt | `kubevirt_vm_resource_requests` | Metric | Gauge | Resources requested by Virtual Machine. Reports memory and CPU requests. |
 | kubevirt | `kubevirt_vm_running_status_last_transition_timestamp_seconds` | Metric | Counter | Virtual Machine last transition timestamp to running status. |
 | kubevirt | `kubevirt_vm_starting_status_last_transition_timestamp_seconds` | Metric | Counter | Virtual Machine last transition timestamp to starting status. |
@@ -122,9 +122,10 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_workqueue_longest_running_processor_seconds` | Metric | Gauge | How many seconds has the longest running processor for workqueue been running. |
 | kubevirt | `kubevirt_workqueue_queue_duration_seconds` | Metric | Histogram | How long an item stays in workqueue before being requested. |
 | kubevirt | `kubevirt_workqueue_retries_total` | Metric | Counter | Total number of retries handled by workqueue |
-| kubevirt | `kubevirt_workqueue_unfinished_work_seconds` | Metric | Gauge | How many seconds of work has done that is in progress and hasn't been observed by work_duration. Large values indicate stuck threads. One can deduce the number of stuck threads by observing the rate at which this increases. |
+| kubevirt | `kubevirt_workqueue_unfinished_work_seconds` | Metric | Gauge | How many seconds of work have been in progress without being observed by work_duration. Large values indicate stuck threads. The number of stuck threads can be deduced by observing the rate at which this value increases. |
 | kubevirt | `kubevirt_workqueue_work_duration_seconds` | Metric | Histogram | How long in seconds processing an item from workqueue takes. |
 | kubevirt | `cluster:kubevirt_virt_controller_pods_running:count` | Recording rule | Gauge | The number of virt-controller pods that are running. |
+| kubevirt | `cluster:kubevirt_virt_operator_pods_running:count` | Recording rule | Gauge | The number of virt-operator pods that are running. |
 | kubevirt | `kubevirt_allocatable_nodes` | Recording rule | Gauge | The number of allocatable nodes in the cluster. |
 | kubevirt | `kubevirt_api_request_deprecated_total` | Recording rule | Counter | The total number of requests to deprecated KubeVirt APIs. |
 | kubevirt | `kubevirt_memory_delta_from_requested_bytes` | Recording rule | Gauge | The delta between the pod with highest memory working set or rss and its requested memory for each container, virt-controller, virt-handler, virt-api, virt-operator and compute(virt-launcher). |
