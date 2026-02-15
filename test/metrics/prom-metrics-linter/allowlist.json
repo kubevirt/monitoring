@@ -26,7 +26,8 @@
     ],
     "hco": [
       "cnv_abnormal",
-      "kubevirt_hyperconverged_operator_health_status"
+      "kubevirt_hyperconverged_operator_health_status",
+      "cluster:vmi_request_cpu_cores:sum"
     ],
     "cdi": [
       "kubevirt_cdi_clone_pods_high_restart",
