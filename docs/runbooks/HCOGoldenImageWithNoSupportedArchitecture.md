@@ -205,8 +205,9 @@ example: `amd64,arm64,s390x`.
 cluster, rebuild the image for one or more of the architectures supported by the
 cluster, or remove the DICT from the `HyperConverged` CR.
 
-    It is also possible to disable the DICT, by adding the `dataimportcrontemplate.kubevirt.io/enable` annotation, with the value
-of `false`. For example:
+    It is also possible to disable the DICT, by adding the
+    `dataimportcrontemplate.kubevirt.io/enable` annotation, with the value of
+    `false`. For example:
 
   ```yaml
   apiVersion: hco.kubevirt.io/v1beta1

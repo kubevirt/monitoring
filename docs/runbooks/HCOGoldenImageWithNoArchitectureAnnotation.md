@@ -23,7 +23,8 @@ alert for this specific DICT.
 
 This alert triggers when the golden image created for this DICT does not have a
 defined architecture. If this image is used as a boot image for a virtual
-machine (VM), and the VM is scheduled on a node with different CPU architecture than the image architecture, the VM fails to start.
+machine (VM), and the VM is scheduled on a node with different CPU
+architecture than the image architecture, the VM fails to start.
 
 ## Diagnosis
 
