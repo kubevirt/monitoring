@@ -87,7 +87,8 @@ disk usage in the guest OS:
       ```
 
       This step resizes the disk.img to match the new PVC size.
-      While this is primarily needed for file system volumes, restarting to apply changes in generally recommended.
+      While this is primarily needed for file system volumes, restarting to apply
+      changes is generally recommended.
 
 ### Long-term Solutions
 

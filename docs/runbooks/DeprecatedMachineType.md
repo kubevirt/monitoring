@@ -43,7 +43,8 @@ following:
 - For a smoother and cleaner update of multiple VMs, use the
   `kubevirt-api-lifecycle-automation` tool to transition all deprecated VMs
   in one operation. This ensures consistent, automated migration and reduces
-  manual errors or downtime during cluster upgrades. For details, see [Updating multiple VMs](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/managing-vms#virt-updating-multiple-vms_virt-edit-vms).
+  manual errors or downtime during cluster upgrades. For details, see
+  [Updating multiple VMs](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/managing-vms#virt-updating-multiple-vms_virt-edit-vms).
 
 **Important** Plan and apply these updates before performing cluster
 upgrades to avoid VM restart failures or compatibility issues.
