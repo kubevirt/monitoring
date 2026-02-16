@@ -193,14 +193,14 @@ misconfigurations:
 
 ### Scheduling issues
 - **Review VM scheduling constraints** and relax if too restrictive:
-   - nodeSelector, affinity, and tolerations
-   - Required CPU model, host devices, or features
+  - nodeSelector, affinity, and tolerations
+  - Required CPU model, host devices, or features
 
 - **Verify that node taints and tolerations** allow scheduling:
-   - Ensure the VM tolerates node taints that apply to target nodes
+  - Ensure the VM tolerates node taints that apply to target nodes
 
 - **Ensure that nodes have required capabilities**:
-   - KVM availability, CPU features, GPU, SR-IOV, or storage access
+  - KVM availability, CPU features, GPU, SR-IOV, or storage access
 
 - If nodes were intentionally cordoned for maintenance, **uncordon** when
    appropriate:
@@ -252,29 +252,29 @@ misconfigurations:
 ## Prevention
 
 - **Resource planning:**
-   - Monitor cluster resource utilization
-   - Set appropriate VM guest resources in the VM domain guest spec.
-   - Plan storage capacity and provisioning
+  - Monitor cluster resource utilization
+  - Set appropriate VM guest resources in the VM domain guest spec.
+  - Plan storage capacity and provisioning
 
 - **Image management:**
-   - Use local image registries where possible to reduce
-     latency
-   - Configure DataVolume import methods appropriately:
-     * **Pod import method**: Images pulled to temporary pods (default)
-     * **Node import method**: Images pulled directly to nodes
-       (requires pre-pulling)
-   - Pre-pull critical containerDisk images to nodes only if
-     using node import method
+  - Use local image registries where possible to reduce
+    latency
+  - Configure DataVolume import methods appropriately:
+    * **Pod import method**: Images pulled to temporary pods (default)
+    * **Node import method**: Images pulled directly to nodes
+      (requires pre-pulling)
+  - Pre-pull critical containerDisk images to nodes only if
+    using node import method
 
 - **Monitoring:**
-   - Set up alerts for cluster resource exhaustion
-   - Monitor storage provisioner health
-   - Track VM startup success rates
+  - Set up alerts for cluster resource exhaustion
+  - Monitor storage provisioner health
+  - Track VM startup success rates
 
 - **Testing:**
-   - Validate VM templates in development environments
-   - Test VM deployments after cluster changes
-   - Regularly verify image accessibility
+  - Validate VM templates in development environments
+  - Test VM deployments after cluster changes
+  - Regularly verify image accessibility
 
 ## Escalation
 

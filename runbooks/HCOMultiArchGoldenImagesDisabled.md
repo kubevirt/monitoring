@@ -23,7 +23,8 @@ feature gate is disabled in the HyperConverged CR.
 ## Impact
 
 When running on a heterogeneous cluster, if the preloaded image uses different
-architecture than the architecture of the node that the VM is scheduled on, the VM fails to start.
+architecture than the architecture of the node that the VM is scheduled on,
+the VM fails to start.
 
 ## Diagnosis
 
@@ -77,7 +78,8 @@ feature is not generally available, and it is not fully supported.
 
 To enable the multi-arch boot image feature:
 
-1. Set the `enableMultiArchBootImageImport` feature gate in the HyperConverged CR to `true`.
+1. Set the `enableMultiArchBootImageImport` feature gate in the
+   HyperConverged CR to `true`.
 
 2. If the HyperConverged CR contains the `spec.dataImportCronTemplates` field,
 and this field is not empty, then you might need to add the

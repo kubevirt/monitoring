@@ -245,29 +245,29 @@ other workloads on the same node
 ## Prevention
 
 - **Node Health Monitoring:**
-   - Monitor node resource utilization (CPU, memory,
-     storage)
-   - Set up alerts for node conditions and taints
-   - Perform regular health checks on container runtime
+  - Monitor node resource utilization (CPU, memory,
+    storage)
+  - Set up alerts for node conditions and taints
+  - Perform regular health checks on container runtime
 
 - **Resource Management:**
-   - Set appropriate resource requests/limits on VMs
-   - Monitor PVC and storage utilization
-   - Plan for node capacity and VM density
+  - Set appropriate resource requests/limits on VMs
+  - Monitor PVC and storage utilization
+  - Plan for node capacity and VM density
 
 - **Image Management:**
-   - Use image pull policies appropriately (Always,
-     IfNotPresent)
-   - Pre-pull critical images to nodes
-   - Monitor image registry health and connectivity
+  - Use image pull policies appropriately (Always,
+    IfNotPresent)
+  - Pre-pull critical images to nodes
+  - Monitor image registry health and connectivity
 
 - **Networking:**
-   - Ensure stable network connectivity between nodes and storage
-   - Monitor DNS resolution and service discovery
-   - Validate network policies do not block required traffic
+  - Ensure stable network connectivity between nodes and storage
+  - Monitor DNS resolution and service discovery
+  - Validate network policies do not block required traffic
 
 - **Regular Maintenance:**
-   - Keep nodes and KubeVirt components updated
+  - Keep nodes and KubeVirt components updated
 
 ## Escalation
 

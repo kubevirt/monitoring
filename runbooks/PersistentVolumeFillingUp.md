@@ -42,10 +42,10 @@ move it to a different storage resource, like an S3 bucket.
 ### Data rebalance in the cluster
 
 Some services automatically rebalance data on the cluster when a node fills up.
-Some of these services make it possible to rebalance data across existing nodes, others
-might require adding new nodes. If your cluster supports data rebalancing,
-increase the number of replicas and wait for data migration, or trigger the
-migration manually.
+Some of these services make it possible to rebalance data across existing
+nodes, others might require adding new nodes. If your cluster supports data
+rebalancing, increase the number of replicas and wait for data migration, or
+trigger the migration manually.
 
 Example services that support data rebalancing:
 
