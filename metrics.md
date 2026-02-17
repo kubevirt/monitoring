@@ -175,9 +175,10 @@ The following table contains all metrics from operators listed above. Each row r
 | containerized-data-importer | `kubevirt_cdi_upload_pods_high_restart` | Recording rule | Gauge | The number of CDI upload server pods with high restart count |
 | hostpath-provisioner | `kubevirt_hpp_pool_path_shared_with_os` | Metric | Gauge | HPP pool path sharing a filesystem with OS, fix to prevent HPP PVs from causing disk pressure and affecting node operation |
 | hostpath-provisioner-operator | `kubevirt_hpp_cr_ready` | Metric | Gauge | HPP CR Ready |
-| hostpath-provisioner-operator | `kubevirt_hpp_operator_up` | Recording rule | Gauge | The number of running hostpath-provisioner-operator pods |
-| hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_architecture_annotation` | Metric | Gauge | Indicates whether the DataImportCronTemplate has the ssp.kubevirt.io/dict.architectures annotation (0) or not (1) |
-| hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_supported_architectures` | Metric | Gauge | Indicates whether the DataImportCronTemplate has supported architectures (0) or not (1) |
+| hostpath-provisioner-operator | `cluster:kubevirt_hpp_operator_up:sum` | Recording rule | Gauge | The number of hostpath-provisioner-operator pods that are up |
+| hostpath-provisioner-operator | `kubevirt_hpp_operator_up` | Recording rule | Gauge | [Deprecated] The number of running hostpath-provisioner-operator pods |
+| hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_architecture_annotation` | Metric | Gauge | Indicates whether the DataImportCronTemplate has the ssp.kubevirt.io/dict.architectures annotation (1) or not (0) |
+| hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_supported_architectures` | Metric | Gauge | Indicates whether the DataImportCronTemplate has supported architectures (1) or not (0) |
 | hyperconverged-cluster-operator | `kubevirt_hco_hyperconverged_cr_exists` | Metric | Gauge | Indicates whether the HyperConverged custom resource exists (1) or not (0) |
 | hyperconverged-cluster-operator | `kubevirt_hco_memory_overcommit_percentage` | Metric | Gauge | Indicates the cluster-wide configured VM memory overcommit percentage |
 | hyperconverged-cluster-operator | `kubevirt_hco_misconfigured_descheduler` | Metric | Gauge | Indicates whether the optional descheduler is not properly configured (1) to work with KubeVirt or not (0) |
