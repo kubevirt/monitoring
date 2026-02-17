@@ -34,6 +34,7 @@ var projectsInfo = []*projectInfo{
 	{"HPPO", "hostpath-provisioner-operator", defaultOrg, "docs/metrics.md"},
 	{"HPP", "hostpath-provisioner", defaultOrg, "docs/metrics.md"},
 	{"HCO", "hyperconverged-cluster-operator", defaultOrg, "docs/metrics.md"},
+	{"KMP", "kubemacpool", "k8snetworkplumbingwg", "doc/metrics.md"},
 }
 
 type projectInfo struct {
