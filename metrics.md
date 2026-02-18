@@ -169,10 +169,14 @@ The following table contains all metrics from operators listed above. Each row r
 | containerized-data-importer | `kubevirt_cdi_openstack_populator_progress_total` | Metric | Counter | Progress of volume population |
 | containerized-data-importer | `kubevirt_cdi_ovirt_progress_total` | Metric | Counter | Progress of volume population |
 | containerized-data-importer | `kubevirt_cdi_storageprofile_info` | Metric | Gauge | `StorageProfiles` info labels: `storageclass`, `provisioner`, `complete` indicates if all storage profiles recommended PVC settings are complete, `default` indicates if it's the Kubernetes default storage class, `virtdefault` indicates if it's the default virtualization storage class, `rwx` indicates if the storage class supports `ReadWriteMany`, `smartclone` indicates if it supports snapshot or CSI based clone, `degraded` indicates it is not optimal for virtualization |
-| containerized-data-importer | `kubevirt_cdi_clone_pods_high_restart` | Recording rule | Gauge | The number of CDI clone pods with high restart count |
-| containerized-data-importer | `kubevirt_cdi_import_pods_high_restart` | Recording rule | Gauge | The number of CDI import pods with high restart count |
-| containerized-data-importer | `kubevirt_cdi_operator_up` | Recording rule | Gauge | CDI operator status |
-| containerized-data-importer | `kubevirt_cdi_upload_pods_high_restart` | Recording rule | Gauge | The number of CDI upload server pods with high restart count |
+| containerized-data-importer | `cluster:kubevirt_cdi_clone_pods_high_restart:count` | Recording rule | Gauge | The number of CDI clone pods with high restart count |
+| containerized-data-importer | `cluster:kubevirt_cdi_import_pods_high_restart:count` | Recording rule | Gauge | The number of CDI import pods with high restart count |
+| containerized-data-importer | `cluster:kubevirt_cdi_operator_up:sum` | Recording rule | Gauge | The number of CDI pods that are up |
+| containerized-data-importer | `cluster:kubevirt_cdi_upload_pods_high_restart:count` | Recording rule | Gauge | The number of CDI upload server pods with high restart count |
+| containerized-data-importer | `kubevirt_cdi_clone_pods_high_restart` | Recording rule | Gauge | [Deprecated] The number of CDI clone pods with high restart count |
+| containerized-data-importer | `kubevirt_cdi_import_pods_high_restart` | Recording rule | Gauge | [Deprecated] The number of CDI import pods with high restart count |
+| containerized-data-importer | `kubevirt_cdi_operator_up` | Recording rule | Gauge | [Deprecated] CDI operator status |
+| containerized-data-importer | `kubevirt_cdi_upload_pods_high_restart` | Recording rule | Gauge | [Deprecated] The number of CDI upload server pods with high restart count |
 | hostpath-provisioner | `kubevirt_hpp_pool_path_shared_with_os` | Metric | Gauge | HPP pool path sharing a filesystem with OS, fix to prevent HPP PVs from causing disk pressure and affecting node operation |
 | hostpath-provisioner-operator | `kubevirt_hpp_cr_ready` | Metric | Gauge | HPP CR Ready |
 | hostpath-provisioner-operator | `cluster:kubevirt_hpp_operator_up:sum` | Recording rule | Gauge | The number of hostpath-provisioner-operator pods that are up |
@@ -186,18 +190,24 @@ The following table contains all metrics from operators listed above. Each row r
 | hyperconverged-cluster-operator | `kubevirt_hco_single_stack_ipv6` | Metric | Gauge | Indicates whether the underlying cluster is single stack IPv6 (1) or not (0) |
 | hyperconverged-cluster-operator | `kubevirt_hco_system_health_status` | Metric | Gauge | Indicates whether the system health status is healthy (0), warning (1), or error (2), by aggregating the conditions of HCO and its secondary resources |
 | hyperconverged-cluster-operator | `kubevirt_hco_unsafe_modifications` | Metric | Gauge | Count of unsafe modifications in the HyperConverged annotations |
-| hyperconverged-cluster-operator | `cluster:vmi_request_cpu_cores:sum` | Recording rule | Gauge | Sum of CPU core requests for all running virt-launcher VMIs across the entire Kubevirt cluster |
+| hyperconverged-cluster-operator | `cluster:kubevirt_hco_operator_health_status:count` | Recording rule | Gauge | Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric |
+| hyperconverged-cluster-operator | `cluster:vmi_request_cpu_cores:sum` | Recording rule | Gauge | Sum of CPU core requests for all running virt-launcher VMIs across the entire KubeVirt cluster |
 | hyperconverged-cluster-operator | `cnv_abnormal` | Recording rule | Gauge | Monitors resources for potential problems |
-| hyperconverged-cluster-operator | `kubevirt_hyperconverged_operator_health_status` | Recording rule | Gauge | Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric |
+| hyperconverged-cluster-operator | `kubevirt_hyperconverged_operator_health_status` | Recording rule | Gauge | [Deprecated] Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric |
 | ssp-operator | `kubevirt_ssp_common_templates_restored_total` | Metric | Counter | The total number of common templates restored by the operator back to their original state |
 | ssp-operator | `kubevirt_ssp_operator_reconcile_succeeded` | Metric | Gauge | Set to 1 if the reconcile process of all operands completes with no errors, and to 0 otherwise |
 | ssp-operator | `kubevirt_ssp_template_validator_rejected_total` | Metric | Counter | The total number of rejected template validators |
 | ssp-operator | `kubevirt_ssp_vm_rbd_block_volume_without_rxbounce` | Metric | Gauge | [ALPHA] VM with RBD mounted Block volume (without rxbounce option set) |
+| ssp-operator | `cluster:kubevirt_ssp_common_templates_restored:increase1h` | Recording rule | Gauge | The increase in the number of common templates restored by the operator back to their original state, over the last hour |
+| ssp-operator | `cluster:kubevirt_ssp_operator_reconcile_succeeded:sum` | Recording rule | Gauge | The number of ssp-operator pods reconciling with no errors |
+| ssp-operator | `cluster:kubevirt_ssp_operator_up:sum` | Recording rule | Gauge | The number of ssp-operator pods that are up |
+| ssp-operator | `cluster:kubevirt_ssp_template_validator_rejected:increase1h` | Recording rule | Gauge | The increase in the number of rejected template validators, over the last hour |
+| ssp-operator | `cluster:kubevirt_ssp_template_validator_up:sum` | Recording rule | Gauge | The number of virt-template-validator pods that are up |
 | ssp-operator | `cnv:vmi_status_running:count` | Recording rule | Gauge | The total number of running VMIs, labeled with node, instance type, preference and guest OS information |
-| ssp-operator | `kubevirt_ssp_common_templates_restored_increase` | Recording rule | Gauge | The increase in the number of common templates restored by the operator back to their original state, over the last hour |
-| ssp-operator | `kubevirt_ssp_operator_reconcile_succeeded_aggregated` | Recording rule | Gauge | The total number of ssp-operator pods reconciling with no errors |
-| ssp-operator | `kubevirt_ssp_operator_up` | Recording rule | Gauge | The total number of running ssp-operator pods |
-| ssp-operator | `kubevirt_ssp_template_validator_rejected_increase` | Recording rule | Gauge | The increase in the number of rejected template validators, over the last hour |
-| ssp-operator | `kubevirt_ssp_template_validator_up` | Recording rule | Gauge | The total number of running virt-template-validator pods |
+| ssp-operator | `kubevirt_ssp_common_templates_restored_increase` | Recording rule | Gauge | [Deprecated] The increase in the number of common templates restored by the operator back to their original state, over the last hour |
+| ssp-operator | `kubevirt_ssp_operator_reconcile_succeeded_aggregated` | Recording rule | Gauge | [Deprecated] The total number of ssp-operator pods reconciling with no errors |
+| ssp-operator | `kubevirt_ssp_operator_up` | Recording rule | Gauge | [Deprecated] The total number of running ssp-operator pods |
+| ssp-operator | `kubevirt_ssp_template_validator_rejected_increase` | Recording rule | Gauge | [Deprecated] The increase in the number of rejected template validators, over the last hour |
+| ssp-operator | `kubevirt_ssp_template_validator_up` | Recording rule | Gauge | [Deprecated] The total number of running virt-template-validator pods |
 
 
