@@ -9,6 +9,7 @@
 - [HCOMultiArchGoldenImagesDisabled.md](runbooks/HCOMultiArchGoldenImagesDisabled.md)
 - [LowReadyVirtControllersCount.md](runbooks/LowReadyVirtControllersCount.md)
 - [DeprecatedMachineType.md](runbooks/DeprecatedMachineType.md)
+- [KubemacpoolMACCollisionDetected.md](runbooks/KubemacpoolMACCollisionDetected.md)
 - [VirtualMachineStuckInUnhealthyState.md](runbooks/VirtualMachineStuckInUnhealthyState.md)
 - [CDINoDefaultStorageClass.md](runbooks/CDINoDefaultStorageClass.md)
 - [VirtHandlerDaemonSetRolloutFailing.md](runbooks/VirtHandlerDaemonSetRolloutFailing.md)
