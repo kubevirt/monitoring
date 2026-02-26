@@ -9,7 +9,7 @@ COPY . .
 RUN go mod tidy && \
     CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -trimpath -ldflags "-s -w" -o /bin/ .
 
-FROM --platform=${TARGETOS}/${TARGETARCH} gcr.io/distroless/base:latest
+FROM --platform=${TARGETOS}/${TARGETARCH} alpine:latest
 
 COPY --from=build /bin/prom-metrics-linter .
 
