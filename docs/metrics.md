@@ -14,6 +14,7 @@ They reflect and describe exactly what is being exposed.
 | [hostpath-provisioner](https://github.com/kubevirt/hostpath-provisioner/tree/main) |
 | [hostpath-provisioner-operator](https://github.com/kubevirt/hostpath-provisioner-operator/tree/main) |
 | [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator/tree/main) |
+| [kubemacpool](https://github.com/k8snetworkplumbingwg/kubemacpool/tree/main) |
 | [ssp-operator](https://github.com/kubevirt/ssp-operator/tree/main) |
 
 
@@ -194,6 +195,8 @@ The following table contains all metrics from operators listed above. Each row r
 | hyperconverged-cluster-operator | `cluster:vmi_request_cpu_cores:sum` | Recording rule | Gauge | Sum of CPU core requests for all running virt-launcher VMIs across the entire KubeVirt cluster |
 | hyperconverged-cluster-operator | `cnv_abnormal` | Recording rule | Gauge | Monitors resources for potential problems |
 | hyperconverged-cluster-operator | `kubevirt_hyperconverged_operator_health_status` | Recording rule | Gauge | [Deprecated] Indicates whether HCO and its secondary resources health status is healthy (0), warning (1) or critical (2), based both on the firing alerts that impact the operator health, and on kubevirt_hco_system_health_status metric |
+| kubemacpool | `kmp_mac_collisions` | Metric | Gauge | Count of running objects sharing the same MAC address (collision when > 1) |
+| kubemacpool | `kubevirt_kmp_duplicate_macs` | Metric | Counter | [DEPRECATED] Total count of duplicate KubeMacPool MAC addresses. Use kmp_mac_collisions instead. |
 | ssp-operator | `kubevirt_ssp_common_templates_restored_total` | Metric | Counter | The total number of common templates restored by the operator back to their original state |
 | ssp-operator | `kubevirt_ssp_operator_reconcile_succeeded` | Metric | Gauge | Set to 1 if the reconcile process of all operands completes with no errors, and to 0 otherwise |
 | ssp-operator | `kubevirt_ssp_template_validator_rejected_total` | Metric | Counter | The total number of rejected template validators |
