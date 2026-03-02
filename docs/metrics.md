@@ -125,6 +125,7 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_workqueue_retries_total` | Metric | Counter | Total number of retries handled by workqueue |
 | kubevirt | `kubevirt_workqueue_unfinished_work_seconds` | Metric | Gauge | How many seconds of work have been in progress without being observed by work_duration. Large values indicate stuck threads. The number of stuck threads can be deduced by observing the rate at which this value increases. |
 | kubevirt | `kubevirt_workqueue_work_duration_seconds` | Metric | Histogram | How long in seconds processing an item from workqueue takes. |
+| kubevirt | `cluster:kubevirt_non_schedulable_nodes:sum` | Recording rule | Gauge | The number of non-schedulable nodes in the cluster. |
 | kubevirt | `cluster:kubevirt_virt_controller_pods_running:count` | Recording rule | Gauge | The number of virt-controller pods that are running. |
 | kubevirt | `cluster:kubevirt_virt_operator_pods_running:count` | Recording rule | Gauge | The number of virt-operator pods that are running. |
 | kubevirt | `kubevirt_allocatable_nodes` | Recording rule | Gauge | The number of allocatable nodes in the cluster. |
@@ -158,10 +159,13 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `vmi:kubevirt_vmi_vcpu:count` | Recording rule | Gauge | The number of the VMI vCPUs. |
 | cluster-network-addons-operator | `kubevirt_cnao_cr_kubemacpool_deployed` | Metric | Gauge | KubeMacpool is deployed by CNAO CR |
 | cluster-network-addons-operator | `kubevirt_cnao_cr_ready` | Metric | Gauge | CNAO CR Ready |
-| cluster-network-addons-operator | `kubevirt_cnao_cr_kubemacpool_aggregated` | Recording rule | Gauge | Total count of KubeMacPool manager pods deployed by CNAO CR |
+| cluster-network-addons-operator | `cluster:kubevirt_cnao_cr_kubemacpool_deployed:sum` | Recording rule | Gauge | The number of KubeMacPool manager pods deployed by CNAO CR |
+| cluster-network-addons-operator | `cluster:kubevirt_cnao_kubemacpool_manager_up:sum` | Recording rule | Gauge | The number of KubeMacPool manager pods that are up |
+| cluster-network-addons-operator | `cluster:kubevirt_cnao_operator_up:sum` | Recording rule | Gauge | The number of CNAO pods that are up |
+| cluster-network-addons-operator | `kubevirt_cnao_cr_kubemacpool_aggregated` | Recording rule | Gauge | [Deprecated] Total count of KubeMacPool manager pods deployed by CNAO CR |
 | cluster-network-addons-operator | `kubevirt_cnao_kubemacpool_duplicate_macs` | Recording rule | Gauge | [DEPRECATED] Total count of duplicate KubeMacPool MAC addresses. This recording rule monitors VM MACs instead of running VMI MACs and will be removed in the next minor release. Use KubeMacPool's native VMI collision detection instead |
-| cluster-network-addons-operator | `kubevirt_cnao_kubemacpool_manager_up` | Recording rule | Gauge | Total count of running KubeMacPool manager pods |
-| cluster-network-addons-operator | `kubevirt_cnao_operator_up` | Recording rule | Gauge | Total count of running CNAO operators |
+| cluster-network-addons-operator | `kubevirt_cnao_kubemacpool_manager_up` | Recording rule | Gauge | [Deprecated] Total count of running KubeMacPool manager pods |
+| cluster-network-addons-operator | `kubevirt_cnao_operator_up` | Recording rule | Gauge | [Deprecated] Total count of running CNAO operators |
 | containerized-data-importer | `kubevirt_cdi_clone_progress_total` | Metric | Counter | The clone progress in percentage |
 | containerized-data-importer | `kubevirt_cdi_cr_ready` | Metric | Gauge | CDI install ready |
 | containerized-data-importer | `kubevirt_cdi_dataimportcron_outdated` | Metric | Gauge | DataImportCron has an outdated import |
