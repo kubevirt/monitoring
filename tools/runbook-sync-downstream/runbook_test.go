@@ -7,6 +7,8 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+
+	"github.com/kubevirt/monitoring/tools/runbook-sync-downstream/pkg/transform"
 )
 
 var _ = Describe("Runbook", func() {
@@ -20,7 +22,7 @@ var _ = Describe("Runbook", func() {
 					"kubectl get <another_other_something> -n kubevirt-hyperconverged -o json\n" +
 					"i'm a resource -> namespace: kubevirt-hyperconverged\n"
 
-			updateRunbookContent = replaceContents(testRunbookContent)
+			updateRunbookContent = transform.ReplaceContents(testRunbookContent)
 		})
 
 		It("should replace namespace in '-n kubevirt' format", func() {
