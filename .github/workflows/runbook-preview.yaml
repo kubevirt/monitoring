@@ -1,0 +1,54 @@
+name: Runbook Downstream Preview
+
+on:
+  pull_request:
+    paths:
+      - 'docs/runbooks/**.md'
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    name: Generate downstream preview
+    if: (github.repository == 'kubevirt/monitoring')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+
+      - name: Build preview tool
+        run: make build-runbook-preview
+
+      - name: Get changed runbook files
+        id: changed-files
+        run: |
+          FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD -- 'docs/runbooks/*.md')
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$FILES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          if [ -z "$FILES" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate downstream preview
+        if: steps.changed-files.outputs.has_changes == 'true'
+        run: |
+          echo "${{ steps.changed-files.outputs.files }}" | while read -r file; do
+            if [ -n "$file" ] && [ -f "$file" ]; then
+              echo "============================================"
+              echo "Preview: $file"
+              echo "============================================"
+              tools/runbook-sync-downstream/_out/runbook-preview "$file"
+              echo ""
+            fi
+          done
