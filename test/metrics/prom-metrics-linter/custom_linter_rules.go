@@ -30,18 +30,19 @@ import (
 
 func CustomMetricsValidation(problems []promlint.Problem, mf *dto.MetricFamily, operatorName, subOperatorName string) []promlint.Problem {
 	// Validate metric prefix
-	nameParts := strings.Split(*mf.Name, "_")
-
-	if nameParts[0] != operatorName {
+	if !(strings.HasPrefix(*mf.Name, operatorName+"_") || *mf.Name == operatorName) {
 		problems = append(problems, promlint.Problem{
 			Metric: *mf.Name,
-			Text:   fmt.Sprintf(`name need to start with %s_`, operatorName),
+			Text:   fmt.Sprintf(`name need to start with %s`, operatorName),
 		})
-	} else if operatorName != subOperatorName && nameParts[1] != subOperatorName {
-		problems = append(problems, promlint.Problem{
-			Metric: *mf.Name,
-			Text:   fmt.Sprintf(`name need to start with "%s_%s_"`, operatorName, subOperatorName),
-		})
+	} else if operatorName != subOperatorName {
+		fullPrefix := operatorName + "_" + subOperatorName
+		if !(strings.HasPrefix(*mf.Name, fullPrefix+"_") || *mf.Name == fullPrefix) {
+			problems = append(problems, promlint.Problem{
+				Metric: *mf.Name,
+				Text:   fmt.Sprintf(`name need to start with "%s_%s"`, operatorName, subOperatorName),
+			})
+		}
 	}
 
 	// If promlint fails on a "total" suffix, check also for "_timestamp_seconds" suffix. If it exists, do not fail
@@ -99,15 +100,19 @@ func validateRecordingRuleNameStructure(name string) ([]string, []promlint.Probl
 func validateRecordingRuleMetricPrefix(name string, parts []string, operatorName, subOperatorName string) []promlint.Problem {
 	var problems []promlint.Problem
 	metricPart := parts[1]
-	expectedPrefix := operatorName + "_"
-	if operatorName != subOperatorName {
-		expectedPrefix = operatorName + "_" + subOperatorName + "_"
-	}
-	if !strings.HasPrefix(metricPart, expectedPrefix) {
+	if !(strings.HasPrefix(metricPart, operatorName+"_") || metricPart == operatorName) {
 		problems = append(problems, promlint.Problem{
 			Metric: name,
-			Text:   fmt.Sprintf("metric (second segment in level:metric:operations) need to start with %q", expectedPrefix),
+			Text:   fmt.Sprintf("metric (second segment in level:metric:operations) need to start with %q", operatorName),
 		})
+	} else if operatorName != subOperatorName {
+		fullPrefix := operatorName + "_" + subOperatorName
+		if !(strings.HasPrefix(metricPart, fullPrefix+"_") || metricPart == fullPrefix) {
+			problems = append(problems, promlint.Problem{
+				Metric: name,
+				Text:   fmt.Sprintf("metric (second segment in level:metric:operations) need to start with %q", fullPrefix),
+			})
+		}
 	}
 	return problems
 }
