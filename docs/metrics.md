@@ -38,7 +38,7 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_virt_operator_leading_status` | Metric | Gauge | Indication for an operating virt-operator. |
 | kubevirt | `kubevirt_virt_operator_ready_status` | Metric | Gauge | Indication for a virt-operator that is ready to take the lead. |
 | kubevirt | `kubevirt_vm_create_date_timestamp_seconds` | Metric | Gauge | Virtual Machine creation timestamp. |
-| kubevirt | `kubevirt_vm_created_by_pod_total` | Metric | Counter | The total number of VMs created by namespace and virt-api pod, since install. |
+| kubevirt | `kubevirt_vm_created_by_pod_total` | Metric | Counter | [Deprecated] The total number of VMs created by namespace and virt-api pod, since install. |
 | kubevirt | `kubevirt_vm_disk_allocated_size_bytes` | Metric | Gauge | Allocated disk size of a Virtual Machine in bytes, based on its PersistentVolumeClaim. Includes persistentvolumeclaim (PVC name), volume_mode (disk presentation mode: Filesystem or Block), and device (disk name). |
 | kubevirt | `kubevirt_vm_error_status_last_transition_timestamp_seconds` | Metric | Counter | Virtual Machine last transition timestamp to error status. |
 | kubevirt | `kubevirt_vm_info` | Metric | Gauge | Information about Virtual Machines. |
@@ -125,33 +125,53 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_workqueue_retries_total` | Metric | Counter | Total number of retries handled by workqueue |
 | kubevirt | `kubevirt_workqueue_unfinished_work_seconds` | Metric | Gauge | How many seconds of work have been in progress without being observed by work_duration. Large values indicate stuck threads. The number of stuck threads can be deduced by observing the rate at which this value increases. |
 | kubevirt | `kubevirt_workqueue_work_duration_seconds` | Metric | Histogram | How long in seconds processing an item from workqueue takes. |
+| kubevirt | `cluster:kubevirt_api_request_deprecated_total:sum` | Recording rule | Counter | The total number of requests to deprecated KubeVirt APIs, by API verb (e.g., LIST, WATCH). |
+| kubevirt | `cluster:kubevirt_nodes_allocatable:count` | Recording rule | Gauge | The number of allocatable nodes in the cluster. |
+| kubevirt | `cluster:kubevirt_nodes_with_kvm:count` | Recording rule | Gauge | The number of nodes in the cluster that have the devices.kubevirt.io/kvm resource available. |
 | kubevirt | `cluster:kubevirt_non_schedulable_nodes:sum` | Recording rule | Gauge | The number of non-schedulable nodes in the cluster. |
+| kubevirt | `cluster:kubevirt_virt_api_up:sum` | Recording rule | Gauge | The number of virt-api pods that are up. |
 | kubevirt | `cluster:kubevirt_virt_controller_pods_running:count` | Recording rule | Gauge | The number of virt-controller pods that are running. |
+| kubevirt | `cluster:kubevirt_virt_controller_ready:sum` | Recording rule | Gauge | The number of virt-controller pods that are ready. |
+| kubevirt | `cluster:kubevirt_virt_controller_up:sum` | Recording rule | Gauge | The number of virt-controller pods that are up. |
+| kubevirt | `cluster:kubevirt_virt_handler_up:sum` | Recording rule | Gauge | The number of virt-handler pods that are up. |
+| kubevirt | `cluster:kubevirt_virt_operator_leading:sum` | Recording rule | Gauge | The number of virt-operator pods that are leading. |
 | kubevirt | `cluster:kubevirt_virt_operator_pods_running:count` | Recording rule | Gauge | The number of virt-operator pods that are running. |
-| kubevirt | `kubevirt_allocatable_nodes` | Recording rule | Gauge | The number of allocatable nodes in the cluster. |
-| kubevirt | `kubevirt_api_request_deprecated_total` | Recording rule | Counter | The total number of requests to deprecated KubeVirt APIs. |
-| kubevirt | `kubevirt_memory_delta_from_requested_bytes` | Recording rule | Gauge | The delta between the pod with highest memory working set or rss and its requested memory for each container, virt-controller, virt-handler, virt-api, virt-operator and compute(virt-launcher). |
-| kubevirt | `kubevirt_nodes_with_kvm` | Recording rule | Gauge | The number of nodes in the cluster that have the devices.kubevirt.io/kvm resource available. |
-| kubevirt | `kubevirt_number_of_vms` | Recording rule | Gauge | The number of VMs in the cluster by namespace. |
-| kubevirt | `kubevirt_virt_api_up` | Recording rule | Gauge | The number of virt-api pods that are up. |
-| kubevirt | `kubevirt_virt_controller_ready` | Recording rule | Gauge | The number of virt-controller pods that are ready. |
-| kubevirt | `kubevirt_virt_controller_up` | Recording rule | Gauge | The number of virt-controller pods that are up. |
-| kubevirt | `kubevirt_virt_handler_up` | Recording rule | Gauge | The number of virt-handler pods that are up. |
-| kubevirt | `kubevirt_virt_operator_leading` | Recording rule | Gauge | The number of virt-operator pods that are leading. |
-| kubevirt | `kubevirt_virt_operator_ready` | Recording rule | Gauge | The number of virt-operator pods that are ready. |
-| kubevirt | `kubevirt_virt_operator_up` | Recording rule | Gauge | The number of virt-operator pods that are up. |
-| kubevirt | `kubevirt_vm_container_memory_request_margin_based_on_rss_bytes` | Recording rule | Gauge | Difference between requested memory and rss for VM containers (request margin). Can be negative when usage exceeds request. |
-| kubevirt | `kubevirt_vm_container_memory_request_margin_based_on_working_set_bytes` | Recording rule | Gauge | Difference between requested memory and working set for VM containers (request margin). Can be negative when usage exceeds request. |
-| kubevirt | `kubevirt_vm_created_total` | Recording rule | Counter | The total number of VMs created by namespace, since install. |
-| kubevirt | `kubevirt_vmi_guest_vcpu_queue` | Recording rule | Gauge | Guest queue length. |
-| kubevirt | `kubevirt_vmi_memory_used_bytes` | Recording rule | Gauge | Amount of `used` memory as seen by the domain. |
+| kubevirt | `cluster:kubevirt_virt_operator_ready:sum` | Recording rule | Gauge | The number of virt-operator pods that are ready. |
+| kubevirt | `cluster:kubevirt_virt_operator_up:sum` | Recording rule | Gauge | The number of virt-operator pods that are up. |
+| kubevirt | `container:kubevirt_memory_delta_from_requested_bytes:max` | Recording rule | Gauge | The delta between the pod with highest memory working set or rss and its requested memory for each container, virt-controller, virt-handler, virt-api, virt-operator and compute(virt-launcher). |
+| kubevirt | `kubevirt_allocatable_nodes` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_nodes_allocatable:count. |
+| kubevirt | `kubevirt_api_request_deprecated_total` | Recording rule | Counter | [Deprecated] Replaced by cluster:kubevirt_api_request_deprecated_total:sum. |
+| kubevirt | `kubevirt_memory_delta_from_requested_bytes` | Recording rule | Gauge | [Deprecated] Replaced by container:kubevirt_memory_delta_from_requested_bytes:max. |
+| kubevirt | `kubevirt_nodes_with_kvm` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_nodes_with_kvm:count. |
+| kubevirt | `kubevirt_number_of_vms` | Recording rule | Gauge | [Deprecated] Replaced by namespace:kubevirt_vm:sum. |
+| kubevirt | `kubevirt_virt_api_up` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_virt_api_up:sum. |
+| kubevirt | `kubevirt_virt_controller_ready` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_virt_controller_ready:sum. |
+| kubevirt | `kubevirt_virt_controller_up` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_virt_controller_up:sum. |
+| kubevirt | `kubevirt_virt_handler_up` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_virt_handler_up:sum. |
+| kubevirt | `kubevirt_virt_operator_leading` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_virt_operator_leading:sum. |
+| kubevirt | `kubevirt_virt_operator_ready` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_virt_operator_ready:sum. |
+| kubevirt | `kubevirt_virt_operator_up` | Recording rule | Gauge | [Deprecated] Replaced by cluster:kubevirt_virt_operator_up:sum. |
+| kubevirt | `kubevirt_vm_container_memory_request_margin_based_on_rss_bytes` | Recording rule | Gauge | [Deprecated] Replaced by pod_container:kubevirt_vm_memory_request_margin_based_on_rss_bytes:sum. |
+| kubevirt | `kubevirt_vm_container_memory_request_margin_based_on_working_set_bytes` | Recording rule | Gauge | [Deprecated] Replaced by pod_container:kubevirt_vm_memory_request_margin_based_on_working_set_bytes:sum. |
+| kubevirt | `kubevirt_vm_created_total` | Recording rule | Counter | [Deprecated] The total number of VMs created by namespace, since install. |
+| kubevirt | `kubevirt_vmi_guest_vcpu_queue` | Recording rule | Gauge | [Deprecated] Replaced by vmi:kubevirt_vmi_guest_queue_length:sum. |
+| kubevirt | `kubevirt_vmi_memory_used_bytes` | Recording rule | Gauge | [Deprecated] Replaced by vmi:kubevirt_vmi_memory_used_bytes:sum. |
 | kubevirt | `kubevirt_vmi_migration_data_total_bytes` | Recording rule | Counter | [Deprecated] Replaced by kubevirt_vmi_migration_data_bytes_total. |
-| kubevirt | `kubevirt_vmi_phase_count` | Recording rule | Gauge | Sum of VMIs per phase and node. `phase` can be one of the following: [`Pending`, `Scheduling`, `Scheduled`, `Running`, `Succeeded`, `Failed`, `Unknown`]. |
-| kubevirt | `kubevirt_vmsnapshot_disks_restored_from_source` | Recording rule | Gauge | Returns the total number of virtual machine disks restored from the source virtual machine. |
-| kubevirt | `kubevirt_vmsnapshot_disks_restored_from_source_bytes` | Recording rule | Gauge | Returns the amount of space in bytes restored from the source virtual machine. |
-| kubevirt | `kubevirt_vmsnapshot_persistentvolumeclaim_labels` | Recording rule | Gauge | Returns the labels of the persistent volume claims that are used for restoring virtual machines. |
+| kubevirt | `kubevirt_vmi_phase_count` | Recording rule | Gauge | [Deprecated] Replaced by node:kubevirt_vmi_phase:sum. |
+| kubevirt | `kubevirt_vmsnapshot_disks_restored_from_source` | Recording rule | Gauge | [Deprecated] Replaced by vm:kubevirt_vmsnapshot_disks_restored:sum. |
+| kubevirt | `kubevirt_vmsnapshot_disks_restored_from_source_bytes` | Recording rule | Gauge | [Deprecated] Replaced by vm:kubevirt_vmsnapshot_restored_bytes:sum. |
+| kubevirt | `kubevirt_vmsnapshot_persistentvolumeclaim_labels` | Recording rule | Gauge | [Deprecated] Replaced by pvc:kubevirt_vmsnapshot_labels:info. |
+| kubevirt | `namespace:kubevirt_vm:sum` | Recording rule | Gauge | The number of VMs in the cluster by namespace. |
+| kubevirt | `node:kubevirt_vmi_phase:sum` | Recording rule | Gauge | Sum of VMIs per phase and node. `phase` can be one of the following: [`Pending`, `Scheduling`, `Scheduled`, `Running`, `Succeeded`, `Failed`, `Unknown`]. |
+| kubevirt | `pod_container:kubevirt_vm_memory_request_margin_based_on_rss_bytes:sum` | Recording rule | Gauge | Difference between requested memory and rss for VM containers (request margin). Can be negative when usage exceeds request. |
+| kubevirt | `pod_container:kubevirt_vm_memory_request_margin_based_on_working_set_bytes:sum` | Recording rule | Gauge | Difference between requested memory and working set for VM containers (request margin). Can be negative when usage exceeds request. |
+| kubevirt | `pvc:kubevirt_vmsnapshot_labels:info` | Recording rule | Gauge | Returns the labels of the persistent volume claims that are used for restoring virtual machines. |
+| kubevirt | `vm:kubevirt_vmsnapshot_disks_restored:sum` | Recording rule | Gauge | Returns the total number of virtual machine disks restored from the source virtual machine. |
+| kubevirt | `vm:kubevirt_vmsnapshot_restored_bytes:sum` | Recording rule | Gauge | Returns the amount of space in bytes restored from the source virtual machine. |
+| kubevirt | `vmi:kubevirt_vmi_guest_queue_length:sum` | Recording rule | Gauge | Guest queue length. |
 | kubevirt | `vmi:kubevirt_vmi_memory_available_bytes:sum` | Recording rule | Gauge | Sum of available memory bytes per VMI (aggregated by name, namespace). |
 | kubevirt | `vmi:kubevirt_vmi_memory_headroom_ratio:sum` | Recording rule | Gauge | Usable memory to available memory ratio per VMI (aggregated by name, namespace). |
+| kubevirt | `vmi:kubevirt_vmi_memory_used_bytes:sum` | Recording rule | Gauge | Amount of `used` memory as seen by the domain. |
 | kubevirt | `vmi:kubevirt_vmi_pgmajfaults:rate30m` | Recording rule | Gauge | Rate of major page faults over 30 minutes per VMI (aggregated by name, namespace). |
 | kubevirt | `vmi:kubevirt_vmi_pgmajfaults:rate5m` | Recording rule | Gauge | Rate of major page faults over 5 minutes per VMI (aggregated by name, namespace). |
 | kubevirt | `vmi:kubevirt_vmi_swap_traffic_bytes:rate30m` | Recording rule | Gauge | Total swap I/O traffic rate over 30 minutes per VMI (swap in + swap out, aggregated by name, namespace). |
