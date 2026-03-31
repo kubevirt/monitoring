@@ -29,7 +29,15 @@ traffic being delivered to the wrong targets.
 3. For each colliding MAC, find the VMIs involved:
 
    ```bash
-   $ kubectl get vmi -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.metadata.name}{"\t"}{.status.interfaces[*].mac}{"\n"}{end}' | grep -i "<MAC_ADDRESS>"
+   $ export MAC=<MAC_ADDRESS>
+   $ kubectl get vmi -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.metadata.name}{"\t"}{.status.interfaces[*].mac}{"\n"}{end}' | grep -i "$MAC"
+   ```
+
+4. For each colliding MAC, find Pods with Multus secondary interfaces involved:
+
+   ```bash
+   $ export MAC=<MAC_ADDRESS>
+   $ kubectl get pod -A -o json | jq -r --arg mac "$MAC" '.items[] | .metadata as $m | (.metadata.annotations["k8s.v1.cni.cncf.io/network-status"] // "[]" | fromjson)[] | select(.mac // "" | test($mac; "i")) | "\($m.namespace)\t\($m.name)\t\(.mac)"'
    ```
 
 ## Mitigation
