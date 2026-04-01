@@ -9,8 +9,8 @@ uninterruptible threads. The run‑queue length is derived from
 
 ## Impact
 
-* Moderate CPU contention inside the guest VM. Latency might spike but workload still
-progresses.
+* Moderate CPU contention inside the guest VM. Latency might spike, but workload
+still progresses.
 
 * An early signal that the VM might need additional vCPUs or that a short‑lived
 process is causing bursts.
