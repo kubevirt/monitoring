@@ -11,22 +11,20 @@ traffic being delivered to the wrong targets.
 
 ## Diagnosis
 
-1. Set the `KMP_NAMESPACE` environment variable:
-
-   ```bash
-   $ export KMP_NAMESPACE="$(kubectl get pod -A --no-headers -l \
-      control-plane=mac-controller-manager | awk '{print $1}')"
-   ```
-
-2. Query the `kmp_mac_collisions` metric to see which MACs are colliding
+1. Query the `kmp_mac_collisions` metric to see which MACs are colliding
    (value > 1 means collision):
 
-   ```bash
-   $ kubectl exec -n $KMP_NAMESPACE deployment/kubemacpool-mac-controller-manager \
-      -c manager -- curl -s http://localhost:8080/metrics | grep kmp_mac_collisions
+   <!--USstart-->
+   **Note:** You can use the Prometheus metrics explorer to run the expression.
+   <!--USend-->
+
+   <!--DS: **Note:** You can use the Openshift metrics explorer available at 'https://{OPENSHIFT_BASE_URL}/monitoring/query-browser'.-->
+
+   ```promql
+   $ kmp_mac_collisions > 1
    ```
 
-3. For each colliding MAC, find the VMIs involved:
+2. For each colliding MAC, find the VMIs involved:
 
    ```bash
    $ kubectl get vmi -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.metadata.name}{"\t"}{.status.interfaces[*].mac}{"\n"}{end}' | grep -i "<MAC_ADDRESS>"
