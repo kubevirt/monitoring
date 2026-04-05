@@ -5,8 +5,9 @@
 This alert fires when no `virt-api` pod in a `Ready` state has been detected
 for 10 minutes.
 
-The `virt-api` serves the KubeVirt API. Without a ready `virt-api`, API
-requests for virtual machines and other KubeVirt resources cannot be served.
+The `virt-api` serves the KubeVirt API.
+Without a ready `virt-api`, API requests for virtual machines
+and other KubeVirt resources cannot be served.
 
 ## Impact
 
