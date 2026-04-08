@@ -2,7 +2,7 @@
 
 ## Meaning
 
-No running `virt-handler` pod has been detected for 10 minutes..
+No running `virt-handler` pod has been detected for 10 minutes.
 
 The `virt-handler` runs on every node that can schedule VMIs. It is
 responsible for domain lifecycle, network configuration, and other
