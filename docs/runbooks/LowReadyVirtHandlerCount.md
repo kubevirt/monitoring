@@ -6,7 +6,7 @@ This alert fires when one or more `virt-handler` pods are running, but not
 all of them have been in a `Ready` state for the last 10 minutes.
 
 The `virt-handler` runs on every node that can schedule VMIs (as a
-DaemonSet). Each node typically has one `virt-handler` pod.
+DaemonSet). Each node has one `virt-handler` pod.
 
 ## Impact
 
