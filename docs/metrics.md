@@ -112,6 +112,7 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_vmi_storage_read_traffic_bytes_total` | Metric | Counter | Total number of bytes read from storage. |
 | kubevirt | `kubevirt_vmi_storage_write_times_seconds_total` | Metric | Counter | Total time spent on write operations. |
 | kubevirt | `kubevirt_vmi_storage_write_traffic_bytes_total` | Metric | Counter | Total number of written bytes. |
+| kubevirt | `kubevirt_vmi_sync_total` | Metric | Counter | Total number of times a VirtualMachineInstance has been synced. |
 | kubevirt | `kubevirt_vmi_vcpu_delay_seconds_total` | Metric | Counter | Amount of time spent by each vcpu waiting in the queue instead of running. |
 | kubevirt | `kubevirt_vmi_vcpu_seconds_total` | Metric | Counter | Total amount of time spent in each state by each vcpu (cpu_time excluding hypervisor time). Where `id` is the vcpu identifier and `state` can be one of the following: [`OFFLINE`, `RUNNING`, `BLOCKED`]. |
 | kubevirt | `kubevirt_vmi_vcpu_wait_seconds_total` | Metric | Counter | Amount of time spent by each vcpu while waiting on I/O. |
