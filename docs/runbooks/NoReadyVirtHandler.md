@@ -3,7 +3,7 @@
 ## Meaning
 
 This alert fires when no `virt-handler` pod in a `Ready` state has been
-detected for 10 minutes.
+detected for 5 minutes.
 
 The `virt-handler` runs on every node that can schedule VMIs (as a
 DaemonSet). It is responsible for domain lifecycle and node-level operations
@@ -11,9 +11,8 @@ for virtual machine instances.
 
 ## Impact
 
-No node has a ready `virt-handler`. Virtual machine instances cannot be
-properly managed: domain updates, migrations, and node-level operations will
-fail or be delayed until at least one `virt-handler` becomes ready.
+This is a warning level alert. Virtual machine instances may experience
+minor delays until at least one `virt-handler` becomes ready.
 
 ## Diagnosis
 
@@ -23,25 +22,25 @@ fail or be delayed until at least one `virt-handler` becomes ready.
    $ export NAMESPACE="$(kubectl get kubevirt -A -o custom-columns="":.metadata.namespace)"
    ```
 
-2. Check the status of the `virt-handler` DaemonSet and pods:
+2. Check the status of the `virt-controller` deployment and pods:
 
    ```bash
-   $ kubectl -n $NAMESPACE get daemonset virt-handler
-   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-handler -o wide
+   $ kubectl -n $NAMESPACE get deployment virt-controller
+   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller -o wide
    ```
 
-3. Check DaemonSet and pod events:
+3. Check deployment and pod events:
 
    ```bash
-   $ kubectl -n $NAMESPACE describe daemonset virt-handler
-   $ kubectl -n $NAMESPACE describe pod -l kubevirt.io=virt-handler
+   $ kubectl -n $NAMESPACE describe deployment virt-controller
+   $ kubectl -n $NAMESPACE describe pod -l kubevirt.io=virt-controller
    ```
 
-4. Review logs of any running but not ready `virt-handler` pod:
+4. Review logs of any running but not ready `virt-controller` pod:
 
    ```bash
-   $ kubectl -n $NAMESPACE logs <virt-handler-pod-name> --previous
-   $ kubectl -n $NAMESPACE logs <virt-handler-pod-name>
+   $ kubectl -n $NAMESPACE logs <virt-controller-pod-name> --previous
+   $ kubectl -n $NAMESPACE logs <virt-controller-pod-name>
    ```
 
 5. Check for cluster-wide node or scheduling issues:
