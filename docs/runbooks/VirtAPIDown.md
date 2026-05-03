@@ -2,11 +2,13 @@
 
 ## Meaning
 
-No running `virt-api` pod has been detected for 10 minutes.
+The `virt-api` deployment has fewer than the expected number of
+replicas available for 5 minutes.
 
 ## Impact
 
-KubeVirt objects cannot send API calls.
+This is a warning level alert. KubeVirt objects may experience degraded
+API performance.
 
 ## Diagnosis
 
@@ -19,7 +21,7 @@ KubeVirt objects cannot send API calls.
 2. Check the status of the `virt-api` pods:
 
    ```bash
-   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-api
+   $ kubectl -n $NAMESPACE get pods -l kubevirt.io=virt-controller
    ```
 
 3. Check the status of the `virt-api` deployment:

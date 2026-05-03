@@ -1,0 +1,209 @@
+language: en-US
+
+reviews:
+  profile: assertive
+  high_level_summary: false
+  high_level_summary_in_walkthrough: false
+  poem: false
+  review_status: false
+  collapse_walkthrough: false
+  changed_files_summary: false
+  sequence_diagrams: false
+  assess_linked_issues: false
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  suggested_reviewers: false
+  enable_prompt_for_ai_agents: false
+  auto_review:
+    enabled: true
+    drafts: false
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+    simplify:
+      enabled: false
+  pre_merge_checks:
+    title:
+      mode: "off"
+    description:
+      mode: "off"
+    issue_assessment:
+      mode: "off"
+    docstrings:
+      mode: "off"
+
+  path_instructions:
+    - path: "docs/runbooks/**/*.md"
+      instructions: |
+        These are KubeVirt alert runbooks. Each runbook documents a Prometheus
+        alert. The alert definitions live in OTHER repositories in the kubevirt
+        GitHub organization (linked repositories), NOT in this repo.
+
+        YOUR PRIMARY JOB is to use the linked repositories to find the actual
+        alert source code and deeply verify the runbook against it. For each
+        runbook file, do the following:
+
+        ## 1. Find the alert definition in the linked repos
+
+        Search ALL linked kubevirt org repositories for the **exact alert name**
+        (the H1 heading / filename, e.g., "VirtControllerDown"). Do NOT rely
+        on name prefixes to guess the repo — alert names do not always contain
+        the operator name. Search every linked repo until you find it. The
+        alert is defined as a PrometheusRule or in Go code using the
+        operator-observability framework.
+
+        IMPORTANT: The alert may not be merged yet — it may only exist in an
+        open pull request in the source repository. The runbook PR description
+        should contain a link to the alert PR. If the alert is not found on
+        the main branch, search open PRs in the linked repositories for the
+        alert name. If no alert definition can be found anywhere (neither
+        merged nor in an open PR), flag this clearly in the review.
+
+        Once found, identify:
+        - The **PromQL expression** (`expr` field)
+        - The **`for` duration** (how long the condition must hold before firing)
+        - The **severity** label
+        - The **operator_health_impact** label
+        - Any other labels (kubernetes_operator_part_of, etc.)
+
+        ## 2. Trace the PromQL expression
+
+        Break down the PromQL expression:
+        - If it references **recording rules**, find those recording rule
+          definitions in the same repo and trace what they compute.
+        - If it references **metrics**, find where those metrics are defined and
+          incremented/set in the Go source code. Understand what each metric
+          measures (e.g., counter of API errors, gauge of running pods).
+        - Understand the **complete chain**: metric → recording rule → alert
+          expression → when it fires.
+
+        ## 3. Print alert context at the top of every review comment
+
+        For EVERY runbook file reviewed, you MUST start your comment with
+        an alert context block. This is MANDATORY — never skip it. It must
+        appear at the very top of the comment before any review feedback.
+
+        Use this EXACT format (all fields required, do not omit any):
+
+        ---
+        **Alert source code:** `<org>/<repo>` — `<file path>` (line <N>)
+        **Alert expr:** `<paste the FULL PromQL expression here>`
+        **Alert `for`:** `<duration>`
+        **Alert labels:** `severity=<val>`, `operator_health_impact=<val>`,
+        `kubernetes_operator_part_of=<val>`, `kubernetes_operator_component=<val>`
+        **Recording rules:**
+        - `<rule name>`: `<rule expr>` — `<repo>/<file path>`
+        **Metrics:**
+        - `<metric name>` (<type>): `<repo>/<file path>` (line <N>)
+        ---
+
+        The **Alert expr** field is critical — always include the full PromQL
+        expression so the reviewer can verify correctness at a glance.
+
+        If the alert was found in an open PR (not merged), add:
+        **Note:** Alert found in open PR: <PR URL>
+
+        If the alert could not be found, state:
+        **Alert source code:** NOT FOUND — cannot verify this runbook
+
+        ## 4. Verify the runbook against the source
+
+        With full understanding of the alert, verify each section:
+
+        **Meaning section:**
+        - Does it accurately describe what the PromQL expression evaluates?
+        - Is the firing condition correct (threshold, duration, component)?
+        - If the expression checks `virt-controller` pods, the runbook must not
+          say `virt-api` (or vice versa). Flag any component mismatches.
+        - Is the `for` duration mentioned and correct?
+
+        **Impact section:**
+        - Based on the code where the metrics are set, what actually breaks when
+          this alert fires? Does the runbook accurately describe the impact?
+        - Are there downstream effects the runbook misses?
+
+        **Diagnosis section:**
+        - Do the `kubectl`/`oc` commands target the correct resources, labels,
+          and namespaces for the component the alert actually monitors?
+        - Are the label selectors correct? (e.g., `kubevirt.io=virt-controller`
+          vs `kubevirt.io=virt-api`)
+        - Do the commands help the user verify the condition the PromQL
+          expression checks?
+        - Are the commands syntactically valid?
+
+        **Mitigation section:**
+        - Based on the root causes visible in the source code, are the suggested
+          mitigations relevant and actionable?
+        - Are there obvious mitigations missing?
+
+        ## 5. Formatting rules
+
+        - Every runbook MUST have H2 sections in order: `## Meaning`,
+          `## Impact`, `## Diagnosis`, `## Mitigation`.
+        - H1 heading must match the filename (e.g., `VirtAPIDown.md` →
+          `# VirtAPIDown`).
+        - Fenced code blocks: use ```` ```bash ```` not ```` ``` bash ````.
+          No space before the language tag.
+        - Line length: 80 chars for prose (code blocks exempt).
+        - `<!--DS: ... -->` and `<!--USstart-->...<!--USend-->` comment blocks
+          are intentional downstream/upstream markers. Do not flag them.
+
+  tools:
+    markdownlint:
+      enabled: true
+    languagetool:
+      enabled: true
+      level: picky
+    shellcheck:
+      enabled: true
+
+knowledge_base:
+  learnings:
+    scope: global
+  pull_requests:
+    scope: global
+  linked_repositories:
+    - repository: kubevirt/kubevirt
+      instructions: >
+        Core KubeVirt. Contains alert definitions, recording rules, and
+        metric definitions for virt-api, virt-controller, virt-handler,
+        virt-launcher, virt-operator. Search this repo for any alert name.
+    - repository: kubevirt/containerized-data-importer
+      instructions: >
+        Containerized Data Importer (CDI). Contains alert definitions,
+        recording rules, and metric definitions. Search this repo for
+        any alert name.
+    - repository: kubevirt/hyperconverged-cluster-operator
+      instructions: >
+        HyperConverged Cluster Operator (HCO). Contains alert definitions,
+        recording rules, and metric definitions. Search this repo for
+        any alert name.
+    - repository: kubevirt/ssp-operator
+      instructions: >
+        Scheduling, Scale, and Performance operator (SSP). Contains alert
+        definitions, recording rules, and metric definitions. Search this
+        repo for any alert name.
+    - repository: kubevirt/cluster-network-addons-operator
+      instructions: >
+        Cluster Network Addons Operator (CNAO). Contains alert definitions
+        and metric definitions. Search this repo for any alert name.
+    - repository: kubevirt/hostpath-provisioner-operator
+      instructions: >
+        HostPath Provisioner Operator (HPP). Contains alert definitions
+        and metric definitions. Search this repo for any alert name.
+    - repository: k8snetworkplumbingwg/kubemacpool
+      instructions: >
+        Kubemacpool. Contains alert definitions and metric definitions.
+        Search this repo for any alert name.
+    - repository: kubevirt/application-aware-quota
+      instructions: >
+        Application Aware Quota (AAQ). Contains alert definitions and
+        metric definitions. Search this repo for any alert name.
+    - repository: kubevirt/hostpath-provisioner
+      instructions: >
+        HostPath Provisioner (HPP). Contains metric definitions and
+        possibly alert definitions. Search this repo for any alert name.
+        Note: this is the provisioner itself, not the operator.

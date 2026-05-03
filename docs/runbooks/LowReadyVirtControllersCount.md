@@ -2,13 +2,13 @@
 
 ## Meaning
 
-This alert fires when one or more `virt-controller` pods are running, but not
-all of them have been in a `Ready` state for the last 10 minutes.
+This alert fires when the `virt-controller` deployment has zero available
+replicas for the last 5 minutes.
 
-A `virt-controller` device monitors the custom resource definitions (CRDs) of a
-virtual machine instance (VMI) and manages the associated pods. The device
-create pods for VMIs and manages the lifecycle of the pods. The device is
-critical for cluster-wide virtualization functionality.
+The `virt-controller` monitors the `kubevirt_vmi_memory_used_bytes`
+metric and manages the associated pods. The device creates pods for
+VMIs and manages the lifecycle of the pods. The device is critical
+for cluster-wide virtualization functionality.
 
 ## Impact
 
@@ -27,7 +27,7 @@ launching a new VMI or shutting down an existing VMI.
 2. Verify a `virt-controller` device is available:
 
    ```bash
-   $ kubectl get deployment -n $NAMESPACE virt-controller -o jsonpath='{.status.readyReplicas}'
+   $ kubectl get deployment -n $NAMESPACE virt-handler -o jsonpath='{.status.readyReplicas}'
    ```
 
 3. Check the status of the `virt-controller` deployment:
