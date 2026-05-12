@@ -1,0 +1,166 @@
+# CodeRabbit Configuration
+# Full reference: https://docs.coderabbit.ai/reference/configuration
+
+# ---------------------------------------------------------------------------
+# General
+# ---------------------------------------------------------------------------
+language: en-US
+tone_instructions: "Act as senior engineer: professional, constructive feedback only. Serious about runbook accuracy, alert verification, and dashboard quality. Flag issues with file/line references. End positively."
+early_access: false
+enable_free_tier: true
+
+# ---------------------------------------------------------------------------
+# Reviews > General
+# ---------------------------------------------------------------------------
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: false
+  high_level_summary_in_walkthrough: false
+  auto_title_placeholder: ""
+  review_status: false
+  review_details: false
+  commit_status: false
+  fail_commit_status: false
+  collapse_walkthrough: true
+  changed_files_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: false
+  auto_apply_labels: false
+  suggested_reviewers: false
+  auto_assign_reviewers: false
+  in_progress_fortune: false
+  poem: false
+  enable_prompt_for_ai_agents: true
+  path_filters:
+    - "!**/vendor/**"
+  path_instructions:
+    - path: "docs/runbooks/**"
+      instructions: "Follow docs/review_guidelines/runbooks.md"
+    - path: "docs/**"
+      instructions: "Follow docs/review_guidelines/docs.md"
+    - path: "dashboards/**"
+      instructions: "Follow docs/review_guidelines/dashboards.md"
+  abort_on_close: true
+  disable_cache: false
+  slop_detection:
+    enabled: false
+
+  # ---------------------------------------------------------------------------
+  # Reviews > Auto Review
+  # ---------------------------------------------------------------------------
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 10
+    ignore_title_keywords:
+      - "WIP"
+    labels:
+      - "!do-not-merge/work-in-progress"
+    drafts: false
+
+  # ---------------------------------------------------------------------------
+  # Reviews > Finishing Touches
+  # ---------------------------------------------------------------------------
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+    simplify:
+      enabled: false
+
+  # ---------------------------------------------------------------------------
+  # Reviews > Pre-merge Checks
+  # ---------------------------------------------------------------------------
+  pre_merge_checks:
+    override_requested_reviewers_only: false
+    docstrings:
+      mode: "off"
+    title:
+      mode: "off"
+    description:
+      mode: "off"
+    issue_assessment:
+      mode: "off"
+
+  # ---------------------------------------------------------------------------
+  # Review Tools: all enabled by default (markdownlint, yamllint, shellcheck, gitleaks, etc.)
+  # ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Chat
+# ---------------------------------------------------------------------------
+chat:
+  art: true
+  allow_non_org_members: true
+  auto_reply: true
+  integrations:
+    jira:
+      usage: disabled
+    linear:
+      usage: disabled
+
+# ---------------------------------------------------------------------------
+# Knowledge Base
+# ---------------------------------------------------------------------------
+knowledge_base:
+  opt_out: false
+  web_search:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "docs/review_guidelines/runbooks.md"
+  learnings:
+    scope: global
+  issues:
+    scope: global
+  jira:
+    usage: disabled
+  linear:
+    usage: disabled
+  pull_requests:
+    scope: global
+  mcp:
+    usage: disabled
+  # Linked repositories — alert definitions live in these operator repos.
+  linked_repositories:
+    - repository: "kubevirt/kubevirt"
+      instructions: "Core virtualization platform. Search here for alert definitions, PromQL expressions, metrics registration, and recording rules."
+    - repository: "kubevirt/containerized-data-importer"
+      instructions: "CDI operator. Search here for CDI* alert definitions, metrics, and recording rules."
+    - repository: "kubevirt/hyperconverged-cluster-operator"
+      instructions: "HCO meta-operator. Search here for HCO* alert definitions and metrics."
+    - repository: "kubevirt/ssp-operator"
+      instructions: "SSP operator. Search here for SSP* alert definitions and metrics."
+    - repository: "kubevirt/cluster-network-addons-operator"
+      instructions: "CNAO operator. Search here for network-related alert definitions and metrics."
+    - repository: "kubevirt/hostpath-provisioner-operator"
+      instructions: "HPP operator. Search here for HPP* alert definitions and metrics."
+    - repository: "kubevirt/hostpath-provisioner"
+      instructions: "Hostpath provisioner. Search here for HPP storage-related alert definitions and metrics."
+    - repository: "kubevirt/application-aware-quota"
+      instructions: "AAQ operator. Search here for AAQ* alert definitions and metrics."
+    - repository: "kubevirt/monitoring"
+      instructions: "This repo itself. Use for cross-referencing between branches, past PRs, and existing runbooks."
+    # Non-kubevirt org
+    - repository: "k8snetworkplumbingwg/kubemacpool"
+      instructions: "KubeMacPool. Search here for MAC pool related alert definitions and metrics."
+
+# ---------------------------------------------------------------------------
+# Issue Enrichment
+# ---------------------------------------------------------------------------
+issue_enrichment:
+  auto_enrich:
+    enabled: false
+  planning:
+    enabled: false
+    auto_planning:
+      enabled: false
+  labeling:
+    auto_apply_labels: false
