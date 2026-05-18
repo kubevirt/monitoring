@@ -48,3 +48,20 @@ runbook-sync-downstream: build-runbook-sync-downstream
 .PHONY: build-runbook-preview
 build-runbook-preview:
 	cd tools/runbook-sync-downstream && go build -ldflags="-s -w" -o _out/runbook-preview ./cmd/preview/
+
+.PHONY: generate-perses-dashboards
+generate-perses-dashboards:
+	go run ./cmd/generate-perses-dashboards/... --out dashboards/perses
+
+.PHONY: verify-perses-dashboards
+verify-perses-dashboards: generate-perses-dashboards
+	@if [ -n "$$(git status --porcelain dashboards/perses/)" ]; then \
+		echo "ERROR: dashboards/perses/ is out of date. Run 'make generate-perses-dashboards' and commit the result."; \
+		git status dashboards/perses/; \
+		git diff dashboards/perses/; \
+		exit 1; \
+	fi
+
+.PHONY: test-perses-dashboards
+test-perses-dashboards:
+	go test ./pkg/dashboards/transform/...
