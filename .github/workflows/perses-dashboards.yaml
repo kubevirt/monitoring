@@ -1,0 +1,41 @@
+name: Perses Dashboards
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/perses-dashboards.yaml'
+      - 'Makefile'
+      - 'cmd/generate-perses-dashboards/**'
+      - 'pkg/dashboards/**'
+      - 'dashboards/perses/**'
+      - 'go.mod'
+      - 'go.sum'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/perses-dashboards.yaml'
+      - 'Makefile'
+      - 'cmd/generate-perses-dashboards/**'
+      - 'pkg/dashboards/**'
+      - 'dashboards/perses/**'
+      - 'go.mod'
+      - 'go.sum'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Verify Perses Dashboards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Run unit tests
+        run: make test-perses-dashboards
+
+      - name: Verify generated dashboards are up-to-date
+        run: make verify-perses-dashboards
