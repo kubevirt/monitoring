@@ -61,7 +61,7 @@ spec:
               spec:
                 query: |-
                   sum (
-                  ((
+                  max by (namespace, name)((
                   sum by (namespace, name)(kubevirt_vm_resource_requests{name=~"$name", namespace=~"$namespace", resource="cpu", unit="cores", source="guest_effective"})
                   or
                   sum by (namespace, name)(
@@ -168,7 +168,7 @@ spec:
                 query: |-
                   sum(
                   max by (namespace, name, status)(
-                    ((
+                    max by (namespace, name)((
                   sum by (namespace, name)(kubevirt_vm_resource_requests{name=~"$name", namespace=~"$namespace", resource="memory", source="guest_effective"})
                   or
                   max by (namespace, name)(kubevirt_vm_resource_requests{name=~"$name", namespace=~"$namespace", resource="memory", source=~"default|domain"})
@@ -264,7 +264,7 @@ spec:
               spec:
                 query: |-
                   sum (
-                    (kubevirt_vm_disk_allocated_size_bytes{name=~"$name", namespace=~"$namespace"})
+                    sum by (namespace, name)(kubevirt_vm_disk_allocated_size_bytes{name=~"$name", namespace=~"$namespace"})
 
                     + on(name, namespace) group_left(status)
                     (0 * (
@@ -433,7 +433,7 @@ spec:
               spec:
                 query: |-
                   sum by (namespace, name, status)(
-                    (kubevirt_vm_disk_allocated_size_bytes{name=~"$name", namespace=~"$namespace"})
+                    sum by (namespace, name)(kubevirt_vm_disk_allocated_size_bytes{name=~"$name", namespace=~"$namespace"})
 
                     + on(name, namespace) group_left(status)
                     (0 * (
@@ -730,7 +730,7 @@ spec:
               spec:
                 query: |-
                   max by (namespace, name, status)(
-                    ((
+                    max by (namespace, name)((
                   sum by (namespace, name)(kubevirt_vm_resource_requests{name=~"$name", namespace=~"$namespace", resource="memory", source="guest_effective"})
                   or
                   max by (namespace, name)(kubevirt_vm_resource_requests{name=~"$name", namespace=~"$namespace", resource="memory", source=~"default|domain"})
@@ -811,7 +811,8 @@ spec:
               kind: PrometheusTimeSeriesQuery
               spec:
                 query: |-
-                  ((
+                  max by (namespace, name, status)(
+                    max by (namespace, name)((
                   sum by (namespace, name)(kubevirt_vm_resource_requests{name=~"$name", namespace=~"$namespace", resource="cpu", unit="cores", source="guest_effective"})
                   or
                   sum by (namespace, name)(
@@ -895,6 +896,7 @@ spec:
                       )
                     ) and on(name, namespace)
                     (kubevirt_vm_info{name=~"$name", namespace=~"$namespace", status_group=~"$status"} > 0))
+                  )
   variables:
   - kind: ListVariable
     spec:

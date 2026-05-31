@@ -228,8 +228,8 @@ github.com/sirupsen/logrus v1.9.4 h1:TsZE7l11zFCLZnZ+teH4Umoq5BhEIfIzfRDZ1Uzql2w
 github.com/sirupsen/logrus v1.9.4/go.mod h1:ftWc9WdOfJ0a92nsE2jF5u5ZwH8Bv2zdeOC42RjbV2g=
 github.com/spf13/pflag v1.0.10 h1:4EBh2KAYBwaONj6b2Ye1GiHfwjqyROoF4RwYO+vPwFk=
 github.com/spf13/pflag v1.0.10/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
-github.com/stolostron/multicluster-observability-addon v0.0.0-20260526130408-cc4faf001eba h1:aJ3JJkC5xYsIJcoCR9qcDe8pZlzI8DlUDBKQ5+jLHQo=
-github.com/stolostron/multicluster-observability-addon v0.0.0-20260526130408-cc4faf001eba/go.mod h1:R7RqN9DZjEcDwX4ms0o3N4FDOJxbsaZeQ5ERlXa577o=
+github.com/stolostron/multicluster-observability-addon v0.0.0-20260528124829-0e27c55f23a3 h1:PiXS7CxltGz32WslsPJB7la7RErC14Bvj4i8I8GbjK0=
+github.com/stolostron/multicluster-observability-addon v0.0.0-20260528124829-0e27c55f23a3/go.mod h1:R7RqN9DZjEcDwX4ms0o3N4FDOJxbsaZeQ5ERlXa577o=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.5.2 h1:xuMeJ0Sdp5ZMRXx/aWO6RZxdr3beISkG5/G/aIRr3pY=
 github.com/stretchr/objx v0.5.2/go.mod h1:FRsXN1f5AsAjCGJKqEizvkpNtU+EGNCLh3NxZ/8L+MA=
