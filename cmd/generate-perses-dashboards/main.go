@@ -83,6 +83,7 @@ func main() {
 		{"virtual-machines-utilization", virtualization.BuildVMUtilization, true},
 		{"virtual-machines-service-level", virtualization.BuildVMServiceLevel, true},
 		{"virtual-machines-by-time-in-status", virtualization.BuildVMByTimeInStatus, true},
+		{"virtual-machines-top-consumers", virtualization.BuildTopConsumers, true},
 	}
 
 	cfg := transform.Config{
