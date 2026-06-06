@@ -423,7 +423,7 @@ spec:
               kind: PrometheusTimeSeriesQuery
               spec:
                 query: |-
-                  (kubevirt_hco_memory_overcommit_percentage / 100)
+                  scalar(kubevirt_hco_memory_overcommit_percentage / 100)
 
                   *
 
