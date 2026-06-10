@@ -38,6 +38,7 @@ reviews:
   enable_prompt_for_ai_agents: true
   path_filters:
     - "!**/vendor/**"
+    - "!go.sum"
   path_instructions:
     - path: "docs/runbooks/**"
       instructions: "Follow docs/review_guidelines/runbooks.md"
@@ -45,6 +46,8 @@ reviews:
       instructions: "Follow docs/review_guidelines/docs.md"
     - path: "dashboards/**"
       instructions: "Follow docs/review_guidelines/dashboards.md"
+    - path: "**/*.go"
+      instructions: "Follow docs/review_guidelines/go.md"
   abort_on_close: true
   disable_cache: false
   slop_detection:
