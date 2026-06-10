@@ -11,9 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
 
-    - uses: actions/setup-go@v2
+    - uses: actions/setup-go@v6
       with:
         go-version: '1.17'
 
@@ -21,7 +23,7 @@ jobs:
       id: generate_metrics_docs
       run: CONFIG_FILE=./tools/metricsdocs/config make metricsdocs
 
-    - uses: peter-evans/create-pull-request@v3
+    - uses: peter-evans/create-pull-request@v8
       with:
         title: Update metrics documentation
         commit-message: Update metrics documentation
