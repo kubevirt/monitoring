@@ -8,16 +8,21 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     name: Build and Push
     steps:
       - name: git-checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v6
         with:
           python-version: 3.8
 
@@ -33,10 +38,14 @@ jobs:
         run: tools/ghpages/venv/bin/python tools/ghpages/main.py --config_file docs/ghpages.json --output_dir dist/
 
       - name: Push
-        uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: ghpages
-          FOLDER: dist/
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MESSAGE: "Build: ({sha}) {msg}"
+        run: |
+          set -euo pipefail
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          COMMIT_MSG=$(git log -1 --format='%s')
+          cd dist/
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Build: (${SHORT_SHA}) ${COMMIT_MSG}"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:ghpages
