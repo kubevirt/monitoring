@@ -2,8 +2,8 @@
 
 ## Meaning
 
-This alert fires when a VM has experienced more than 5 non-recoverable guest
-OS panics in the last 24 hours. The alert is based on the
+This alert fires when a VM has experienced non-recoverable guest OS panics in
+the last 24 hours. The alert is based on the
 `kubevirt_vmi_guest_os_panic_total` metric, which tracks panic events for all
 panic types (pvpanic, hyper-v, s390, etc.).
 
