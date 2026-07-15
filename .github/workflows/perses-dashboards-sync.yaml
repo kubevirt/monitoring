@@ -24,7 +24,7 @@ jobs:
 
       - name: Update upstream dependency
         run: |
-          go get github.com/stolostron/multicluster-observability-addon@latest
+          go get github.com/stolostron/multicluster-observability-addon/pkg/perses@latest
           go mod tidy
 
       - name: Regenerate dashboards
