@@ -228,8 +228,8 @@ github.com/sirupsen/logrus v1.9.4 h1:TsZE7l11zFCLZnZ+teH4Umoq5BhEIfIzfRDZ1Uzql2w
 github.com/sirupsen/logrus v1.9.4/go.mod h1:ftWc9WdOfJ0a92nsE2jF5u5ZwH8Bv2zdeOC42RjbV2g=
 github.com/spf13/pflag v1.0.10 h1:4EBh2KAYBwaONj6b2Ye1GiHfwjqyROoF4RwYO+vPwFk=
 github.com/spf13/pflag v1.0.10/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
-github.com/stolostron/multicluster-observability-addon/pkg/perses v0.0.0-20260710145816-2e3132c1485a h1:QBWjNljWjGrT2P7oqu/COckNhIaM2uj1a8dUiV96efw=
-github.com/stolostron/multicluster-observability-addon/pkg/perses v0.0.0-20260710145816-2e3132c1485a/go.mod h1:IP3RctL2XOK3N0oXOjbVbjUItj+hVnlzGRSkNW6CBt0=
+github.com/stolostron/multicluster-observability-addon/pkg/perses v0.0.0-20260716154714-29a97f1aad10 h1:M8ZaHFHmkbyH1oIWmrIbIpTZkcfPg4J3ufVWaBMBfEw=
+github.com/stolostron/multicluster-observability-addon/pkg/perses v0.0.0-20260716154714-29a97f1aad10/go.mod h1:IP3RctL2XOK3N0oXOjbVbjUItj+hVnlzGRSkNW6CBt0=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.5.2 h1:xuMeJ0Sdp5ZMRXx/aWO6RZxdr3beISkG5/G/aIRr3pY=
 github.com/stretchr/objx v0.5.2/go.mod h1:FRsXN1f5AsAjCGJKqEizvkpNtU+EGNCLh3NxZ/8L+MA=
