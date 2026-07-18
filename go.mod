@@ -4,7 +4,7 @@ go 1.25.7
 
 require (
 	github.com/perses/perses v0.53.1
-	github.com/stolostron/multicluster-observability-addon/pkg/perses v0.0.0-20260710145816-2e3132c1485a
+	github.com/stolostron/multicluster-observability-addon/pkg/perses v0.0.0-20260716154714-29a97f1aad10
 	golang.org/x/tools v0.44.0
 	sigs.k8s.io/yaml v1.6.0
 )
