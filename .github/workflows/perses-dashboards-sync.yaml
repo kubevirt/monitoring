@@ -33,10 +33,15 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if [ -n "$(git status --porcelain dashboards/perses/ go.mod go.sum)" ]; then
+          # Open a PR only when generated YAML changed. go.mod-only
+          # pin bumps are skipped; they are included when YAML changes.
+          if [ -n "$(git status --porcelain dashboards/perses/)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            if [ -n "$(git status --porcelain go.mod go.sum)" ]; then
+              echo "Skipping PR: module pin changed but generated dashboards are unchanged."
+            fi
           fi
 
       - name: Create pull request
