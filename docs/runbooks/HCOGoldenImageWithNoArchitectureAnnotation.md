@@ -16,8 +16,12 @@ For each DICT, if the `ssp.kubevirt.io/dict.architectures` annotation is
 missing, HCO triggers the `HCOGoldenImageWithNoArchitectureAnnotation`
 alert for this specific DICT.
 
-> **Note:** This alert only triggers if the `enableMultiArchBootImageImport`
-> feature gate is enabled in the `HyperConverged` CR.
+> **Note:** This alert only triggers if
+> * For version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0--> or newer, the
+`spec.workloadSources.enableMultiArchBootImageImport` field in the `HyperConverged`
+CR, is `true`.
+> * For versions before <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->, the
+`enableMultiArchBootImageImport` feature gate is enabled in the `HyperConverged` CR.
 
 ## Impact
 
@@ -32,40 +36,60 @@ architecture than the image architecture, the VM fails to start.
 
 ```bash
   # Get the namespace of the HyperConverged CR
-  $ NAMESPACE="$(oc get hyperconverged -A --no-headers | awk '{print $1}')"
+  $ NAMESPACE="$(kubectl get hyperconverged -A --no-headers | awk '{print $1}')"
 
   # Read the HyperConverged CR
-  $ oc get hyperconverged -n "${NAMESPACE}" -o yaml
+  $ kubectl get hyperconverged -n "${NAMESPACE}" -o yaml
 ```
 
 2. If this command lists any DICT objects under the
-`spec.dataImportCronTemplates` field in the `HyperConverged` CR, check whether
+`dataImportCronTemplates` field in the `HyperConverged` CR, check whether
 the `ssp.kubevirt.io/dict.architectures` annotation is set for each of them. If
 the annotation is not set, then this alert is triggered.
 
    Below is an example for a HyperConverged CR with a valid DICT with the
-  `ssp.kubevirt.io/dict.architectures` annotation set:
-  ```yaml
-  apiVersion: hco.kubevirt.io/v1beta1
-  kind: HyperConverged
-  ...
-  spec:
-  ...
-    dataImportCronTemplates:
-      - metadata:
-          annotations:
-            ...
-            ssp.kubevirt.io/dict.architectures: amd64
-          name: the-name-of-the-dict
-        spec:
-          ...
-```
+  `ssp.kubevirt.io/dict.architectures` annotation set.
+
+   For version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->, or newer, use the `v1` api version:
+   ```yaml
+   apiVersion: hco.kubevirt.io/v1
+   kind: HyperConverged
+   ...
+   spec:
+   ...
+     workloadSources:
+       dataImportCronTemplates:
+         - metadata:
+             annotations:
+               ...
+               ssp.kubevirt.io/dict.architectures: amd64
+             name: the-name-of-the-dict
+           spec:
+             ...
+   ```
+   For versions before <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->, use the
+   `v1beta1` api version:
+   ```yaml
+   apiVersion: hco.kubevirt.io/v1beta1
+   kind: HyperConverged
+   ...
+   spec:
+   ...
+     dataImportCronTemplates:
+       - metadata:
+           annotations:
+             ...
+             ssp.kubevirt.io/dict.architectures: amd64
+           name: the-name-of-the-dict
+         spec:
+           ...
+   ```
 
 The `status.nodeInfo.workloadsArchitectures` field in the `HyperConverged` CR
 shows the list of architectures that are supported by the cluster.
 
 User-defined DICTs are defined in the `HyperConverged` CR, in the
-`spec.dataImportCronTemplates` field.
+`dataImportCronTemplates` field.
 
 ## Mitigation
 
@@ -77,7 +101,7 @@ User-defined DICTs are defined in the `HyperConverged` CR, in the
 
    For details, see the
   [podman manifest inspect documentation](https://docs.podman.io/en/latest/markdown/podman-manifest-inspect.1.html).
-  
+
     If the image is a multi-architecture manifest ("fat manifest"), it includes the
 `manifests` field, which is a list of architectures supported by the image. If
 the image is not a multi-architecture manifest, you need to find out what

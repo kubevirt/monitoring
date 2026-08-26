@@ -17,9 +17,12 @@ supported by the cluster (which means that there is no node in the cluster with
 the architectures listed in the DICT annotation), HCO triggers the
 `HCOGoldenImageWithNoSupportedArchitecture` alert for this specific DICT.
 
-> **Note:** This only triggers if the `enableMultiArchBootImageImport`
-> feature gate is enabled in the `HyperConverged` CR.
-
+> **Note:** This alert only triggers if
+> * For version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0--> or newer, the
+   `spec.workloadSources.enableMultiArchBootImageImport` field in the `HyperConverged`
+   CR, is `true`.
+> * For versions before <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->, the
+    `enableMultiArchBootImageImport` feature gate is enabled in the `HyperConverged` CR.
 ## Impact
 
 This alert triggers when the DICT is not supported by any of the nodes in the
@@ -32,10 +35,10 @@ is not available for use in the cluster.
 
 ```bash
   # Get the namespace of the HyperConverged CR
-  $ NAMESPACE="$(oc get hyperconverged -A --no-headers | awk '{print $1}')"
+  $ NAMESPACE="$(kubectl get hyperconverged -A --no-headers | awk '{print $1}')"
 
   # Read the HyperConverged CR
-  $ oc get hyperconverged -n "${NAMESPACE}" -o yaml
+  $ kubectl get hyperconverged -n "${NAMESPACE}" -o yaml
 ```
 
 2. Examine the following fields in the `HyperConverged` CR status:
@@ -67,7 +70,7 @@ architectures supported by the image, which was set in the
 ### Example
 
 ```yaml
-apiVersion: hco.kubevirt.io/v1beta1
+apiVersion: hco.kubevirt.io/v1
 kind: HyperConverged
 ...
 status:
@@ -96,9 +99,14 @@ DICTs or user-defined DICTs.
 
 ### Pre-defined DataImportCronTemplates
 
-Pre-defined DICTs are not defined in the `spec.dataImportCronTemplates`
+Pre-defined DICTs are not defined in the `dataImportCronTemplates`
 field in the `HyperConverged` CR. Instead, they are defined internally in the
 HCO application.
+
+> Please notice:
+> * In the `v1` API version, used in version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->
+ or above, the `dataImportCronTemplates` field is under the `spec.workloadSources` field.
+> * In the `v1beta1` version, used in versions earlier than <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->, the `dataImportCronTemplates` field is under the `spec` field.
 
 All pre-defined DICTs are annotated with the `ssp.kubevirt.io/dict.architectures`
 annotation, and all of them support the `amd64`, `arm64`, and `s390x`
@@ -117,12 +125,28 @@ off:
   `status.dataImportCronTemplates` field of the `HyperConverged` CR, as
   described [in the Diagnosis section](#diagnosis).
 
-  2. Add the DICT to the `spec.dataImportCronTemplates` field in the
+  2. Add the DICT to the `dataImportCronTemplates` field in the
   `HyperConverged` CR. Add the `dataimportcrontemplate.kubevirt.io/enable`
   annotation with the value `false` to the DICT. Only the DICT name and the
   annotation are required.
 
        For example, to disable the `centos-stream10-image-cron` DICT:
+       * In version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->
+         or above:
+       ```yaml
+       apiVersion: hco.kubevirt.io/v1
+       kind: HyperConverged
+       metadata:
+         name: kubevirt-hyperconverged
+       spec:
+         workloadSources:
+           dataImportCronTemplates:
+           - metadata:
+               name: centos-stream10-image-cron
+               annotations:
+                 dataimportcrontemplate.kubevirt.io/enable: 'false'
+        ```
+       * In versions earlier than <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->:
        ```yaml
        apiVersion: hco.kubevirt.io/v1beta1
        kind: HyperConverged
@@ -138,50 +162,86 @@ off:
 
      If you have a self-built image that is supported by the nodes in the cluster,
 you can modify the pre-defined DICT to use your image. To do so, add the DICT to
-the `spec.dataImportCronTemplates` field in the `HyperConverged` CR and modify
+the `dataImportCronTemplates` field in the `HyperConverged` CR and modify
 its `spec.source.registry` field.
 
   > Tip: you can find the pre-defined DICTs in the
   > `status.dataImportCronTemplates` field of the `HyperConverged` CR, as
-  > described [in the Diagnosis section](#diagnosis). Afterwards, you can copy
-  > the DICT from the field, and modify it in the `spec.dataImportCronTemplates`
+  > described [in the Diagnosis section](#diagnosis). Afterward, you can copy
+  > the DICT from the field, and modify it in the `dataImportCronTemplates`
   > field.
 
 3. Set the `ssp.kubevirt.io/dict.architectures` annotation to include all the
 architectures supported by your image.
 
    For example:
-  ```yaml
-  apiVersion: hco.kubevirt.io/v1beta1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-  spec:
-    dataImportCronTemplates:
-    - metadata:
-      annotations:
-        cdi.kubevirt.io/storage.bind.immediate.requested: "true"
-        ssp.kubevirt.io/dict.architectures: arch1,arch2
-      name: centos-stream10-image-cron
-    spec:
-      garbageCollect: Outdated
-      managedDataSource: centos-stream10
-      schedule: "0 */12 * * *"
-      template:
-        spec:
-          source:
-            registry:
-              url: docker://your-registry/your-image:latest
-          storage:
-            resources:
-              requests:
-                storage: 10Gi
-  ```
+   * In version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->
+     or above, use the `v1` API version:
+       ```yaml
+       apiVersion: hco.kubevirt.io/v1
+       kind: HyperConverged
+       metadata:
+         name: kubevirt-hyperconverged
+       spec:
+         workloadSources:
+           dataImportCronTemplates:
+           - metadata:
+               annotations:
+                 cdi.kubevirt.io/storage.bind.immediate.requested: "true"
+                 ssp.kubevirt.io/dict.architectures: arch1,arch2
+               name: centos-stream10-image-cron
+             spec:
+               garbageCollect: Outdated
+               managedDataSource: centos-stream10
+               schedule: "0 */12 * * *"
+               template:
+                 spec:
+                   source:
+                     registry:
+                       url: docker://your-registry/your-image:latest
+                   storage:
+                     resources:
+                       requests:
+                         storage: 10Gi
+       ```
+   * In versions earlier than <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->,
+     use the `v1beta1` API version:
+       ```yaml
+       apiVersion: hco.kubevirt.io/v1beta1
+       kind: HyperConverged
+       metadata:
+         name: kubevirt-hyperconverged
+       spec:
+         dataImportCronTemplates:
+         - metadata:
+             annotations:
+               cdi.kubevirt.io/storage.bind.immediate.requested: "true"
+               ssp.kubevirt.io/dict.architectures: arch1,arch2
+             name: centos-stream10-image-cron
+           spec:
+             garbageCollect: Outdated
+             managedDataSource: centos-stream10
+             schedule: "0 */12 * * *"
+             template:
+               spec:
+                 source:
+                   registry:
+                     url: docker://your-registry/your-image:latest
+                 storage:
+                   resources:
+                     requests:
+                       storage: 10Gi
+       ```
 
 ### User-defined DataImportCronTemplates
 
-User-defined DICTs are defined in the `spec.dataImportCronTemplates` field of
-the of the HyperConverged CR.
+User-defined DICTs are defined in the `dataImportCronTemplates` field of
+the HyperConverged CR.
+
+> Please notice:
+> * In the `v1` API version, used in version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->
+    or above, the `dataImportCronTemplates` field is under the `spec.workloadSources` field.
+> * In the `v1beta1` version, used in versions earlier than <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->, the `dataImportCronTemplates` field is under the `spec` field.
 
 1. Check what architectures are supported by the image:
 
@@ -208,22 +268,40 @@ cluster, or remove the DICT from the `HyperConverged` CR.
     It is also possible to disable the DICT, by adding the
     `dataimportcrontemplate.kubevirt.io/enable` annotation, with the value of
     `false`. For example:
-
-  ```yaml
-  apiVersion: hco.kubevirt.io/v1beta1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-  spec:
-    dataImportCronTemplates:
-    - metadata:
-      annotations:
-        dataimportcrontemplate.kubevirt.io/enable: "false"
-        ssp.kubevirt.io/dict.architectures: unsupported-arch1,unsupported-arch2
-      name: my-image
-    spec:
-      ...
-  ```
+    * In version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->
+      or above:
+      ```yaml
+      apiVersion: hco.kubevirt.io/v1
+      kind: HyperConverged
+      metadata:
+        name: kubevirt-hyperconverged
+      spec:
+        workloadSources:
+          dataImportCronTemplates:
+          - metadata:
+              annotations:
+                dataimportcrontemplate.kubevirt.io/enable: "false"
+                ssp.kubevirt.io/dict.architectures: unsupported-arch1,unsupported-arch2
+              name: my-image
+            spec:
+              ...
+      ```
+    * In versions earlier than <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->:
+      ```yaml
+      apiVersion: hco.kubevirt.io/v1beta1
+      kind: HyperConverged
+      metadata:
+        name: kubevirt-hyperconverged
+      spec:
+        dataImportCronTemplates:
+        - metadata:
+            annotations:
+              dataimportcrontemplate.kubevirt.io/enable: "false"
+              ssp.kubevirt.io/dict.architectures: unsupported-arch1,unsupported-arch2
+            name: my-image
+          spec:
+            ...
+      ```
 
 For more information about building multi-architecture images, see the
 [podman documentation](https://docs.podman.io/en/latest/markdown/podman-manifest-create.1.html).

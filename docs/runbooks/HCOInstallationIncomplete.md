@@ -19,16 +19,31 @@ the HCO:
 - Complete the installation by creating a `HyperConverged` CR with its
 default values:
 
-  ```bash
-  $ cat <<EOF | kubectl apply -f -
-  apiVersion: hco.kubevirt.io/v1beta1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-    namespace: kubevirt-hyperconverged
-  spec: {}
-  EOF
-  ```
+  * In version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->
+    or above, use the `v1` API version:
+    ```bash
+    $ cat <<EOF | kubectl apply -f -
+    apiVersion: hco.kubevirt.io/v1
+    kind: HyperConverged
+    metadata:
+      name: kubevirt-hyperconverged
+      namespace: kubevirt-hyperconverged
+    spec: {}
+    EOF
+    ```
 
-- Uninstall the HCO. If the uninstall process continues to run, you must
+  * In versions earlier than <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->,
+    use the `v1beta1` API version:
+    ```bash
+    $ cat <<EOF | kubectl apply -f -
+    apiVersion: hco.kubevirt.io/v1beta1
+    kind: HyperConverged
+    metadata:
+      name: kubevirt-hyperconverged
+      namespace: kubevirt-hyperconverged
+    spec: {}
+    EOF
+    ```
+
+- Uninstall the HCO. If the uninstallation process continues to run, you must
 resolve that issue in order to cancel the alert.
