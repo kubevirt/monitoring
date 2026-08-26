@@ -95,18 +95,27 @@ with the previous default storage class. The CDI will recreate the data volumes
 with the newly configured default storage class.
 
 3. If your cluster is installed in a restricted network environment, disable the
-`enableCommonBootImageImport` feature gate in order to opt out of automatic
-updates:
+common boot image import feature in order to opt out of automatic updates, by
+setting the `enableCommonBootImageImport` field to `false`:
 
-   ```bash
-   $ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type json -p '[{"op": "replace", "path": "/spec/featureGates/enableCommonBootImageImport", "value": false}]'
-   ```
+   * In version <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0--> or above, use the `v1` API
+     version:
+     ```bash
+     $ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type merge -p \
+     '{"spec": {"workloadSources": {"enableCommonBootImageImport": false}}}'
+     ```
+   * In versions earlier than <!--USstart-->`v1.19.0`<!--USend--><!--DS: v4.23.0-->, use the
+     `v1beta1` API version:
+     ```bash
+     $ kubectl patch hco kubevirt-hyperconverged -n $CDI_NAMESPACE --type merge -p \
+     '{"spec": {"enableCommonBootImageImport": false}}'
+     ```
 
 <!--DS: If you cannot resolve the issue, log in to the
 link:https://access.redhat.com[Customer Portal] and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
-See the [HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#enablecommonbootimageimport-feature-gate)
+See the [v1 API HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#disabling-all-pre-defined-golden-images)
 for more information.
 
 If you cannot resolve the issue, see the following resources:
