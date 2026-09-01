@@ -22,6 +22,7 @@ package main
 import (
 	"context"
 	"embed"
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -30,6 +31,7 @@ import (
 	"time"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/google/go-github/v60/github"
 	"k8s.io/klog/v2"
@@ -140,37 +142,114 @@ func (rbSync *runbookSync) createRunbooksBranches(runbooksToUpdate []runbook, ru
 	}
 }
 
+// runbookPRSync captures everything the shared PR sync flow needs to decide
+// whether to skip, create, or update a downstream runbook PR.
+type runbookPRSync struct {
+	branchName string
+	filePath   string // path of the runbook file relative to the repo root
+	commitMsg  string
+	prTitle    string
+	prBody     string
+	generate   func() error                              // writes the runbook file to disk
+	afterSync  func(currentPR *github.PullRequest) error // optional, runs after a PR is created or updated in place, receiving the PR to keep open
+}
+
+// syncRunbookPR skips closed PRs, updates open PRs in place when the generated
+// content differs, and otherwise creates a fresh PR.
+func (rbSync *runbookSync) syncRunbookPR(p runbookPRSync) string {
+	prExists, pr, err := rbSync.prForBranchPreviouslyCreated(p.branchName)
+	if err != nil {
+		klog.Fatalf("failed to check if branch exists: %v", err)
+	}
+
+	if prExists && pr.GetState() == "closed" {
+		klog.Infof("PR for '%s' is closed, skipping: %s", p.branchName, pr.GetHTMLURL())
+		return p.branchName
+	}
+
+	worktree, err := newBranchFromMain(rbSync.downstreamRepo, p.branchName)
+	if err != nil {
+		klog.Fatalf("failed to create branch: %v", err)
+	}
+
+	if err := p.generate(); err != nil {
+		klog.Fatalf("failed to generate runbook: %v", err)
+	}
+
+	action, err := classifyCommitResult(rbSync.commit(worktree, p.commitMsg), prExists)
+	if err != nil {
+		klog.Fatalf("failed to commit changes: %v", err)
+	}
+
+	if action == commitActionSkipNewPR {
+		klog.Infof("no changes to sync for '%s', skipping new PR", p.branchName)
+		return p.branchName
+	}
+
+	if prExists {
+		rbSync.updateOpenPR(p, pr)
+		if err := rbSync.runAfterSync(p, pr); err != nil {
+			klog.Fatalf("failed to run post-sync step: %v", err)
+		}
+		return p.branchName
+	}
+
+	if err := rbSync.push(p.branchName, false); err != nil {
+		klog.Fatalf("failed to push changes: %v", err)
+	}
+
+	newPR, err := rbSync.createPR(p.branchName, p.prTitle, p.prBody)
+	if err != nil {
+		klog.Fatalf("failed to create PR: %v", err)
+	}
+
+	if err := rbSync.runAfterSync(p, newPR); err != nil {
+		klog.Fatalf("failed to run post-sync step: %v", err)
+	}
+
+	return p.branchName
+}
+
+// runAfterSync runs the optional post-sync hook, closing other outdated PRs for
+// the same runbook on both the create and in-place update paths.
+func (rbSync *runbookSync) runAfterSync(p runbookPRSync, currentPR *github.PullRequest) error {
+	if p.afterSync == nil {
+		return nil
+	}
+	return p.afterSync(currentPR)
+}
+
+// updateOpenPR force-pushes the regenerated content to an already-open PR's
+// branch, but only when it differs from what is already there.
+func (rbSync *runbookSync) updateOpenPR(p runbookPRSync, pr *github.PullRequest) {
+	remoteContent, err := forkBranchFileContent(rbSync.downstreamRepo, p.branchName, p.filePath)
+	if err != nil {
+		klog.Fatalf("failed to read fork branch content: %v", err)
+	}
+
+	if remoteContent != nil {
+		matches, err := generatedFileMatches(downstreamCloneDir, p.filePath, remoteContent)
+		if err != nil {
+			klog.Fatalf("failed to compare runbook content: %v", err)
+		}
+		if matches {
+			klog.Infof("open PR '%s' is already up to date, skipping: %s", p.branchName, pr.GetHTMLURL())
+			return
+		}
+	}
+
+	klog.Infof("open PR '%s' is out of date, updating: %s", p.branchName, pr.GetHTMLURL())
+	if err := rbSync.push(p.branchName, true); err != nil {
+		klog.Fatalf("failed to force-push changes: %v", err)
+	}
+}
+
 func (rbSync *runbookSync) updateRunbook(rb runbook) string {
 	lastUpdateDate := rb.upstreamLastUpdated.Format("20060102150405")
 	runbookName := strings.Replace(rb.name, ".md", "", -1)
 	branchName := fmt.Sprintf("cnv-runbook-sync-%s/%s", lastUpdateDate, runbookName)
 
-	prExists, pr, err := rbSync.prForBranchPreviouslyCreated(branchName)
-	if err != nil {
-		klog.Fatalf("failed to check if branch exists: %v", err)
-	}
-
-	if prExists {
-		klog.Infof("PR for '%s' was previously created: %s", branchName, pr.GetHTMLURL())
-		return branchName
-	}
-
-	worktree, err := newBranchFromMain(rbSync.downstreamRepo, branchName)
-	if err != nil {
-		klog.Fatalf("failed to create branch: %v", err)
-	}
-
-	err = copyRunbook(rb.name)
-	if err != nil {
-		klog.Fatalf("failed to copy file: %v", err)
-	}
-
 	commitMessage := fmt.Sprintf("Sync CNV runbook %s (Updated at %s)", rb.name, rb.upstreamLastUpdated)
-
-	err = rbSync.commitAndPush(worktree, commitMessage)
-	if err != nil {
-		klog.Fatalf("failed to push changes: %v", err)
-	}
 
 	body := fmt.Sprintf(
 		"This is an automated PR by 'tools/openshift-virtualization-operator/runbook-sync'.\n\n"+
@@ -180,46 +259,24 @@ func (rbSync *runbookSync) updateRunbook(rb runbook) string {
 		rb.name, upstreamRepositoryURL, rb.upstreamLastUpdated, prReviewersFmt,
 	)
 
-	newPR, err := rbSync.createPR(branchName, commitMessage, body)
-	if err != nil {
-		klog.Fatalf("failed to create PR: %v", err)
-	}
-
-	if err := rbSync.closeOutdatedRunbookPRs(newPR, runbookName); err != nil {
-		klog.Fatalf("failed to close outdated PRs: %v", err)
-	}
-
-	return branchName
+	return rbSync.syncRunbookPR(runbookPRSync{
+		branchName: branchName,
+		filePath:   path.Join(downstreamRunbooksDir, rb.name),
+		commitMsg:  commitMessage,
+		prTitle:    commitMessage,
+		prBody:     body,
+		generate:   func() error { return copyRunbook(rb.name) },
+		afterSync: func(currentPR *github.PullRequest) error {
+			return rbSync.closeOutdatedRunbookPRs(currentPR, runbookName)
+		},
+	})
 }
 
 func (rbSync *runbookSync) deprecateRunbook(rb runbook) string {
 	runbookName := strings.Replace(rb.name, ".md", "", -1)
 	branchName := fmt.Sprintf("cnv-runbook-deprecate-%s", runbookName)
 
-	prExists, pr, err := rbSync.prForBranchPreviouslyCreated(branchName)
-	if err != nil {
-		klog.Fatalf("failed to check if branch exists: %v", err)
-	}
-
-	if prExists {
-		klog.Infof("PR for '%s' was previously created: %s", branchName, pr.GetHTMLURL())
-		return branchName
-	}
-
-	worktree, err := newBranchFromMain(rbSync.downstreamRepo, branchName)
-	if err != nil {
-		klog.Fatalf("failed to create branch: %v", err)
-	}
-
-	klog.Infof("updating runbook with deprecation message")
-	deprecatedRunbook(runbookName, downstreamCloneDir)
-
 	commitMessage := fmt.Sprintf("Deprecate CNV runbook %s", runbookName)
-
-	err = rbSync.commitAndPush(worktree, commitMessage)
-	if err != nil {
-		klog.Fatalf("failed to push changes: %v", err)
-	}
 
 	body := fmt.Sprintf(
 		"This is an automated PR by 'tools/openshift-virtualization-operator/runbook-sync'.\n\n"+
@@ -229,15 +286,50 @@ func (rbSync *runbookSync) deprecateRunbook(rb runbook) string {
 		rb.name, upstreamRepositoryURL, prReviewersFmt,
 	)
 
-	_, err = rbSync.createPR(branchName, commitMessage, body)
-	if err != nil {
-		klog.Fatalf("failed to create PR: %v", err)
-	}
-
-	return branchName
+	return rbSync.syncRunbookPR(runbookPRSync{
+		branchName: branchName,
+		filePath:   path.Join(downstreamRunbooksDir, rb.name),
+		commitMsg:  commitMessage,
+		prTitle:    commitMessage,
+		prBody:     body,
+		generate: func() error {
+			klog.Infof("updating runbook with deprecation message")
+			deprecatedRunbook(runbookName, downstreamCloneDir)
+			return nil
+		},
+	})
 }
 
-func (rbSync *runbookSync) commitAndPush(worktree *git.Worktree, msg string) error {
+// commitAction describes how syncRunbookPR should proceed after committing.
+type commitAction int
+
+const (
+	commitActionProceed      commitAction = iota // a commit was created; continue the sync
+	commitActionSkipNewPR                        // nothing to commit and no PR exists; skip creating an empty PR
+	commitActionKeepExisting                     // nothing to commit but a PR exists; continue to update it in place
+)
+
+// classifyCommitResult decides how to proceed based on the commit result. A
+// clean worktree (git.ErrEmptyCommit) means the generated content already
+// matches the base branch: skip creating a brand-new empty PR, but still
+// continue so an existing PR is updated in place. Any other commit error is
+// returned to the caller for fatal handling.
+func classifyCommitResult(err error, prExists bool) (commitAction, error) {
+	if err == nil {
+		return commitActionProceed, nil
+	}
+
+	if errors.Is(err, git.ErrEmptyCommit) {
+		if prExists {
+			return commitActionKeepExisting, nil
+		}
+		return commitActionSkipNewPR, nil
+	}
+
+	return commitActionProceed, err
+}
+
+func (rbSync *runbookSync) commit(worktree *git.Worktree, msg string) error {
 	_, err := worktree.Add(downstreamRunbooksDir)
 	if err != nil {
 		return fmt.Errorf("failed to add changes: %w", err)
@@ -255,14 +347,32 @@ func (rbSync *runbookSync) commitAndPush(worktree *git.Worktree, msg string) err
 	}
 	klog.Infof("successfully committed: %s", msg)
 
+	return nil
+}
+
+// push publishes branchName to the fork remote. When force is true it overwrites
+// the remote branch, which is required to update an already-open PR whose branch
+// has diverged from the freshly recreated local branch.
+func (rbSync *runbookSync) push(branchName string, force bool) error {
 	if rbSync.dryRun {
-		klog.Warning("[DRY RUN] skipping push")
+		if force {
+			klog.Warningf("[DRY RUN] would force-push to update branch %s", branchName)
+		} else {
+			klog.Warning("[DRY RUN] skipping push")
+		}
 		return nil
 	}
 
-	err = rbSync.downstreamRepo.Push(&git.PushOptions{
+	pushOpts := &git.PushOptions{
 		RemoteName: forkRemoteName,
-	})
+	}
+	if force {
+		refSpec := config.RefSpec(fmt.Sprintf("+refs/heads/%s:refs/heads/%s", branchName, branchName))
+		pushOpts.RefSpecs = []config.RefSpec{refSpec}
+		pushOpts.Force = true
+	}
+
+	err := rbSync.downstreamRepo.Push(pushOpts)
 	if err != nil {
 		return fmt.Errorf("failed to push changes: %w", err)
 	}
@@ -282,6 +392,14 @@ func (rbSync *runbookSync) prForBranchPreviouslyCreated(branchName string) (bool
 
 	if len(prs) == 0 {
 		return false, nil, nil
+	}
+
+	// Prefer an open PR when both open and closed PRs exist for the branch, so an
+	// open PR is updated in place rather than being treated as closed.
+	for _, pr := range prs {
+		if pr.GetState() == "open" {
+			return true, pr, nil
+		}
 	}
 
 	return true, prs[0], nil
@@ -313,7 +431,7 @@ func (rbSync *runbookSync) createPR(branchName string, title string, body string
 	return pr, nil
 }
 
-func (rbSync *runbookSync) closeOutdatedRunbookPRs(newPR *github.PullRequest, runbookName string) error {
+func (rbSync *runbookSync) closeOutdatedRunbookPRs(keepPR *github.PullRequest, runbookName string) error {
 	prs, _, err := rbSync.ghClient.PullRequests.List(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, &github.PullRequestListOptions{
 		State: "open",
 		Base:  downstreamMainBranch,
@@ -323,8 +441,8 @@ func (rbSync *runbookSync) closeOutdatedRunbookPRs(newPR *github.PullRequest, ru
 	}
 
 	for _, oldPR := range prs {
-		if isAutomatedPRForSameRunbook(oldPR, runbookName) && oldPR.GetNumber() != newPR.GetNumber() {
-			if err := rbSync.closeOutdatedRunbookPR(oldPR, newPR); err != nil {
+		if isAutomatedPRForSameRunbook(oldPR, runbookName) && oldPR.GetNumber() != keepPR.GetNumber() {
+			if err := rbSync.closeOutdatedRunbookPR(oldPR, keepPR); err != nil {
 				return err
 			}
 		}
@@ -337,7 +455,7 @@ func isAutomatedPRForSameRunbook(oldPR *github.PullRequest, runbookName string) 
 	return strings.Contains(oldPR.GetTitle(), runbookName) && oldPR.GetUser().GetLogin() == githubUsername
 }
 
-func (rbSync *runbookSync) closeOutdatedRunbookPR(oldPR *github.PullRequest, newPr *github.PullRequest) error {
+func (rbSync *runbookSync) closeOutdatedRunbookPR(oldPR *github.PullRequest, keepPR *github.PullRequest) error {
 	klog.Infof("closing outdated PR: %s", oldPR.GetHTMLURL())
 
 	if rbSync.dryRun {
@@ -345,7 +463,7 @@ func (rbSync *runbookSync) closeOutdatedRunbookPR(oldPR *github.PullRequest, new
 		return nil
 	}
 
-	body := *oldPR.Body + fmt.Sprintf("\n\nThis pull request has been closed in favor of a newer one. Please refer to the updated PR for the latest changes and discussion: %s.", newPr.GetHTMLURL())
+	body := *oldPR.Body + fmt.Sprintf("\n\nThis pull request has been closed in favor of another one. Please refer to the updated PR for the latest changes and discussion: %s.", keepPR.GetHTMLURL())
 	_, _, err := rbSync.ghClient.PullRequests.Edit(context.Background(), downstreamRepositoryOwner, downstreamRepositoryName, oldPR.GetNumber(), &github.PullRequest{
 		State: github.String("closed"),
 		Body:  github.String(body),

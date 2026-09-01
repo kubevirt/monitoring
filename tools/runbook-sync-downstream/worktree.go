@@ -20,9 +20,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
@@ -49,6 +51,50 @@ func getDirCurrentTree(repo *git.Repository, dir string) (*object.Tree, error) {
 	}
 
 	return runbooksTree, nil
+}
+
+// forkBranchFileContent fetches branchName from the fork remote and returns the
+// content of filePath as it currently exists on that branch. It returns
+// (nil, nil) when the branch or file is absent on the fork, so callers can treat
+// a missing remote file as "changed".
+func forkBranchFileContent(repo *git.Repository, branchName, filePath string) ([]byte, error) {
+	refSpec := config.RefSpec(fmt.Sprintf("+refs/heads/%s:refs/remotes/%s/%s", branchName, forkRemoteName, branchName))
+
+	err := repo.Fetch(&git.FetchOptions{
+		RemoteName: forkRemoteName,
+		RefSpecs:   []config.RefSpec{refSpec},
+	})
+	if err != nil && !errors.Is(err, git.NoErrAlreadyUpToDate) {
+		if errors.Is(err, git.NoMatchingRefSpecError{}) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to fetch fork branch %s: %w", branchName, err)
+	}
+
+	ref, err := repo.Reference(plumbing.NewRemoteReferenceName(forkRemoteName, branchName), true)
+	if err != nil {
+		return nil, fmt.Errorf("failed to resolve fork branch %s: %w", branchName, err)
+	}
+
+	commit, err := repo.CommitObject(ref.Hash())
+	if err != nil {
+		return nil, fmt.Errorf("failed to get commit for fork branch %s: %w", branchName, err)
+	}
+
+	f, err := commit.File(filePath)
+	if err != nil {
+		if errors.Is(err, object.ErrFileNotFound) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to read %s from fork branch %s: %w", filePath, branchName, err)
+	}
+
+	content, err := f.Contents()
+	if err != nil {
+		return nil, fmt.Errorf("failed to read contents of %s from fork branch %s: %w", filePath, branchName, err)
+	}
+
+	return []byte(content), nil
 }
 
 func newBranchFromMain(repo *git.Repository, name string) (*git.Worktree, error) {

@@ -20,6 +20,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path"
@@ -130,6 +131,18 @@ func copyRunbook(name string) error {
 
 	content := transform.ReplaceContents(string(file))
 	return createAndWriteFile(to, content)
+}
+
+// generatedFileMatches reports whether the freshly generated runbook file at
+// repoDir/filePath is byte-identical to want (the content already on the PR
+// branch). It returns an error if the generated file cannot be read.
+func generatedFileMatches(repoDir, filePath string, want []byte) (bool, error) {
+	got, err := os.ReadFile(path.Join(repoDir, filePath))
+	if err != nil {
+		return false, fmt.Errorf("failed to read generated file %s: %w", filePath, err)
+	}
+
+	return bytes.Equal(got, want), nil
 }
 
 func createAndWriteFile(path, content string) error {
