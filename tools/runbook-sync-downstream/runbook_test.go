@@ -5,8 +5,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
@@ -94,6 +96,12 @@ var _ = Describe("Runbook", func() {
 		var repo *git.Repository
 		var worktree *git.Worktree
 
+		var runbookPath string
+
+		// The repo is seeded with a committed runbook so the index is populated,
+		// which is what the real downstream clone looks like. go-git v5.11 only
+		// reports git.ErrEmptyCommit for a completely empty index, so a populated
+		// index is the only setup that exercises the real clean-worktree path.
 		BeforeEach(func() {
 			var err error
 			tempDir, err = os.MkdirTemp("", "runbook-commit-*")
@@ -105,10 +113,19 @@ var _ = Describe("Runbook", func() {
 			worktree, err = repo.Worktree()
 			Expect(err).ToNot(HaveOccurred())
 
-			// An empty runbooks dir means commit() stages nothing, which is the
-			// clean-worktree case that yields git.ErrEmptyCommit.
 			runbooksDir := filepath.Join(tempDir, downstreamRunbooksDir)
 			Expect(os.MkdirAll(runbooksDir, 0755)).To(Succeed())
+
+			runbookPath = filepath.Join(runbooksDir, "Foo.md")
+			Expect(os.WriteFile(runbookPath, []byte("# Foo\n\noriginal content\n"), 0644)).To(Succeed())
+
+			_, err = worktree.Add(downstreamRunbooksDir)
+			Expect(err).ToNot(HaveOccurred())
+
+			_, err = worktree.Commit("seed runbook", &git.CommitOptions{
+				Author: &object.Signature{Name: githubUsername, Email: githubEmail, When: time.Now()},
+			})
+			Expect(err).ToNot(HaveOccurred())
 		})
 
 		AfterEach(func() {
@@ -116,10 +133,22 @@ var _ = Describe("Runbook", func() {
 			Expect(err).ToNot(HaveOccurred())
 		})
 
-		It("returns git.ErrEmptyCommit when the worktree is clean", func() {
+		It("reports nothing to commit when the worktree is clean", func() {
 			rbSync := &runbookSync{downstreamRepo: repo}
 			err := rbSync.commit(worktree, "no changes")
-			Expect(errors.Is(err, git.ErrEmptyCommit)).To(BeTrue())
+			Expect(err).To(HaveOccurred())
+		})
+
+		It("does not create a commit when the worktree is clean", func() {
+			rbSync := &runbookSync{downstreamRepo: repo}
+			head, err := repo.Head()
+			Expect(err).ToNot(HaveOccurred())
+
+			_ = rbSync.commit(worktree, "no changes")
+
+			newHead, err := repo.Head()
+			Expect(err).ToNot(HaveOccurred())
+			Expect(newHead.Hash()).To(Equal(head.Hash()))
 		})
 
 		It("skips creating a new PR branch when a clean worktree has no PR", func() {
@@ -138,6 +167,22 @@ var _ = Describe("Runbook", func() {
 			action, classifyErr := classifyCommitResult(err, true)
 			Expect(classifyErr).ToNot(HaveOccurred())
 			Expect(action).To(Equal(commitActionKeepExisting))
+		})
+
+		It("reports nothing to commit when only files outside the runbooks dir are dirty", func() {
+			rbSync := &runbookSync{downstreamRepo: repo}
+			Expect(os.WriteFile(filepath.Join(tempDir, "unrelated.txt"), []byte("noise\n"), 0644)).To(Succeed())
+
+			err := rbSync.commit(worktree, "no runbook changes")
+
+			Expect(err).To(MatchError(errNothingToCommit))
+		})
+
+		It("commits when the runbook content changed", func() {
+			rbSync := &runbookSync{downstreamRepo: repo}
+			Expect(os.WriteFile(runbookPath, []byte("# Foo\n\nnew content\n"), 0644)).To(Succeed())
+
+			Expect(rbSync.commit(worktree, "real change")).To(Succeed())
 		})
 
 		It("proceeds normally when a commit was created", func() {
@@ -222,6 +267,25 @@ How to fix the issue.`
 			Expect(updatedStr).To(ContainSubstring("How to fix the issue."))
 		})
 
+		It("should separate the deprecation notice from the body by a single blank line", func() {
+			originalContent := "# TestRunbook\n\n## Meaning\n\nThis is a test runbook.\n"
+			Expect(os.WriteFile(testRunbookPath, []byte(originalContent), 0644)).To(Succeed())
+
+			deprecatedRunbook("TestRunbook", tempDir)
+
+			updatedContent, err := os.ReadFile(testRunbookPath)
+			Expect(err).ToNot(HaveOccurred())
+
+			Expect(string(updatedContent)).To(Equal(
+				"# TestRunbook [Deprecated]\n" +
+					"\n" +
+					"This alert is deprecated. You can safely ignore or silence it.\n" +
+					"\n" +
+					"## Meaning\n" +
+					"\n" +
+					"This is a test runbook.\n"))
+		})
+
 		It("should not re-deprecate an already deprecated runbook", func() {
 			By("creating a runbook that's already deprecated")
 			deprecatedContent := `# TestRunbook [Deprecated]
@@ -252,4 +316,121 @@ This is a test runbook with some content.`
 			Expect(deprecatedCount).To(Equal(1))
 		})
 	})
+
+	Context("Filtering runbooks that are already deprecated", func() {
+		var tempDir string
+		var runbooksDir string
+
+		BeforeEach(func() {
+			var err error
+			tempDir, err = os.MkdirTemp("", "runbook-filter-*")
+			Expect(err).ToNot(HaveOccurred())
+
+			runbooksDir = filepath.Join(tempDir, downstreamRunbooksDir)
+			Expect(os.MkdirAll(runbooksDir, 0755)).To(Succeed())
+		})
+
+		AfterEach(func() {
+			err := os.RemoveAll(tempDir)
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		writeRunbook := func(name, content string) {
+			Expect(os.WriteFile(filepath.Join(runbooksDir, name), []byte(content), 0644)).To(Succeed())
+		}
+
+		It("drops a runbook whose downstream file already carries the deprecation notice", func() {
+			writeRunbook("Done.md", "# Done [Deprecated]\n\nThis alert is deprecated.\n")
+
+			kept := filterAlreadyDeprecated([]runbook{{name: "Done.md"}}, tempDir)
+
+			Expect(kept).To(BeEmpty())
+		})
+
+		It("keeps a runbook that has not been deprecated yet", func() {
+			writeRunbook("Pending.md", "# Pending\n\n## Meaning\n\nStill live.\n")
+
+			kept := filterAlreadyDeprecated([]runbook{{name: "Pending.md"}}, tempDir)
+
+			Expect(kept).To(HaveLen(1))
+			Expect(kept[0].name).To(Equal("Pending.md"))
+		})
+
+		It("keeps a runbook whose file cannot be read so the error surfaces downstream", func() {
+			kept := filterAlreadyDeprecated([]runbook{{name: "Missing.md"}}, tempDir)
+
+			Expect(kept).To(HaveLen(1))
+			Expect(kept[0].name).To(Equal("Missing.md"))
+		})
+
+		It("keeps only the runbooks still needing deprecation", func() {
+			writeRunbook("Done.md", "# Done [Deprecated]\n\nGone.\n")
+			writeRunbook("Pending.md", "# Pending\n\nStill live.\n")
+
+			kept := filterAlreadyDeprecated([]runbook{{name: "Done.md"}, {name: "Pending.md"}}, tempDir)
+
+			Expect(kept).To(HaveLen(1))
+			Expect(kept[0].name).To(Equal("Pending.md"))
+		})
+	})
+
+	Context("Listing runbooks that need a sync", func() {
+		var upstreamDir, downstreamDir string
+		var upstreamRepo, downstreamRepo *git.Repository
+
+		BeforeEach(func() {
+			var err error
+			upstreamDir, err = os.MkdirTemp("", "runbook-upstream-*")
+			Expect(err).ToNot(HaveOccurred())
+			downstreamDir, err = os.MkdirTemp("", "runbook-downstream-*")
+			Expect(err).ToNot(HaveOccurred())
+
+			upstreamRepo = initRepoWithRunbooks(upstreamDir, upstreamRunbooksDir, map[string]string{
+				"Live.md": "# Live\n\nStill documented upstream.\n",
+			})
+			downstreamRepo = initRepoWithRunbooks(downstreamDir, downstreamRunbooksDir, map[string]string{
+				"Live.md":    "# Live\n\nStill documented upstream.\n",
+				"Done.md":    "# Done [Deprecated]\n\nAlready deprecated downstream.\n",
+				"Pending.md": "# Pending\n\nRemoved upstream, not yet deprecated.\n",
+			})
+		})
+
+		AfterEach(func() {
+			Expect(os.RemoveAll(upstreamDir)).To(Succeed())
+			Expect(os.RemoveAll(downstreamDir)).To(Succeed())
+		})
+
+		It("excludes runbooks that are already deprecated downstream", func() {
+			_, toDeprecate := listRunbooksThatNeedUpdate(downstreamRepo, upstreamRepo)
+
+			var names []string
+			for _, rb := range toDeprecate {
+				names = append(names, rb.name)
+			}
+			Expect(names).To(ConsistOf("Pending.md"))
+		})
+	})
 })
+
+func initRepoWithRunbooks(dir, runbooksDir string, runbooks map[string]string) *git.Repository {
+	GinkgoHelper()
+
+	repo, err := git.PlainInit(dir, false)
+	Expect(err).ToNot(HaveOccurred())
+
+	Expect(os.MkdirAll(filepath.Join(dir, runbooksDir), 0755)).To(Succeed())
+	for name, content := range runbooks {
+		Expect(os.WriteFile(filepath.Join(dir, runbooksDir, name), []byte(content), 0644)).To(Succeed())
+	}
+
+	worktree, err := repo.Worktree()
+	Expect(err).ToNot(HaveOccurred())
+	_, err = worktree.Add(runbooksDir)
+	Expect(err).ToNot(HaveOccurred())
+	_, err = worktree.Commit("seed runbooks", &git.CommitOptions{
+		Author: &object.Signature{Name: githubUsername, Email: githubEmail, When: time.Now()},
+	})
+	Expect(err).ToNot(HaveOccurred())
+
+	return repo
+}
