@@ -310,7 +310,7 @@ const (
 )
 
 // classifyCommitResult decides how to proceed based on the commit result. A
-// clean worktree (git.ErrEmptyCommit) means the generated content already
+// clean worktree means the generated content already
 // matches the base branch: skip creating a brand-new empty PR, but still
 // continue so an existing PR is updated in place. Any other commit error is
 // returned to the caller for fatal handling.
@@ -319,7 +319,7 @@ func classifyCommitResult(err error, prExists bool) (commitAction, error) {
 		return commitActionProceed, nil
 	}
 
-	if errors.Is(err, git.ErrEmptyCommit) {
+	if errors.Is(err, errNothingToCommit) || errors.Is(err, git.ErrEmptyCommit) {
 		if prExists {
 			return commitActionKeepExisting, nil
 		}
@@ -329,10 +329,35 @@ func classifyCommitResult(err error, prExists bool) (commitAction, error) {
 	return commitActionProceed, err
 }
 
+var errNothingToCommit = errors.New("nothing to commit: clean working tree")
+
+func stagedRunbookChanges(worktree *git.Worktree) (bool, error) {
+	status, err := worktree.Status()
+	if err != nil {
+		return false, fmt.Errorf("failed to get worktree status: %w", err)
+	}
+
+	for file, fileStatus := range status {
+		if strings.HasPrefix(file, downstreamRunbooksDir+"/") && fileStatus.Staging != git.Unmodified {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
 func (rbSync *runbookSync) commit(worktree *git.Worktree, msg string) error {
 	_, err := worktree.Add(downstreamRunbooksDir)
 	if err != nil {
 		return fmt.Errorf("failed to add changes: %w", err)
+	}
+
+	staged, err := stagedRunbookChanges(worktree)
+	if err != nil {
+		return err
+	}
+	if !staged {
+		return errNothingToCommit
 	}
 
 	_, err = worktree.Commit(msg, &git.CommitOptions{
@@ -485,7 +510,7 @@ func deprecatedRunbook(runbookName string, cloneDir string) {
 
 	originalContent := string(content)
 
-	if strings.Contains(originalContent, "[Deprecated]") {
+	if strings.Contains(originalContent, deprecatedMarker) {
 		klog.Infof("runbook %s is already deprecated", runbookName)
 		return
 	}
@@ -518,7 +543,7 @@ func deprecatedRunbook(runbookName string, cloneDir string) {
 		OriginalContent string
 	}{
 		RunbookName:     runbookName,
-		OriginalContent: strings.Join(contentWithoutTitle, "\n"),
+		OriginalContent: strings.Trim(strings.Join(contentWithoutTitle, "\n"), "\n"),
 	}
 
 	err = tmpl.Execute(f, templateData)

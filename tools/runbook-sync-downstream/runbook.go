@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/go-git/go-git/v5"
@@ -32,6 +33,8 @@ import (
 
 	"github.com/kubevirt/monitoring/tools/runbook-sync-downstream/pkg/transform"
 )
+
+const deprecatedMarker = "[Deprecated]"
 
 var (
 	runbookRegex = regexp.MustCompile(`.*\.md`)
@@ -55,7 +58,17 @@ func listRunbooksThatNeedUpdate(downstreamRepo *git.Repository, upstreamRepo *gi
 		klog.Fatal(fmt.Errorf("failed to find runbooks last update dates: %w", err))
 	}
 
-	return checkWhichRunbooksNeedUpdate(localRunbooks, upstreamRunbooks), checkWhichRunbooksNeedDeprecation(localRunbooks, upstreamRunbooks)
+	downstreamWorktree, err := downstreamRepo.Worktree()
+	if err != nil {
+		klog.Fatal(fmt.Errorf("failed to get downstream worktree: %w", err))
+	}
+
+	toDeprecate := filterAlreadyDeprecated(
+		checkWhichRunbooksNeedDeprecation(localRunbooks, upstreamRunbooks),
+		downstreamWorktree.Filesystem.Root(),
+	)
+
+	return checkWhichRunbooksNeedUpdate(localRunbooks, upstreamRunbooks), toDeprecate
 }
 
 func findRunbooksLastUpdateDates(repo *git.Repository, dir string) (map[string]time.Time, error) {
@@ -118,6 +131,22 @@ func checkWhichRunbooksNeedDeprecation(localRunbooks, upstreamRunbooks map[strin
 	}
 
 	return runbooksToDeprecate
+}
+
+func filterAlreadyDeprecated(runbooks []runbook, cloneDir string) []runbook {
+	var stillToDeprecate []runbook
+
+	for _, rb := range runbooks {
+		content, err := os.ReadFile(path.Join(cloneDir, downstreamRunbooksDir, rb.name))
+		if err == nil && strings.Contains(string(content), deprecatedMarker) {
+			klog.Infof("runbook %s is already deprecated downstream, skipping", rb.name)
+			continue
+		}
+
+		stillToDeprecate = append(stillToDeprecate, rb)
+	}
+
+	return stillToDeprecate
 }
 
 func copyRunbook(name string) error {

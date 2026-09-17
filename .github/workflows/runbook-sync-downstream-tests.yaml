@@ -1,0 +1,36 @@
+name: Runbook Sync Downstream Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/runbook-sync-downstream-tests.yaml'
+      - 'Makefile'
+      - 'tools/runbook-sync-downstream/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/runbook-sync-downstream-tests.yaml'
+      - 'Makefile'
+      - 'tools/runbook-sync-downstream/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test runbook-sync-downstream
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: tools/runbook-sync-downstream/go.mod
+
+      - name: Run unit tests
+        run: make test-runbook-sync-downstream

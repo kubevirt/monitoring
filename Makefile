@@ -45,6 +45,10 @@ build-runbook-sync-downstream:
 runbook-sync-downstream: build-runbook-sync-downstream
 	tools/runbook-sync-downstream/_out/runbook-sync-downstream
 
+.PHONY: test-runbook-sync-downstream
+test-runbook-sync-downstream:
+	cd tools/runbook-sync-downstream && go test ./...
+
 .PHONY: build-runbook-preview
 build-runbook-preview:
 	cd tools/runbook-sync-downstream && go build -ldflags="-s -w" -o _out/runbook-preview ./cmd/preview/
