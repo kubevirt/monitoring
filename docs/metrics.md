@@ -26,6 +26,11 @@ The following table contains all metrics from operators listed above. Each row r
 |----------|------|------|------|-------------|
 | kubevirt | `kubevirt_configuration_emulation_enabled` | Metric | Gauge | Indicates whether the Software Emulation is enabled in the configuration. |
 | kubevirt | `kubevirt_console_active_connections` | Metric | Gauge | Amount of active Console connections, broken down by namespace and vmi name. |
+| kubevirt | `kubevirt_decentralized_migration_proxy_active_connections` | Metric | Gauge | Number of active connections through the migration proxy |
+| kubevirt | `kubevirt_decentralized_migration_proxy_bytes_transferred_total` | Metric | Counter | Total state/disk bytes transferred through the migration proxy across all migrations |
+| kubevirt | `kubevirt_decentralized_migration_proxy_errors_total` | Metric | Counter | Total number of migration proxy errors |
+| kubevirt | `kubevirt_decentralized_migration_proxy_migration_bytes` | Metric | Gauge | State/disk bytes transferred for an active migration through the proxy |
+| kubevirt | `kubevirt_decentralized_migration_proxy_throughput_bytes_per_second` | Metric | Gauge | Approximate state/disk proxy throughput in bytes per second over a short window |
 | kubevirt | `kubevirt_info` | Metric | Gauge | Version information. |
 | kubevirt | `kubevirt_node_deprecated_machine_types` | Metric | Gauge | List of deprecated machine types based on the capabilities of individual nodes, as detected by virt-handler. |
 | kubevirt | `kubevirt_portforward_active_tunnels` | Metric | Gauge | Amount of active portforward tunnels, broken down by namespace and vmi name. |
