@@ -88,6 +88,7 @@ The following table contains all metrics from operators listed above. Each row r
 | kubevirt | `kubevirt_vmi_migration_dirty_memory_rate_bytes` | Metric | Gauge | The rate of memory being dirty in the Guest OS. |
 | kubevirt | `kubevirt_vmi_migration_end_time_seconds` | Metric | Gauge | The time at which the migration ended. |
 | kubevirt | `kubevirt_vmi_migration_failed` | Metric | Gauge | Indicates if the VMI migration failed. |
+| kubevirt | `kubevirt_vmi_migration_last_downtime_duration_seconds` | Metric | Gauge | Time, in seconds, the guest was paused during the cut-over of its last successful live migration, reported by the source node. |
 | kubevirt | `kubevirt_vmi_migration_memory_transfer_rate_bytes` | Metric | Gauge | The rate at which the memory is being transferred. |
 | kubevirt | `kubevirt_vmi_migration_phase_transition_time_from_creation_seconds` | Metric | Histogram | Histogram of VM migration phase transitions duration from creation time in seconds. |
 | kubevirt | `kubevirt_vmi_migration_start_time_seconds` | Metric | Gauge | The time at which the migration started. |
@@ -228,6 +229,7 @@ The following table contains all metrics from operators listed above. Each row r
 | hostpath-provisioner-operator | `kubevirt_hpp_operator_up` | Recording rule | Gauge | [Deprecated] The number of running hostpath-provisioner-operator pods |
 | hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_architecture_annotation` | Metric | Gauge | Indicates whether the DataImportCronTemplate has the ssp.kubevirt.io/dict.architectures annotation (1) or not (0) |
 | hyperconverged-cluster-operator | `kubevirt_hco_dataimportcrontemplate_with_supported_architectures` | Metric | Gauge | Indicates whether the DataImportCronTemplate has supported architectures (1) or not (0) |
+| hyperconverged-cluster-operator | `kubevirt_hco_feature_gate_enabled` | Metric | Gauge | Indicates whether an alpha or beta HyperConverged feature gate is configured as enabled (1) or disabled (0). Legacy feature gates superseded by dedicated configuration fields are excluded. |
 | hyperconverged-cluster-operator | `kubevirt_hco_hyperconverged_cr_exists` | Metric | Gauge | Indicates whether the HyperConverged custom resource exists (1) or not (0) |
 | hyperconverged-cluster-operator | `kubevirt_hco_memory_overcommit_percentage` | Metric | Gauge | Indicates the cluster-wide configured VM memory overcommit percentage |
 | hyperconverged-cluster-operator | `kubevirt_hco_misconfigured_descheduler` | Metric | Gauge | Indicates whether the optional descheduler is not properly configured (1) to work with KubeVirt or not (0) |
