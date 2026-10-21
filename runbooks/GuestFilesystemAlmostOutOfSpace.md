@@ -1,0 +1,121 @@
+# GuestFilesystemAlmostOutOfSpace
+
+## Meaning
+
+This alert triggers when a file system in a virtual machine (VM) is running out
+of available disk space.
+
+The alert has the following severity levels:
+
+- **Warning**: Triggers when file system usage is between 85% and 95% for 5 minutes.
+- **Critical**: Triggers when file system usage exceeds 95%.
+
+The alert provides details about the specific file system (`disk_name`), its
+mount point (`mount_point`), the VMI name, and namespace.
+
+## Impact
+
+When a guest file system runs out of space, the VM may experience:
+
+- Application failures or crashes due to inability to write data
+- System instability or inability to perform updates
+- Potential data loss if applications cannot write to disk
+- Degraded performance as the system struggles with low disk space
+- The VM may become unresponsive or enter a failed state
+
+Critical space exhaustion (>95%) significantly increases the risk of immediate
+application or system failure.
+
+## Diagnosis
+
+- Check the file-system usage metrics for the VMI:
+
+   ```bash
+   # Get the domain name of the VMI
+   $ kubectl exec -it <pod-name> -n <namespace> -- virsh list
+   ```
+
+   ```bash
+   # Query filesystem info via QEMU Guest Agent
+   $ kubectl exec -it <pod-name> -n <namespace> -- virsh qemu-agent-command <domain-name> '{"execute": "guest-get-fsinfo"}'
+   ```
+
+- You can also connect to the VMI by using the `virtctl` console to inspect
+disk usage in the guest OS:
+
+   ```bash
+   $ virtctl console <vmi-name> -n <namespace>
+   ```
+
+   In the guest OS, run commands to evaluate file-system usage. For example, in
+   Linux guests:
+
+   ```bash
+   $ df -h
+   $ du -sh /* | sort -h
+   ```
+
+## Mitigation
+
+### Immediate Actions
+
+1. **Free up space in the guest file system**:
+
+   - Remove temporary files, logs, or caches
+   - Clean up old application data or archives
+   - Remove unnecessary packages or applications
+
+2. **Expand the disk size** if the underlying PVC supports volume expansion:
+
+   a. Check if the storage class supports volume expansion:
+
+      ```bash
+      $ kubectl get storageclass <storage-class-name> -o yaml | grep allowVolumeExpansion
+      ```
+
+   b. Modify the PVC to request a larger size:
+
+      ```bash
+      $ kubectl edit pvc <pvc-name> -n <namespace>
+      # Update the spec.resources.requests.storage value to a larger size
+      ```
+
+   c. Restart the VM to apply the changes:
+
+      ```bash
+      $ virtctl restart <vm-name> -n <namespace>
+      ```
+
+      This step resizes the disk.img to match the new PVC size.
+      While this is primarily needed for file system volumes, restarting to apply
+      changes is generally recommended.
+
+### Long-term Solutions
+
+- **Set up log rotation and cleanup policies** within guest operating systems.
+
+- **Use appropriate volume sizes** when provisioning VMs based on expected
+workload requirements.
+
+- **Consider using dynamic storage provisioning** with StorageClasses that
+support volume expansion.
+
+- **Implement automated cleanup scripts** or maintenance tasks within VMs to
+manage disk space proactively.
+
+- **Review and optimize application storage patterns** to minimize unnecessary
+disk usage.
+
+If the issue persists or the file system continues to fill up rapidly after
+cleanup, investigate the root cause such as application bugs, excessive logging,
+or unexpected data growth.
+
+<!--DS: If you cannot resolve the issue, log in to the
+link:https://access.redhat.com[Red Hat Customer Portal] and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
