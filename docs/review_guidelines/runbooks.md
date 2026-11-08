@@ -40,8 +40,11 @@ When reviewing a runbook:
    link to the PR description** (or provide it in a comment reply).
    The runbook cannot be verified without it.
 5. If the alert PR link is provided but the PR is not yet merged,
-   note this in the review — the runbook should not be merged before
-   the alert PR is merged or at least approved.
+   note the dependency in the review. The runbook must merge first:
+   a merged runbook without its alert is an unlinked document, while
+   an alert that merges first references a `runbook_url` that does
+   not exist yet. Verify every runbook claim against the alert PR's
+   expressions before approving the runbook.
 
 ## What to Verify
 
