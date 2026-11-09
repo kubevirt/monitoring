@@ -4,9 +4,12 @@
 
 A large number of virt-launcher Pods remain in the `Failed` phase.
 
-Condition: `sum(kube_pod_status_phase{phase="Failed", pod=~"virt-launcher-.*"}) >= 200` holds for 10 minutes.
-Virt-launcher Pods host virtual machine (VM) workloads and mass failures can indicate
-migration loops, image/network/storage issues, or control-plane regressions.
+Condition:
+`sum(kube_pod_status_phase{phase="Failed", pod=~"virt-launcher-.*"}) >= 200`
+holds for 10 minutes.
+Virt-launcher Pods host virtual machine (VM) workloads and mass failures
+can indicate migration loops, image/network/storage issues, or
+control-plane regressions.
 
 ## Impact
 
@@ -96,7 +99,8 @@ VMs and the cluster control plane might be affected:
 
 3. Resolve root cause:
 
-    - Image issues: fix registry access, credentials, or tags; re-run affected workloads.
+    - Image issues: fix registry access, credentials, or tags; re-run
+      affected workloads.
     - Network/CNI: fix CNI/data-plane errors; confirm new Pods start cleanly.
     - Storage: resolve attach/mount failures; verify PVC/VolumeSnapshot health.
     - KubeVirt regression: roll forward/back to a known-good version and re-try.
@@ -106,11 +110,13 @@ VMs and the cluster control plane might be affected:
     sum(kube_pod_status_phase{phase="Failed", pod=~"virt-launcher-.*"})
     ```
 
-Ensure the failed count drops and stays below threshold and that new virt-launcher
-Pods start successfully and VMIs are healthy.
+Ensure the failed count drops and stays below threshold and that new
+virt-launcher Pods start successfully and VMIs are healthy.
 
-<!--DS: If you cannot resolve the issue, log in to the [Red Hat Customer Portal](link:https://access.redhat.com)
-and open a support case, attaching the artifacts gathered during the diagnosis procedure.-->
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](link:https://access.redhat.com) and open a
+support case, attaching the artifacts gathered during the diagnosis
+procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
