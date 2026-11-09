@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'docs/runbooks/**.md'
+      - 'tools/runbook-sync-downstream/**'
+      - '.github/workflows/runbook-preview.yaml'
 
 permissions:
   contents: read
@@ -29,8 +31,15 @@ jobs:
 
       - name: Get changed runbook files
         id: changed-files
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
-          FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD -- 'docs/runbooks/*.md')
+          FILES=$(git diff --name-only "origin/${BASE_REF}...HEAD" -- 'docs/runbooks/*.md')
+
+          if [ -z "$FILES" ]; then
+            FILES=$(ls docs/runbooks/*.md)
+          fi
+
           echo "files<<EOF" >> "$GITHUB_OUTPUT"
           echo "$FILES" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
@@ -43,13 +52,30 @@ jobs:
 
       - name: Generate downstream preview
         if: steps.changed-files.outputs.has_changes == 'true'
+        env:
+          CHANGED_FILES: ${{ steps.changed-files.outputs.files }}
         run: |
-          echo "${{ steps.changed-files.outputs.files }}" | while read -r file; do
+          mkdir -p "${RUNNER_TEMP}/downstream-preview"
+          echo "$CHANGED_FILES" | while read -r file; do
             if [ -n "$file" ] && [ -f "$file" ]; then
-              echo "============================================"
-              echo "Preview: $file"
-              echo "============================================"
-              tools/runbook-sync-downstream/_out/runbook-preview "$file"
-              echo ""
+              tools/runbook-sync-downstream/_out/runbook-preview \
+                -output-dir "${RUNNER_TEMP}/downstream-preview" "$file" >/dev/null
             fi
           done
+
+          for preview in "${RUNNER_TEMP}"/downstream-preview/*.md; do
+            [ -e "$preview" ] || continue
+            echo "============================================"
+            echo "Preview: $(basename "$preview")"
+            echo "============================================"
+            cat "$preview"
+            echo ""
+          done
+
+      - name: Lint downstream preview
+        if: steps.changed-files.outputs.has_changes == 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          npx --yes markdownlint-cli2@0.13.0 \
+            --config "${GITHUB_WORKSPACE}/tools/runbook-sync-downstream/downstream.markdownlint-cli2.yaml" \
+            "${RUNNER_TEMP}/downstream-preview/*.md"
