@@ -110,3 +110,144 @@ func TestReplaceOnlyInText(t *testing.T) {
 		})
 	}
 }
+
+func TestWrapLines(t *testing.T) {
+	const longSentence = "This line is quite long and absolutely should be wrapped because it exceeds the limit."
+
+	const wrappedSentence = "This line is quite long and absolutely should be wrapped because it exceeds the \n" +
+		"limit."
+
+	tests := []struct {
+		name string
+		in   string
+		want string
+	}{
+		{
+			name: "wraps plain prose at the limit",
+			in:   longSentence,
+			want: wrappedSentence + "\n",
+		},
+		{
+			name: "does not wrap inside a fenced code block",
+			in: "```bash\n" +
+				"$ oc get pods -A -l kubevirt.io=virt-launcher --field-selector=status.phase=Failed --no-headers\n" +
+				"```",
+			want: "```bash\n" +
+				"$ oc get pods -A -l kubevirt.io=virt-launcher --field-selector=status.phase=Failed --no-headers\n" +
+				"```\n",
+		},
+		{
+			// Regression test: a closing backtick followed by punctuation
+			// ("`virt-api`,") used to leave the inline-code state stuck open.
+			// Because inInlineCode suppresses wrapping, every later line in the
+			// document was then emitted unwrapped.
+			name: "keeps wrapping after inline code whose closing backtick is followed by punctuation",
+			in: "Without a ready `virt-api`, requests cannot be served.\n" +
+				longSentence,
+			want: "Without a ready `virt-api`, requests cannot be served.\n" +
+				wrappedSentence + "\n",
+		},
+		{
+			// Regression test: the punctuation-trimming rule must apply to
+			// inline code only. A fenced-code line ending in "```." is code
+			// content, not a valid closing delimiter, so block code stays open
+			// and the long line inside it must not be wrapped.
+			name: "keeps block code open when a fence line ends in punctuation",
+			in: "```bash\n" +
+				"$ echo hello```.\n" +
+				longSentence + "\n" +
+				"```",
+			want: "```bash\n" +
+				"$ echo hello```.\n" +
+				longSentence + "\n" +
+				"```\n",
+		},
+		{
+			// End-to-end regression against the NoReadyVirtAPI runbook: the
+			// "## Impact" paragraph was emitted unwrapped because
+			// "`virt-api`," in the Meaning section stuck the state open.
+			name: "wraps the Impact section of a realistic runbook",
+			in: "# NoReadyVirtAPI\n" +
+				"\n" +
+				"## Meaning\n" +
+				"\n" +
+				"Without a ready `virt-api`, API requests for virtual machines\n" +
+				"cannot be served.\n" +
+				"\n" +
+				"## Impact\n" +
+				"\n" +
+				longSentence,
+			want: "# NoReadyVirtAPI\n" +
+				"\n" +
+				"## Meaning\n" +
+				"\n" +
+				"Without a ready `virt-api`, API requests for virtual machines\n" +
+				"cannot be served.\n" +
+				"\n" +
+				"## Impact\n" +
+				"\n" +
+				wrappedSentence + "\n",
+		},
+		{
+			// A complete triple-backtick span in the middle of a line is
+			// inline code, not a fence: the info string of a real fence may
+			// not contain a backtick. Treating it as a fence used to leave
+			// block state open and suppress all later wrapping.
+			name: "treats a mid-line triple-backtick span as inline code",
+			in: "A span such as ```foo```, stays inline.\n" +
+				longSentence,
+			want: "A span such as ```foo```, stays inline.\n" +
+				wrappedSentence + "\n",
+		},
+		{
+			// Trailing text on a line inside a code block must not close it,
+			// even when that text ends in three backticks.
+			name: "does not close a block on trailing text ending in backticks",
+			in: "```bash\n" +
+				"$ echo hello```\n" +
+				longSentence + "\n" +
+				"```",
+			want: "```bash\n" +
+				"$ echo hello```\n" +
+				longSentence + "\n" +
+				"```\n",
+		},
+		{
+			// A bare opening fence must not be closed by the very word that
+			// opened it.
+			name: "handles an opening fence with no info string",
+			in: "```\n" +
+				longSentence + "\n" +
+				"```\n" +
+				longSentence,
+			want: "```\n" +
+				longSentence + "\n" +
+				"```\n" +
+				wrappedSentence + "\n",
+		},
+		{
+			// A longer opening fence is only closed by a run at least as
+			// long, so a shorter run inside the block is content.
+			name: "closes a long fence only on a run at least as long",
+			in: "````text\n" +
+				"```\n" +
+				longSentence + "\n" +
+				"````\n" +
+				longSentence,
+			want: "````text\n" +
+				"```\n" +
+				longSentence + "\n" +
+				"````\n" +
+				wrappedSentence + "\n",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := wrapLines(tt.in, 80)
+			if got != tt.want {
+				t.Errorf("wrapLines() mismatch\n in:   %q\n got:  %q\n want: %q", tt.in, got, tt.want)
+			}
+		})
+	}
+}
