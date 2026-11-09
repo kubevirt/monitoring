@@ -49,3 +49,13 @@ that are not migratable:
 
 Set the `evictionStrategy` of the VMI to `shutdown` or resolve the issue that
 prevents the VMI from migrating.
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

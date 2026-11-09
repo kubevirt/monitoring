@@ -50,13 +50,12 @@ command:
   $ kubectl patch storageclass <storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubevirt.io/is-default-virt-class":"true"}}}'
   ```
 
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
 - [OKD Help](https://okd.io/docs/community/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
-
-<!--DS: If you cannot resolve the issue, log in to the
-[Customer Portal](https://access.redhat.com) and open a support case,
-attaching the artifacts gathered during the diagnosis procedure.-->

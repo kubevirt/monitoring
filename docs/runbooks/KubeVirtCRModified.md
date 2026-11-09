@@ -35,3 +35,13 @@ configure the cluster.
 
 The alert resolves itself after 10 minutes if the operands are not changed
 manually.
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

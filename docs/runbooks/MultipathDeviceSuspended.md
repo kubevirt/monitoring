@@ -44,3 +44,13 @@ a suspended device can be part of an in-progress storage operation.
 Verify that the device is active, workload I/O resumes, and
 `node_dmmultipath_device_active` returns to `1`. Do not remove or recreate the
 device while workloads are using it.
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

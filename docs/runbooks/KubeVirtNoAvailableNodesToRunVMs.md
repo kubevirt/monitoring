@@ -31,7 +31,7 @@ To mitigate the impact of this alert, add nodes to the cluster that have
 hardware virtualization or CPU virtualization extensions enabled.
 
 <!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:

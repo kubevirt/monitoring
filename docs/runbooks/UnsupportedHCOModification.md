@@ -85,3 +85,13 @@ To remove a specific JSON Patch annotation from the `HyperConverged` CR:
 If the JSON Patch annotation is generic and useful, you can submit an RFE to add
 the modification to the API by filing a [bug](https://bugzilla.redhat.com/).
 <!--USend-->
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

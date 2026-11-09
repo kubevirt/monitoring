@@ -291,9 +291,8 @@ Escalate to the cluster administrator if:
   progressed to having VMIs
 
 <!--DS: If you cannot resolve the issue, log in to the
-[Red Hat Custromer Portal](https://access.redhat.com) and open a support
-case, attaching the artifacts gathered during the diagnosis
-procedure.-->
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

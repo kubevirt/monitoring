@@ -77,13 +77,12 @@ but with a `RunStrategy` of `Always` it will be automatically restarted.
   (`pvpanic` for Linux, `hyperv` for Windows) to enable reliable crash
   detection.
 
-<!--USstart-->
-If you cannot resolve the issue, see the following resources:
-
-- [OKD Help](https://www.okd.io/help/)
-- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
-<!--USend-->
-
 <!--DS: If you cannot resolve the issue, log in to the
 [Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
