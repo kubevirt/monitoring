@@ -112,7 +112,7 @@ setting the `enableCommonBootImageImport` field to `false`:
      ```
 
 <!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 See the [v1 API HCO cluster configuration documentation](https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#disabling-all-pre-defined-golden-images)

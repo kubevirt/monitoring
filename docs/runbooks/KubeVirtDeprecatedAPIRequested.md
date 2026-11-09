@@ -27,6 +27,9 @@ fail when the API is removed in a future release.
 Use fully supported APIs. The alert resolves itself after 10 minutes if the
 deprecated API is not used.
 
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 

@@ -63,3 +63,13 @@ Before closing the incident, recheck `multipath -ll` on the affected node and
 confirm that affected workload I/O is healthy: the failed-path count and the
 alert can clear while multipath still marks a path unusable. Do not remove
 the mapped device while workloads are using it.
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->

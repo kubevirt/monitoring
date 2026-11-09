@@ -73,7 +73,7 @@ changes to the node's taints and tolerations or to a pod's scheduling rules.
 Try to identify the root cause and resolve the issue.
 
 <!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 See [How Daemon Pods are scheduled](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#how-daemon-pods-are-scheduled)

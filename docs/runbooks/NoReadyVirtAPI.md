@@ -54,7 +54,7 @@ Identify the root cause (e.g. all replicas crashing, readiness probe failures,
 node or resource issues) and restore at least one ready `virt-api` pod.
 
 <!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
