@@ -4,6 +4,10 @@
 
 This alert fires when a `DataVolume` object restarts more than three times.
 
+The alert fires once for each namespace that has such data volumes, and its
+`namespace` label names that namespace. Alerts from older CDI versions don't
+have this label.
+
 ## Impact
 
 Data volumes are responsible for importing and creating a virtual machine disk
@@ -13,7 +17,14 @@ issue.
 
 ## Diagnosis
 
-1. Find Containerized Data Importer (CDI) pods with more than three restarts:
+1. Find Containerized Data Importer (CDI) pods with more than three restarts
+   in the namespace from the alert's `namespace` label:
+
+   ```bash
+   $ kubectl get pods -n <namespace> -l app=containerized-data-importer -o=jsonpath='{range .items[?(@.status.containerStatuses[0].restartCount>3)]}{.metadata.name}{"/"}{.metadata.namespace}{"\n"}'
+   ```
+
+   If the alert has no `namespace` label, search all namespaces instead:
 
    ```bash
    $ kubectl get pods --all-namespaces -l app=containerized-data-importer -o=jsonpath='{range .items[?(@.status.containerStatuses[0].restartCount>3)]}{.metadata.name}{"/"}{.metadata.namespace}{"\n"}'
