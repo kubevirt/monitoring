@@ -21,16 +21,16 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Python 3.8
+      - name: Set up Python 3.13
         uses: actions/setup-python@v6
         with:
-          python-version: 3.8
+          python-version: '3.13'
 
       - name: Run Python commands
         working-directory: ./tools/ghpages
         run: |
           pip install --upgrade pip
-          python3.8 -m venv venv
+          python3 -m venv venv
           source venv/bin/activate
           echo "VIRTUAL ENV:" $VIRTUAL_ENV
 
