@@ -5,7 +5,9 @@
 This alert fires when a `DataVolume` object restarts more than three times.
 
 The alert fires once for each namespace that has such data volumes, and its
-`namespace` label names that namespace. Alerts from older CDI versions don't
+`namespace` label names the namespace of the CDI pod that restarted. For a
+cross-namespace clone, that is the namespace of the source PVC, so the target
+data volume can be in another namespace. Alerts from older CDI versions don't
 have this label.
 
 ## Impact
@@ -17,11 +19,17 @@ issue.
 
 ## Diagnosis
 
-1. Find Containerized Data Importer (CDI) pods with more than three restarts
-   in the namespace from the alert's `namespace` label:
+1. Set `NAMESPACE` to the value of the alert's `namespace` label:
 
    ```bash
-   $ kubectl get pods -n <namespace> -l app=containerized-data-importer -o=jsonpath='{range .items[?(@.status.containerStatuses[0].restartCount>3)]}{.metadata.name}{"/"}{.metadata.namespace}{"\n"}'
+   $ export NAMESPACE=<namespace>
+   ```
+
+2. Find Containerized Data Importer (CDI) pods with more than three restarts
+   in that namespace:
+
+   ```bash
+   $ kubectl get pods -n "$NAMESPACE" -l app=containerized-data-importer -o=jsonpath='{range .items[?(@.status.containerStatuses[0].restartCount>3)]}{.metadata.name}{"/"}{.metadata.namespace}{"\n"}'
    ```
 
    If the alert has no `namespace` label, search all namespaces instead:
@@ -30,16 +38,17 @@ issue.
    $ kubectl get pods --all-namespaces -l app=containerized-data-importer -o=jsonpath='{range .items[?(@.status.containerStatuses[0].restartCount>3)]}{.metadata.name}{"/"}{.metadata.namespace}{"\n"}'
    ```
 
-2. Obtain the details of the pods:
+3. Obtain the details of the pods. The owner references, labels and annotations
+   show which PVC the pod works on, and from there which data volume:
 
    ```bash
-   $ kubectl -n <namespace> describe pods <pod>
+   $ kubectl -n "$NAMESPACE" describe pods <pod>
    ```
 
-3. Check the pod logs for error messages:
+4. Check the pod logs for error messages:
 
    ```bash
-   $ kubectl -n <namespace> logs <pod>
+   $ kubectl -n "$NAMESPACE" logs <pod>
    ```
 
 ## Mitigation
