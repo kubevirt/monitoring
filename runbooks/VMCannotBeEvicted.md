@@ -1,0 +1,61 @@
+# VMCannotBeEvicted
+
+## Meaning
+
+This alert fires when the eviction strategy of a virtual machine (VM) is set to
+`LiveMigration` but the VM is not migratable.
+
+## Impact
+
+Non-migratable VMs prevent node eviction. This condition affects operations such
+as node drain and updates.
+
+## Diagnosis
+
+1. Check the VMI configuration to determine whether the value of
+`evictionStrategy` is `LiveMigrate` of the VMI:
+
+   ```bash
+   $ kubectl get vmis -o yaml
+   ```
+
+2. Check for a `False` status in the `LIVE-MIGRATABLE` column to identify VMIs
+that are not migratable:
+
+   ```bash
+   $ kubectl get vmis -o wide
+   ```
+
+3. Obtain the details of the VMI and check `spec.conditions` to identify the issue:
+
+   ```bash
+   $ kubectl get vmi <vmi> -o yaml
+   ```
+
+   Example output:
+
+   ```yaml
+   status:
+     conditions:
+     - lastProbeTime: null
+       lastTransitionTime: null
+       message: cannot migrate VMI which does not use masquerade to connect to the pod network
+       reason: InterfaceNotLiveMigratable
+       status: "False"
+       type: LiveMigratable
+   ```
+
+## Mitigation
+
+Set the `evictionStrategy` of the VMI to `shutdown` or resolve the issue that
+prevents the VMI from migrating.
+
+<!--DS: If you cannot resolve the issue, log in to the
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
+attaching the artifacts gathered during the diagnosis procedure.-->
+<!--USstart-->
+If you cannot resolve the issue, see the following resources:
+
+- [OKD Help](https://okd.io/docs/community/help/)
+- [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
+<!--USend-->
