@@ -2,35 +2,34 @@
 
 ## Meaning
 
-Autopilot cannot select a StorageClass for the `logging-lokistack` asset for
-at least fifteen minutes. Logging is enabled, but no explicit storage class,
-existing LokiStack storage class, or cluster default StorageClass is available.
+Logging is enabled, but its storage is not configured. Autopilot cannot find
+a StorageClass for the LokiStack it manages: the HyperConverged resource does
+not select one for logging, an existing LokiStack does not specify one, and
+the cluster has no default StorageClass.
 
-The warning alert selects the following expression for `15m`:
+The alert fires when this condition holds for fifteen minutes:
 
 ```promql
 kubevirt_autopilot_render_failed{asset="logging-lokistack", reason="configuration", code="NoDefaultStorageClass"} == 1
 ```
 
-The alert carries a fixed `namespace: openshift-logging` label — the
-LokiStack namespace the asset targets — so routing and filtering follow the
-affected logging namespace rather than the operator installation namespace.
-The fifteen-minute delay allows storage setup to complete before notifying an
-administrator. Internal template errors and API read failures do not trigger
-this alert.
-
 ## Impact
 
-Autopilot cannot create or update the LokiStack desired configuration.
-Logging setup remains incomplete. Other eligible assets continue to reconcile.
+Logging setup remains incomplete. The LokiStack is not created or updated, so
+logs are not collected and saved: application, infrastructure, and, when
+enabled, audit logs are discarded when their pods terminate. Other
+Autopilot-managed assets continue to reconcile.
 
-This alert does not detect missing explicitly named storage classes, unsuitable
-storage classes, object-storage credentials, or PVC provisioning failures.
-Those problems are reported by Loki and the storage provisioner.
+This alert reports only the missing storage-class selection. It does not
+detect missing explicitly named storage classes, unsuitable storage classes,
+object-storage credentials, or PVC provisioning failures; those problems are
+reported by Loki and the storage provisioner. Internal rendering errors and
+API read failures do not trigger this alert.
 
 ## Diagnosis
 
-1. Set the HyperConverged name expected by Autopilot and discover its namespace:
+1. Set the HyperConverged name expected by Autopilot and discover its
+   namespace:
 
    ```bash
    $ HCO="kubevirt-hyperconverged"
@@ -40,14 +39,13 @@ Those problems are reported by Loki and the storage provisioner.
    $ printf 'HyperConverged: %s\nNamespace: %s\n' "$HCO" "$HCO_NAMESPACE"
    ```
 
-   Continue only if the lookup succeeds and returns exactly one namespace.
-   If it returns no namespace or multiple namespaces, inspect
-   `kubectl get hyperconverged -A` and identify the resource managed by the
-   affected Autopilot installation before continuing. Do not assume that the
-   Autopilot installation namespace is also the HyperConverged namespace.
-   Run the remaining commands in the same shell; `export` is unnecessary.
+   > **Note:** If no namespace or multiple namespaces are returned, inspect
+   > `kubectl get hyperconverged -A` and identify the resource managed by the
+   > affected Autopilot installation before continuing. Do not assume that
+   > the Autopilot installation namespace is also the HyperConverged
+   > namespace.
 
-2. Read the warning events for the exact configuration problem:
+2. Read the warning events on HyperConverged for the configuration problem:
 
    ```bash
    $ kubectl -n "$HCO_NAMESPACE" get events \
@@ -55,40 +53,55 @@ Those problems are reported by Loki and the storage provisioner.
        --sort-by=.lastTimestamp
    ```
 
-   The event identifies `logging-lokistack` and `NoDefaultStorageClass`.
+   Each `RenderFailed` event names the asset that failed to render and the
+   problem code. For this alert, the event reports the `logging-lokistack`
+   asset with the `NoDefaultStorageClass` code. Events for other assets or
+   with other codes indicate a different problem.
 
-3. Inspect storage classes, the HCO override, and any existing LokiStack:
+3. Check where a StorageClass can come from. Autopilot selects the logging
+   storage class, in order, from the HyperConverged annotation, an existing
+   LokiStack, and the cluster default:
 
    ```bash
-   $ kubectl get storageclass
    $ kubectl -n "$HCO_NAMESPACE" get hyperconverged "$HCO" \
        -o go-template='{{index .metadata.annotations "platform.kubevirt.io/logging-storage-class"}}{{"\n"}}'
    $ kubectl -n openshift-logging get lokistack logging-loki \
        -o jsonpath='{.spec.storageClassName}{"\n"}'
+   $ kubectl get storageclass
    ```
 
-   A new installation can have no LokiStack yet. A configured existing stack
-   keeps its storage class even when the cluster default changes.
+   The first command prints the storage class selected for logging, if any.
+   The second prints the storage class of an existing LokiStack; a new
+   installation has no LokiStack yet, and a configured stack keeps its
+   storage class even when the cluster default changes. The third lists all
+   storage classes and marks the cluster default with `(default)`.
 
 ## Mitigation
 
-Select an available StorageClass suitable for Loki's filesystem PVCs, then set
-it explicitly on HyperConverged:
+Select a StorageClass that provisions persistent volumes for Loki's internal
+filesystem storage, then set it explicitly on HyperConverged:
 
 ```bash
 $ kubectl -n "$HCO_NAMESPACE" annotate hyperconverged "$HCO" \
     platform.kubevirt.io/logging-storage-class=<storage-class> --overwrite
 ```
 
-Alternatively, ask the storage administrator to configure a cluster default:
+The selected class must support the filesystem PVCs that Loki requests. This
+is block storage for Loki's internal volumes, separate from the object
+storage configured in the `logging-loki-storage` secret.
+<!--DS: See
+[Loki block storage](https://github.com/openshift-virtualization/virt-platform-autopilot/blob/main/docs/logging.md#loki-block-storage)
+for the selection policy and requirements.-->
+
+Alternatively, ask the storage administrator to configure a cluster default.
+Changing the default affects other workloads that do not specify a storage
+class; use the HyperConverged annotation when the choice should apply only
+to logging:
 
 ```bash
 $ kubectl annotate storageclass <storage-class> \
     storageclass.kubernetes.io/is-default-class=true --overwrite
 ```
-
-Changing the default affects other workloads that do not specify a storage
-class. Use the HCO annotation when the choice should apply only to logging.
 
 Autopilot retries reconciliation automatically. The metric is a status gauge:
 when rendering succeeds, or when logging is excluded or set to unmanaged, the
@@ -101,11 +114,11 @@ stack's storage class unless performing a planned storage migration; do not
 delete LokiStack resources or PVCs to clear this alert.
 
 <!--DS: If you cannot resolve the issue, log in to the
-link:https://access.redhat.com[Customer Portal] and open a support case,
+[Red Hat Customer Portal](https://access.redhat.com) and open a support case,
 attaching the artifacts gathered during the diagnosis procedure.-->
 <!--USstart-->
 If you cannot resolve the issue, see the following resources:
 
-- [OKD Help](https://okd.io/docs/community/help)
+- [OKD Help](https://okd.io/docs/community/help/)
 - [#virtualization Slack channel](https://kubernetes.slack.com/channels/virtualization)
 <!--USend-->
